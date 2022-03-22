@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Row, Col } from 'react-bootstrap';
-import styles from '../styles/Footer.module.css';
+import styles from './styles/Footer.module.css';
 import { FaFacebookF, FaTwitter, FaYoutube, FaDribbble } from 'react-icons/fa';
 import Link from 'next/link';
 import { FiMail } from 'react-icons/fi';

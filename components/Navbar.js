@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from 'next/image'
-import styles from '../styles/Navbar.module.css'
+import styles from './styles/Navbar.module.css'
 import { useRouter } from "next/router";
 import { BiSearchAlt2, BiHeart, BiCartAlt } from 'react-icons/bi';
 
