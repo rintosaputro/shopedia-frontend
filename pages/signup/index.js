@@ -4,10 +4,11 @@ import styles from '../login/login.module.css'
 import Sidebar from '../../components/sidebar'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import Link from 'next/link'
+import Layout from '../../components/Layout'
 
 const Index = () => {
     return (
-        <>
+        <Layout>
             <Head>
                 <title>Login | Shopedia</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -23,13 +24,14 @@ const Index = () => {
                     </Col>
                     <Col xs={12} md={5}>
                         <div className='my-5'>
-                            <h3>Login</h3>
+                            <h3>Create Account</h3>
                             <Form.Control
                                 type="email"
                                 id="email"
                                 name="email"
                                 aria-describedby="email"
                                 className='me-5 py-3 mt-5'
+                                placeholder='Email address'
                             />
                             <Form.Control
                                 type="password"
@@ -37,6 +39,7 @@ const Index = () => {
                                 name="password"
                                 aria-describedby="password"
                                 className='me-5 py-3 mt-2'
+                                placeholder='Password'
                             />
                             <Row className='mt-3'>
                                 <Col>
@@ -63,7 +66,7 @@ const Index = () => {
                     </Col>
                 </Row>
             </Container>
-        </>
+        </Layout>
     )
 }
 export default Index

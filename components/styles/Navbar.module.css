@@ -1,0 +1,24 @@
+.contain {
+  margin-top: 124px;
+}
+.border {
+  border-bottom: 1px solid black;
+}
+.layout a {
+  text-decoration: none !important;
+  color: black !important;
+}
+.formSearch {
+  display: none;
+}
+.notif {
+  width: 26px;
+  height: 26px;
+  right: -7px;
+  top: -14px;
+}
+@media all and (max-width: 992px) {
+  .formSearch {
+    width: 100% !important;
+  }
+}
