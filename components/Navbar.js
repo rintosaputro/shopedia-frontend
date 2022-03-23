@@ -37,7 +37,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item dropdown ms-lg-3">
-              <Link href=''>
+              <Link href='/'>
                 <a className="nav-link dropdown-toggle fw-bold fs-5" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   PAGES
                 </a>
@@ -55,7 +55,7 @@ const Navbar = () => {
               </ul>
             </li>
             <li className="nav-item dropdown mx-lg-3">
-              <Link href=''>
+              <Link href='/'>
                 <a className="nav-link dropdown-toggle fw-bold fs-5" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   SHOP
                 </a>
