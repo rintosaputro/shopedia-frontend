@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Row,Col, Container,Nav } from 'react-bootstrap'
 import homepage from '../styles/homepage.module.scss'
 import CButton from '../components/CButton'
-import NavHomepage from '../components/NavHomepage'
+import NavProductHomepage from '../components/NavProductHomepage'
 
 
 export default function Home() {
@@ -41,18 +41,7 @@ export default function Home() {
           </header>
           <section>
               <Container>
-                <NavHomepage/>
-                  {/* <Nav defaultActiveKey="/home" as="ul" className={`${homepage.menuTrend} justify-content-center`}>
-                    <Nav.Item as="li">
-                      <Nav.Link href="/home">New Products</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item as="li">
-                      <Nav.Link className='active'>Hot Trends</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item as="li">
-                      <Nav.Link eventKey="link-2">Sale Off</Nav.Link>
-                    </Nav.Item>
-                </Nav> */}
+                <NavProductHomepage/>
                   <Row className='mt-5 mb-5 text-center'>
                     <Col md={4} className="mb-4">
                       <Image src="/images/chair2.png" width={360} height={450} alt="chair2"/>

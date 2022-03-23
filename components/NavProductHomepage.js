@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Container } from 'react-bootstrap'
 import Link from 'next/link'
 
-const NavHomepage = () => {
+const NavProductHomepage = () => {
   const route = useRouter()
   const [active, setActive] = useState('/')
   useEffect(() => {
@@ -57,13 +57,17 @@ const NavHomepage = () => {
             a:hover{
               font-size: 6vw;
             }
+
+            a.active{
+              color : #05595B
+            }
+            
           }
         `}
       </style>
       <ul className="nav justify-content-center">
         {menu.map(item => {
           return (
-                  <>
                       <li className="nav-item" key={item.name}>
                         {
                           active===item.link ? 
@@ -75,11 +79,10 @@ const NavHomepage = () => {
                             
                         }
                       </li>
-                  </>
             )
         })}
       </ul>
     </>
   )
 }
-export default NavHomepage
+export default NavProductHomepage
