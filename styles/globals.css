@@ -17,3 +17,11 @@ a {
 .active{
   color: brown;
 }
+.notfound{
+  font-size: 6rem;
+}
+
+iframe{
+  height: 100%;
+  width: 100%;
+}
