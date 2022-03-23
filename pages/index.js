@@ -7,9 +7,6 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-      <CButton classStyle='mt-4 px-4' color="color2" size="lg" active>
-                                Register
-                            </CButton>
         <title className='bg-primary'>Create Next App</title>
         <meta name="description" content="Generatedd by create next app" />
         <link rel="icon" href="/favicon.ico" />
