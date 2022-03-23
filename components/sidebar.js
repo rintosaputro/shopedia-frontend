@@ -5,20 +5,20 @@ import { Container } from 'react-bootstrap'
 import Link from 'next/link'
 
 const Sidebar = () => {
-    const route = useRouter()
-    const [active, setActive] = useState('/login')
-    useEffect(() => {
-        setActive(route.pathname)
-        console.log(route.pathname)
-    }, [route.pathname])
-    const menu = [
-        { link: '/login', name: 'Login Account' },
-        { link: '/signup', name: 'Register Account' },
-    ]
-    return (
-        <>
-            <style jsx>
-                {`
+  const route = useRouter()
+  const [active, setActive] = useState('/login')
+  useEffect(() => {
+    setActive(route.pathname)
+    console.log(route.pathname)
+  }, [route.pathname])
+  const menu = [
+    { link: '/login', name: 'Login Account' },
+    { link: '/signup', name: 'Register Account' },
+  ]
+  return (
+    <>
+      <style jsx>
+        {`
                     a{
                         color: rgba(58, 61, 66, 0.4);
                         text-decoration: none;
@@ -37,24 +37,24 @@ const Sidebar = () => {
                         color: #062C30;
                     }
                 `}
-            </style>
-            <Nav className="flex-column my-5 ms-5">
-                {menu.map(item => {
-                    return (
-                        <>
-                            <Link
-                                key={item.name}
-                                href={item.link}>
-                                <a className={active === item.link ? 'active' : ''}>
-                                    <h3>{item.name}</h3>
-                                </a>
-                            </Link>
-                            <hr className={active === item.link ? 'actived' : ''} width="10%" />
-                        </>
-                    )
-                })}
-            </Nav>
-        </>
-    )
+      </style>
+      <Nav className="flex-column my-5 ms-5">
+        {menu.map(item => {
+          return (
+            <>
+              <Link
+                key={item.name}
+                href={item.link}>
+                <a className={active === item.link ? 'active' : ''}>
+                  <h3>{item.name}</h3>
+                </a>
+              </Link>
+              <hr className={active === item.link ? 'actived' : ''} width="10%" />
+            </>
+          )
+        })}
+      </Nav>
+    </>
+  )
 }
 export default Sidebar

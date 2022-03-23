@@ -25,3 +25,13 @@ iframe{
   height: 100%;
   width: 100%;
 }
+.form-select:focus{
+  border-color: #30bb47 !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(93, 197, 119, 0.25) !important;
+}
+.form-control:focus{
+  border-color: #30bb47 !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(93, 197, 119, 0.25) !important;
+}
