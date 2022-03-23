@@ -17,3 +17,6 @@ a {
 .active{
   color: brown;
 }
+.notfound{
+  font-size: 6rem;
+}
