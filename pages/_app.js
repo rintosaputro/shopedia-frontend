@@ -7,6 +7,9 @@ import { Provider } from 'react-redux';
 import store from '../redux/store'
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap");
+  }, []);
   return (
     <Provider store={store}>
       <Component {...pageProps} />
