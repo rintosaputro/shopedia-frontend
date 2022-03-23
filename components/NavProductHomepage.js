@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Container } from 'react-bootstrap'
 import Link from 'next/link'
 
-const NavHomepage = () => {
+const NavProductHomepage = () => {
   const route = useRouter()
   const [active, setActive] = useState('/')
   useEffect(() => {
@@ -85,4 +85,4 @@ const NavHomepage = () => {
     </>
   )
 }
-export default NavHomepage
+export default NavProductHomepage
