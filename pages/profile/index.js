@@ -3,7 +3,7 @@ import Input from '../../components/CInput'
 import { Container, Form, Button } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 import BreadCrumb from '../../components/BrreadCrumb'
-import ProfileNav from '../../components/ProfileNav'
+import NavProduct from '../../components/NavProduct'
 import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
@@ -24,7 +24,7 @@ const index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
-        <ProfileNav />
+        <NavProduct />
         <div className='d-flex flex-row'>
           <div className='ms-4 my-5 d-inline position-relative '>
             <Image
