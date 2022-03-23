@@ -39,6 +39,8 @@ const ProfileNAv = () => {
                     a.active{
                         color: #062C30;
                     }
+
+                    
                 `}
       </style>
       <nav className="navbar navbar-expand-lg navbar-light bg-light my-5">
