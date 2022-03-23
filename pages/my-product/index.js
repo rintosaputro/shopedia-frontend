@@ -38,10 +38,10 @@ const MyProduct = () => {
             Product
           </Col>
           <Col lg={4}>
-            Stock Status
+            <span className="ms-0 ms-lg-5">Stock Status</span>
           </Col>
           <Col lg={4}>
-            Price
+            <span className="ms-0 ms-lg-5">Price</span>
           </Col>
         </Row>
         {dataProduct.map((data, index) => {
@@ -52,12 +52,12 @@ const MyProduct = () => {
                 <span className="ps-4">{data.desc}</span>
               </Col>
               <Col xs={12} sm={6} lg={4} className='my-auto'>
-                <div className="my-3 my-lg-0">
+                <div className="my-3 my-lg-0 ms-0 ms-lg-5">
                   <span className={styles.pill}><BsCheck/></span> {data.stock} Stock
                 </div>
               </Col>
               <Col xs={12} sm={12} lg={4} className='my-auto'>
-                <span className="fw-bold">{formatter.format(data.price)}</span>
+                <span className="fw-bold ms-0 ms-lg-5">{formatter.format(data.price)}</span>
                 <CButton classStyle='px-5 py-2 ms-5' color='danger'>Delete</CButton>
               </Col>
             </Row>

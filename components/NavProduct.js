@@ -11,13 +11,13 @@ const NavProduct = () => {
       <ul className="list-group d-flex flex-row justify-content-center align-items-center my-5">
         <li className={`mx-3 ${styles.list}`}>
           <Link href='/profile'>
-            <a className={`${route.pathname === '/profile' ? 'text-color1' : 'text-muted'} h2 text-decoration-none `}>Profile</a>
+            <a className={`${route.pathname === '/profile' ? 'text-color1' : 'text-muted'} h4 text-decoration-none `}>Profile</a>
           </Link>
         </li>
         <li className={`mx-3 ${styles.list}`}>
           <Dropdown>
             <Dropdown.Toggle variant="white" id="dropdown-basic">
-              <span className={`${route.pathname === '/my-product' ? 'text-color1' : 'text-muted'} fs-2 h2`}>My Product</span>
+              <span className={`${route.pathname === '/my-product' ? 'text-color1' : 'text-muted'} h4`}>My Product</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item href="/my-product/all">All</Dropdown.Item>
@@ -28,13 +28,13 @@ const NavProduct = () => {
         </li>
         <li className={`mx-3 ${styles.list}`}>
           <Link href='/selling-product'>
-            <a className={`${route.pathname === '/selling-product' ? 'text-color1' : 'text-muted'} h2 text-decoration-none `}>Selling Product</a>
+            <a className={`${route.pathname === '/selling-product' ? 'text-color1' : 'text-muted'} h4 text-decoration-none `}>Selling Product</a>
           </Link>
         </li>
         <li className={`mx-3 ${styles.list}`}>
           <Dropdown>
             <Dropdown.Toggle variant="white" id="dropdown-basic">
-              <span className={`${route.pathname === '/my-order' ? 'text-color1' : 'text-muted'} fs-2 h2`}>My Order</span>
+              <span className={`${route.pathname === '/my-order' ? 'text-color1' : 'text-muted'} h4`}>My Order</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item href="/my-order/all">All</Dropdown.Item>
