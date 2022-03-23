@@ -1,10 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-import styles from '../login/login.module.css'
-import Sidebar from '../../components/sidebar'
 import Input from '../../components/CInput'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import Link from 'next/link'
 import Layout from '../../components/Layout'
 
 const index = () => {
