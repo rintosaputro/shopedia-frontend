@@ -1,11 +1,15 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import CButton from '../components/CButton'
 
 export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
+      <CButton classStyle='mt-4 px-4' color="color2" size="lg" active>
+                                Register
+                            </CButton>
         <title className='bg-primary'>Create Next App</title>
         <meta name="description" content="Generatedd by create next app" />
         <link rel="icon" href="/favicon.ico" />

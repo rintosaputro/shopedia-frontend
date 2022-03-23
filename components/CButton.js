@@ -1,7 +1,10 @@
+import { Button} from "react-bootstrap";
 
-const CButton = ({classVariant,children,...rest})=>{
+const CButton = ({classStyle,color,children,...rest})=>{
     return(
-        <button className={`btn ${classVariant}`} {...rest}>{children}</button>
+      <Button className={classStyle} variant={color} {...rest}>
+        {children}
+    </Button>
     )
 }
 
