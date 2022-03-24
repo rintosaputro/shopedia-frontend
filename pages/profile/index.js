@@ -8,7 +8,7 @@ import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
 
-const index = () => {
+const Index = () => {
   return (
     <Layout>
 
@@ -97,4 +97,4 @@ const index = () => {
     </Layout >
   )
 }
-export default index
+export default Index
