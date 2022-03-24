@@ -11,13 +11,12 @@ import NavProductHomepage from '../components/NavProductHomepage'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title className='bg-primary'>Shopedia</title>
-        <meta name="description" content="Generatedd by create next app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Layout>
+        <Head>
+          <title className='bg-primary'>Shopedia</title>
+          <meta name="description" content="Generatedd by create next app" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
           <header className={homepage.header}>
             <Container>
                 <Row className='align-items-center'>
@@ -136,6 +135,5 @@ export default function Home() {
               </Container>
           </section>
       </Layout>
-    </div>
   )
 }
