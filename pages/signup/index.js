@@ -1,13 +1,48 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Head from 'next/head'
 import styles from '../login/login.module.css'
 import Sidebar from '../../components/sidebar'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import Link from 'next/link'
 import Layout from '../../components/Layout'
+import { signup } from '../../redux/actions/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { Alert } from 'react-bootstrap'
+import { useRouter } from 'next/router'
 
 const Index = () => {
+    const [roleCheck, setRoleCheck] = useState(true);
+    const route = useRouter();
+    const dispatch = useDispatch();
+
+    const { auth } = useSelector(state => state);
+
+    useEffect(() => {
+      if (auth.signup) {
+        route.push('/login');
+      }
+    }, [auth])
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.querySelector('.form-check-input:checked');
+      let roleId
+      if (role) {
+        roleId = role.value
+        setRoleCheck(true)
+      } else {
+        setRoleCheck(false)
+      }
+      console.log(email, password, roleId);
+      dispatch(signup(email, password, Number(roleId)))
+      // route.push('/login')
+    } 
+
     return (
+        <>
+        {/* {auth.signup && route.push('/login')} */}
         <Layout>
             <Head>
                 <title>Login | Shopedia</title>
@@ -25,6 +60,7 @@ const Index = () => {
                     <Col xs={12} md={5}>
                         <div className='my-5'>
                             <h3>Create Account</h3>
+                            {auth.isError && <Alert variant='color1' className='text-danger text-center mt-5'>{auth.errMessage}</Alert>}
                             <Form.Control
                                 type="email"
                                 id="email"
@@ -47,6 +83,8 @@ const Index = () => {
                                         inline
                                         label="I'm Customer"
                                         name="group1"
+                                        className='roleCheckbox'
+                                        value={2}
                                     />
                                 </Col>
                                 <Col>
@@ -54,10 +92,12 @@ const Index = () => {
                                         inline
                                         label="I'm Seller"
                                         name="group1"
+                                        className='roleCheckbox'
+                                        value={3}
                                     />
                                 </Col>
                             </Row>
-                            <Button className='mt-4 px-4' variant="color2" size="lg" active>
+                            <Button onClick={handleSubmit} className='mt-4 px-4' variant="color2" size="lg" active>
                                 Register
                             </Button>{' '}<br />
                         </div>
@@ -67,6 +107,7 @@ const Index = () => {
                 </Row>
             </Container>
         </Layout>
+        </>
     )
 }
 export default Index
