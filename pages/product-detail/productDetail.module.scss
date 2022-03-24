@@ -1,0 +1,30 @@
+.asideImg {
+  flex-direction: column;
+}
+.sideRow {
+  height: 900px;
+}
+.list {
+  list-style-type: none;
+}
+.navBottom {
+  .nav-link.active, .nav-item.show .nav-link {
+    border-color: none !important;
+  }
+}
+.comment {
+  height: 200px;
+}
+.relatedBg {
+  height: 350px;
+  background-position: center;
+  background-size: cover;
+}
+@media all and (max-width: 992px) {
+  .asideImg {
+    flex-direction: row;
+  }
+  .sideRow {
+    flex-direction: column-reverse;
+  }
+}
