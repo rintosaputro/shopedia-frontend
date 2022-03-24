@@ -1,0 +1,17 @@
+.list {
+  list-style-type: none;
+}
+.pill {
+  padding: 0px 3px;
+  border-radius: 90px;
+  border: 1px solid black;
+}
+.contain {
+  margin-bottom: 170px;
+}
+
+@media all and (max-width: 768px) {
+  .list {
+    width: 25% !important;
+  }
+}
