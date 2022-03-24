@@ -1,4 +1,110 @@
 .text{
   line-height: 37px;
+  font-size: 18px;
+}
+
+.tBorderNone{
+  border: none;
+}
+
+.button{
+  background-color: transparent;
+  border : none;
   font-size: 16px;
+  color: #062C30;
+}
+
+.button:hover{
+  background-color: transparent;
+  color: #062C30;
+  font-weight: 700;
+}
+
+.button:focus{
+  background-color: transparent;
+  color: #062C30;
+  font-weight: 700;
+}
+
+.formQty{
+  width : 50px;
+  height : 50px;
+  border: none;
+}
+
+.formQty::-webkit-outer-spin-button,
+.formQty::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.formQty {
+  -moz-appearance: textfield;
+}
+
+
+.formCupon{
+  border: none;
+}
+
+.formCupon:focus {
+  outline: none;
+  background-color: transparent;
+  box-shadow: unset;
+}
+
+.cupon{
+  border-bottom: 1px solid #062C30;
+}
+
+.buttonDelete,.buttonUpdate{
+  background-color: transparent;
+  font-size: 14px;
+  border: none;
+}
+
+.buttonDelete{
+  color:#8D8D8D;
+}
+
+.buttonUpdate{
+  color: #062C30;
+}
+
+.buttonDelete:hover,.buttonUpdate:hover{
+  color: #05595B;
+  background-color: transparent;
+  border: none;
+}
+
+.buttonDelete:focus,.buttonUpdate:focus{
+  color: #05595B;
+  background-color: transparent;
+  border: none;
+  box-shadow: unset;
+}
+
+.buttonProcessCheckout{
+  height: 63px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 0;
+}
+
+.selectShipping{
+  background-color: transparent;
+  font-size: 14px;
+  color: #060606;
+  font-weight: 600;
+}
+
+@media(max-width:500px){
+  .cupon{
+    border: none;
+  }
+
+  .formCupon{
+    border-bottom: 1px solid #060606;
+  }
 }
