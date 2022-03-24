@@ -7,8 +7,20 @@ import NavProduct from '../../components/NavProduct'
 import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import getProfile from '../../redux/actions/user'
 
 const Index = () => {
+  const dispatch = useDispatch()
+  const data = useSelector(state => state.user?.dataUser)
+  console.log(data.dataUser)
+  const role = data.role
+  useEffect(
+    () => {
+      dispatch(getProfile)
+    }, []
+  )
   return (
     <Layout>
 
@@ -30,7 +42,7 @@ const Index = () => {
             <Image
               id="profile-image"
               alt="{auth?.fullName}"
-              src={profile}
+              src={data.image || profile}
               width="80"
               height="80"
               className="rounded-circle mx-auto d-block"
@@ -41,14 +53,15 @@ const Index = () => {
             </div>
           </div>
           <div className='my-5 py-2 ms-5'>
-            <h5>Syifa</h5>
-            <div>as seller</div>
+            <h5>{data.name || 'your name'}</h5>
+            <div>as {role?.name}</div>
           </div>
         </div>
 
         <div className='border border-3 border-bottom-0 px-3 pt-3'>
           <Form.Label className='px-3'><p>Gender :</p></Form.Label>
-          <Form.Select className='border-0' size="lg">
+          <Form.Select className='border-0' size="lg" defaultValue={data.gender || ''}>
+            <option disabled value={''}></option>
             <option value={'Male'}>Male</option>
             <option value={'Female'}>Female</option>
             <option value={'Others'}>Others</option>
@@ -62,7 +75,7 @@ const Index = () => {
             name="email"
             aria-describedby="email"
             className='me-5 pb-3 border-0 form-color2'
-            defaultValue="mail@mail.com"
+            defaultValue={data.email}
             placeholder='Your email address *'
           />
         </div>
@@ -74,7 +87,7 @@ const Index = () => {
             name="store"
             aria-describedby="store"
             className='me-5 pb-3 border-0'
-            defaultValue="Shopedia"
+            defaultValue={data.storeId}
             placeholder='Your Store'
           />
         </div>
@@ -86,7 +99,7 @@ const Index = () => {
             name="description"
             aria-describedby="description"
             className='me-5 mb-3 border-0'
-            defaultValue="This is My Store"
+            defaultValue={data.description}
             placeholder='Description Store'
           />
         </div>
