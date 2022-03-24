@@ -1,6 +1,7 @@
 const initialState = {
   isError: false,
   isLoading: false,
+  signup: false,
   token: null,
   errMessage: null,
   dataUser: {},
@@ -12,6 +13,10 @@ const auth = (state = initialState, action) => {
       state.token = action.payload
       window.localStorage.setItem('token', action.payload)
       return { ...state }
+    }
+    case 'AUTH_SIGNUP': {
+      state.signup = true;
+      return { ...state };
     }
     case 'AUTH_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
