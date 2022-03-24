@@ -8,28 +8,16 @@ const initialState = {
 
 const auth = (state = initialState, action) => {
   switch (action.type) {
-    case 'AUTH_LOGIN_PENDING' : {
-      state.isError = false;
-      state.isLoading = true;
-      state.token = null;
-      state.errMessage = null;
+    case 'AUTH_LOGIN': {
+      state.token = action.payload
+      window.localStorage.setItem('token', action.payload)
       return { ...state }
     }
-    case 'AUTH_LOGIN_FULFILLED' : {
-      const { data } = action.payload
-      state.isError = false;
-      state.isLoading = false;
-      state.errMessage = null;
-      state.token = data.results.token
-      window.localStorage.setItem('token', data.results.token);
-      return { ...state }
+    case 'AUTH_ERROR': {
+      return { ...state, isError: true, errMessage: action.payload }
     }
-    case 'AUTH_LOGIN_REJECTED': {
-      const { message } = action.payload.response.data;
-      state.isLoading = false;
-      state.token = null;
-      state.isError = true;
-      return { ...state }
+    case 'AUTH_CLEAR_STATE': {
+      return initialState
     }
     default: {
       return { ...state }

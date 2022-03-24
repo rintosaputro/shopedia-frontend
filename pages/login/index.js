@@ -1,25 +1,41 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
 import styles from '../login/login.module.css'
 import Sidebar from '../../components/sidebar'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap'
 import Link from 'next/link'
 import Layout from '../../components/Layout'
 import { login } from '../../redux/actions/auth'
+import { useRouter } from 'next/router'
 
-const Index = () => {
+const Login = () => {
   const dispatch = useDispatch();
+  const route = useRouter();
+
+  const { auth } = useSelector(state => state);
+  useEffect(() => {
+    if (window.localStorage.getItem('token')) {
+      route.push('/')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (auth.token) {
+      route.push('/')
+    }
+  }, [auth])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const pwd = document.getElementById('password').value;
-    console.log('test', email, pwd);
-    dispatch(login(email, pwd))
+    dispatch(login(email, pwd));
   }
 
+
   return (
+    <>
     <Layout>
       <Head>
         <title>Login | Shopedia</title>
@@ -37,6 +53,7 @@ const Index = () => {
             <Col xs={12} md={5}>
               <div className='my-5'>
                 <h3>Login</h3>
+                {auth.isError && <Alert variant='color2' className='mt-5 text-danger text-center'>{auth.errMessage}</Alert>}
                 <Form.Control
                   type="email"
                   id="email"
@@ -77,6 +94,7 @@ const Index = () => {
           </Row>
       </Container>
     </Layout>
+    </>
   )
 }
-export default Index
+export default Login
