@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import http from '../../helper/http'
 import Head from 'next/head'
 import Carousel from '../../components/Carousel'
-import { Container, Row, Col, ListGroup, Form, Pagination, Button } from 'react-bootstrap'
+import { Container, Row, Col, ListGroup, Form, Pagination, Button, Alert } from 'react-bootstrap'
 // import RangeSlider from 'react-bootstrap-range-slider';
 import RangeSlider from '../../components/RangeSlider';
 import Layout from '../../components/Layout'
@@ -65,12 +65,35 @@ const Index = () => {
 
   const onSearch = async (event) => {
     event.preventDefault();
-    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&limit=12`
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&limit=12`
+    let name = document.getElementById('name').value;
     let brand = document.querySelector('.form-check-input:checked').value;
     let minPrice = document.querySelector('#min-value').value;
     let maxPrice = document.querySelector('#max-value').value;
-    console.log(minPrice, maxPrice)
-    await getNextData(url(brand, minPrice, maxPrice), true)
+    await getNextData(url(brand, minPrice, maxPrice, name), true)
+  }
+
+  const onSort = async (event) => {
+    event.preventDefault();
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&sort=${sort}&orderBy=${orderBy}&limit=12`
+    let name = document.getElementById('name').value;
+    let brand = document.querySelector('.form-check-input:checked').value;
+    let minPrice = document.querySelector('#min-value').value;
+    let maxPrice = document.querySelector('#max-value').value;
+    let check = document.querySelector('.form-select option:checked').value;
+    let sort = ""
+    let orderBy = ""
+    if (check === "cheap") {
+      sort = "ASC"
+      orderBy = "price"
+    } else if (check === "expensive") {
+      sort = "DESC"
+      orderBy = "price"
+    } else if (check == "latest") {
+      sort = "DESC"
+      orderBy = "id"
+    }
+    await getNextData(url(brand, minPrice, maxPrice, name, sort, orderBy), true)
   }
 
   const onCategories1 = async (event) => {
@@ -157,6 +180,14 @@ const Index = () => {
         <Row>
           <Col md={3}>
             <Form onSubmit={onSearch}>
+              <Form.Control
+                type="text"
+                id="name"
+                name="name"
+                aria-describedby="name"
+                className='me-5 py-3 mt-5'
+                placeholder='Search Product'
+              />
               <ListGroup >
                 <h3 className='ms-3'>Categories</h3>
                 <ListGroup.Item onClick={onCategories1} id="category" value='1' className='bg-transparent border-0 d-flex justify-content-between' action >
@@ -239,15 +270,23 @@ const Index = () => {
               <Col md={9}>
               </Col>
               <Col md={3}>
-                <Form.Select className='border-0'>
-                  <option>Sort By</option>
-                  <option>Latest Product</option>
-                  <option>More Expensivet</option>
-                  <option>More Cheap</option>
-                </Form.Select>
+                <Form onSubmit={onSort}>
+                  <Form.Select className='border-0' defaultChecked={""}>
+                    <option value={""}>Sort By</option>
+                    <option value={"latest"}>Latest Product</option>
+                    <option value="expensive">More Expensive</option>
+                    <option value="cheap">More Cheap</option>
+                  </Form.Select>
+                  <Button type="submit" className='mt-4 px-4' variant="color2" size="sm" active>
+                    &nbsp;Sort
+                  </Button>{' '}
+                </Form>
               </Col>
             </Row>
             <Row className='mt-5 mb-5 text-center'>
+              {errorMsg &&
+                <Alert variant='color3'>{errorMsg}</Alert>
+              }
               {product?.map((data, idx) => {
                 return (
                   <>
@@ -268,7 +307,7 @@ const Index = () => {
             <Pagination>{items}</Pagination>
           </Col>
         </Row>
-      </Container>
+      </Container >
     </Layout >
   )
 }
