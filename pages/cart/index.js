@@ -9,7 +9,7 @@ import CInput from "../../components/CInput"
 import cartStyle from "./cart.module.scss"
 import {FaTrashAlt} from "react-icons/fa"
 
-const cart = ()=>{
+const Cart = ()=>{
 
   const [cart,setCart] = useState([])
   const [titleTable,setTitleTable] = useState([])
@@ -143,4 +143,4 @@ const cart = ()=>{
   )
 }
 
-export default cart
+export default Cart
