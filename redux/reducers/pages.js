@@ -9,7 +9,7 @@ const pages = (state = initialState, action) => {
       isLoading = !isLoading
       state.token = null;
       state.errMessage = null;
-      return { ...state, isLoading }
+      return { ...state,isLoading}
     }
 
     default: {
