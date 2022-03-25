@@ -94,3 +94,39 @@ export const forgotPassword = (email) => {
     }
   }
 }
+
+export const verify = (email) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+      dispatch({
+        type: 'AUTH_CLEAR_STATE'
+      })
+      
+      const param = new URLSearchParams();
+      param.append('email', email)
+      param.append('isReset', 0)
+
+      const data = await http().post('/auth/reset-verify?callbackUrl=http://localhost:3001/verify-email', param)
+
+      dispatch({
+        type: 'AUTH_VERIFY',
+        // payload:  await http().post('/auth/reset-verify?callbackUrl=http://localhost:3001/verify-email', param)
+        payload: data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    } catch (err) {
+      dispatch({
+        type: 'AUTH_ERROR',
+        payload: err.response.data.message
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    }
+  }
+}
