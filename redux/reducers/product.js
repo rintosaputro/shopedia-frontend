@@ -14,6 +14,9 @@ const product = (state = initialState, action) => {
       }
       return { ...state, ...newState }
     }
+    case 'PRODUCT_ERROR': {
+      return { ...state, isError: true, errMessage: action.payload.message }
+    }
     default: {
       return { ...state }
     }
