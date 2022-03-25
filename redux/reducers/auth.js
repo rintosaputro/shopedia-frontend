@@ -2,7 +2,10 @@ const initialState = {
   isError: false,
   isLoading: false,
   signup: false,
+  message: null,
   token: null,
+  forgot: false,
+  verify: false,
   errMessage: null,
   dataUser: {},
 }
@@ -16,6 +19,14 @@ const auth = (state = initialState, action) => {
     }
     case 'AUTH_SIGNUP': {
       state.signup = true;
+      return { ...state };
+    }
+    case 'AUTH_FORGOT': {
+      state.forgot = true;
+      return { ...state };
+    }
+    case 'AUTH_VERIFY': {
+      state.verify = true;
       return { ...state };
     }
     case 'AUTH_ERROR': {
