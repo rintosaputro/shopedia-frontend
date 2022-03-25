@@ -3,9 +3,27 @@ import Image from 'next/image'
 import styles from './styles/Navbar.module.css'
 import { useRouter } from "next/router";
 import { BiSearchAlt2, BiHeart, BiCartAlt } from 'react-icons/bi';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCart } from "../redux/actions/cart";
 
 const Navbar = () => {
   const route = useRouter();
+  const {cart} = useSelector(state=>state)
+  const dispatch = useDispatch()
+  const [dataCart,setDataCart] = useState(0) 
+  // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
+
+  useEffect(()=>{
+    setDataCart(cart.listCart.length)
+  },[])
+
+  useEffect(()=>{
+    if(cart.isAddCart){
+      setDataCart(cart.listCart.length)
+    }
+  })
+
 
   const searchBtn = (e) => {
     e.preventDefault()
@@ -98,7 +116,7 @@ const Navbar = () => {
             <li className="nav-item">
               <button className="btn position-relative mx-lg-1">
                 <BiCartAlt className="fs-2"/>
-                <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>3</div>
+                <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{dataCart}</div>
               </button>
             </li>
             <li className="nav-item">
