@@ -8,7 +8,7 @@ export default class NextJsCarousel extends Component {
   render() {
     return (
       <div>
-        <Carousel>
+        <Carousel showThumbs={false}>
           <div>
             <Image width={2000} height={1000} src={banner} alt="image1" />
           </div>
