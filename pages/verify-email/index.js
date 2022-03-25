@@ -4,7 +4,7 @@ import Input from '../../components/CInput'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 
-const index = () => {
+const Index = () => {
   return (
     <Layout>
       <Head>
@@ -43,4 +43,4 @@ const index = () => {
     </Layout>
   )
 }
-export default index
+export default Index

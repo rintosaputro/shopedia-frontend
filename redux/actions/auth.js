@@ -34,7 +34,7 @@ export const signup = (email, password, role) => {
       })
       dispatch({
         type: 'AUTH_CLEAR_STATE'
-      })  
+      })
       const param = new URLSearchParams();
       param.append('email', email)
       param.append('password', password)
@@ -43,12 +43,47 @@ export const signup = (email, password, role) => {
       const { data } = await http().post('/auth/register', param) 
       dispatch({
         type: 'AUTH_SIGNUP',
-        // payload: data.results
+        payload: data.results
       })
       dispatch({
         type: 'TOGGLE_LOADING'
       })
     } catch(err) {
+      dispatch({
+        type: 'AUTH_ERROR',
+        payload: err.response.data.message
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    }
+  }
+}
+
+export const forgotPassword = (email) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+      dispatch({
+        type: 'AUTH_CLEAR_STATE'
+      })
+      
+      const param = new URLSearchParams();
+      param.append('email', email)
+      param.append('isReset', 1)
+
+      const { data } = await http().post('/auth/reset-verify?callbackUrl=http://localhost:3001/forgot-password', param)
+
+      dispatch({
+        type: 'AUTH_FORGOT',
+        // payload: data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    } catch (err) {
       dispatch({
         type: 'AUTH_ERROR',
         payload: err.response.data.message
