@@ -32,7 +32,6 @@ const Cart = ()=>{
     setTitleTable(["Products","Price","Quantity","Total"])
     dispatch(addCart)
     dispatch(getListShipping)
-    // handleSubtotal(false)
     handleSubtotal()
   },[])
 
