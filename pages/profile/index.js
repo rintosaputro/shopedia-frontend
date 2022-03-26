@@ -132,7 +132,7 @@ const Index = () => {
               name="store"
               aria-describedby="store"
               className='me-5 pb-3 border-0'
-              defaultValue={data.storeId}
+              defaultValue={data.store?.name}
               placeholder='Your Store'
             />
           </div>
@@ -144,12 +144,12 @@ const Index = () => {
               name="description"
               aria-describedby="description"
               className='me-5 mb-3 border-0'
-              defaultValue={data.description}
+              defaultValue={data.store?.description}
               placeholder='Description Store'
             />
           </div>
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
-            <FiLogOut />&nbsp;Logout
+            <FiLogOut />&nbsp;Save
           </Button>{' '}
         </Form>
       </Container>
