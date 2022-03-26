@@ -26,6 +26,7 @@ const ProductDetail = () => {
   const [whislist, setWhislist] = useState(false);
   const [errWhislist, setErrWhislist] = useState(false);
   const [reviewMessage, setReviewMessage] = useState('')
+  const [delWishlist, setDelWhislist] = useState(false);
 
   const route = useRouter();
   const dispatch = useDispatch();
@@ -81,10 +82,10 @@ const ProductDetail = () => {
     setIsLoading(true)
     setErrWhislist(false)
     const token = window.localStorage.getItem('token');
-    await http(token).post(`/users/favorite-product/${whislist.id}`)
+    await http(token).delete(`/users/favorite-product/${whislist.id}`)
     .then(res => {
       if (res.status < 400) {
-
+        setWhislist(false)
         console.log(res.data.results)
       }
     }) 
