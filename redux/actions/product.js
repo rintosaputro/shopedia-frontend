@@ -24,3 +24,30 @@ export const getProduct = async (dispatch) => {
     })
   }
 }
+
+export const getProductDetail = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+      const token = window.localStorage.getItem('token')
+      const { data } = await http(token).get(`/products/${id}`)
+      dispatch({
+        type: 'GET_PRODUCT_DETAIL',
+        payload: data.results
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    } catch (err) {
+      dispatch({
+        type: 'PRODUCT_ERROR',
+        payload: err.response.data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    }
+  }
+}

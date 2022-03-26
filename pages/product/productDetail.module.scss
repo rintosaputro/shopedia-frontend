@@ -2,7 +2,7 @@
   flex-direction: column;
 }
 .sideRow {
-  height: 900px;
+  height: 800px;
 }
 .list {
   list-style-type: none;
@@ -20,11 +20,24 @@
   background-position: center;
   background-size: cover;
 }
+.photoReview {
+  width: 70px;
+  height: 70px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 105px;
+}
+.commentReview {
+  width: 90%;
+}
 @media all and (max-width: 992px) {
   .asideImg {
     flex-direction: row;
   }
   .sideRow {
     flex-direction: column-reverse;
+  }
+  .sideRow {
+    height: auto;
   }
 }
