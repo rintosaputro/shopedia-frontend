@@ -8,18 +8,126 @@ import CButton from "../../components/CButton"
 import CInput from "../../components/CInput"
 import cartStyle from "./cart.module.scss"
 import {FaTrashAlt} from "react-icons/fa"
+import { addCart } from "../../redux/actions/cart"
+import { useDispatch, useSelector } from "react-redux"
+import { useRouter } from "next/router"
+import { getListShipping } from "../../redux/actions/shipping"
 
-const cart = ()=>{
-
-  const [cart,setCart] = useState([])
+const Cart = ()=>{
+  const {cart,shipping} = useSelector(state=>state)
   const [titleTable,setTitleTable] = useState([])
+  const dispatch = useDispatch() 
+  const [statusCounter,setStatusCounter] = useState(false)
+  const [subtotal,setSubtotal] =  useState(0)
+  const route = useRouter()
+  const [isEmpty,setIsEmpty] = useState(false)
+  const [dataShipping,setDataShipping] = useState({})
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 
   useEffect(()=>{
     setTitleTable(["Products","Price","Quantity","Total"])
-    setCart([{name:"Fabric Mid Century Chair",image:"chair-cart2.png",price:"$10.50",quantity:2,total:"$21.00"},
-    {name:"Chair in Dark Grey",image:"chair-cart1.png",price:"$10.50",quantity:1,total:"$10,50"}])
+    dispatch(addCart)
+    dispatch(getListShipping)
+    // handleSubtotal(false)
+    handleSubtotal()
   },[])
 
+  useEffect(()=>{
+    if(!statusCounter){
+      handleSubtotal()
+    }
+  },[statusCounter])
+
+
+  const countIncrement = (index) =>{
+    console.log("masuk@@")
+    cart.listCart[index].qty++;
+    const parsed = JSON.stringify(cart.listCart);
+    window.localStorage.setItem("cart",parsed)
+    dispatch(addCart)
+    setStatusCounter(true)
+  }
+
+  const countDecrement = (index) =>{
+    if(cart.listCart[index].qty>0){
+      cart.listCart[index].qty--;
+    }
+    const parsed = JSON.stringify(cart.listCart);
+    window.localStorage.setItem("cart",parsed)
+    dispatch(addCart)
+    setStatusCounter(true)
+  }
+
+  const handleSubtotal = () =>{
+    if(!statusCounter){
+        const subtotal = cart.listCart.map((item)=>{
+          var result = 0
+          result +=(item.qty * item.data.product.price) 
+          return result
+      })
+
+      setSubtotal(subtotal.reduce(function (total, num) {
+        return total+num
+        }, 0))
+    } 
+  }
+
+  const handleDelete = (index)=>{
+    var getListcart = cart.listCart.filter((item,indexCart)=>indexCart!==index);
+    cart.listCart = getListcart
+    const parsed = JSON.stringify(cart.listCart);
+    window.localStorage.setItem("cart",parsed)
+    dispatch(addCart)
+    if(cart.listCart.length == 0){
+      setIsEmpty(true)
+    }else{
+      setStatusCounter(false)
+      handleSubtotal()
+    }
+  }
+
+  const handleUpdate = ()=>{
+    setStatusCounter(false)
+    handleSubtotal()
+  }
+
+  const handleChange = (event)=>{
+    event.preventDefault()
+    setDataShipping(JSON.parse(event.target.value))
+  }
+
+  const totalPrice = ()=>{
+      var total = 0;
+      if(Object.keys(dataShipping).length > 0){
+        total = subtotal + dataShipping.cost;
+      }else{
+        total = subtotal
+      }
+    
+      return total
+  }
+
+  const handleClearCart = (event)=>{
+      event.preventDefault()
+      cart.listCart = []
+      const parsed = JSON.stringify(cart.listCart);
+      window.localStorage.setItem("cart",parsed)
+      dispatch(addCart)
+      setStatusCounter(false)
+      handleSubtotal()
+      totalPrice()
+      setIsEmpty(true)
+  }
+
+  const handleProcessCheckout = (event)=>{
+    event.preventDefault()
+    route.push("/checkout")
+  }
+    
   return(
     <Layout>
         <Head>
@@ -28,6 +136,17 @@ const cart = ()=>{
       </Head>
       <HeaderPage breadcumb={[{name:"Cart",active:true}]} title="Your cart" detail="Buy everything in your cart now!"/>
       <Container>
+        {
+          isEmpty ?  
+          <div className="text-center py-5">
+            <div  className="pt-4">
+              <Image src="/images/shopping-cart.png" width={200} height={200}/>
+            </div>
+            <div className="fs-1 mt-3">Your Cart is Empty</div>
+            <div className="w-50 ms-auto me-auto mt-3 pb-5">
+              <p className={`${cartStyle.text} text-center`}>Donec nunc nunc, gravida vitae diam vel, varius interdum erat. Quisque a nunc vel diam auctor commodo. urabitur blandit ultri</p>
+            </div>
+          </div> :
         <Form>
           <Row>
             <Col md={6} lg={7} xl={8}>
@@ -42,25 +161,25 @@ const cart = ()=>{
                   }
               </Row>
                 {
-                  cart.map((item)=>{
+                  cart.listCart.map((item,index)=>{
                     return(
-                      <Row key={item.name}>
+                      <Row key={index}>
                         <Col lg={6}>
                           <div className='d-flex flex-row align-items-center'>
-                            <span className="py-5 me-3"><CButton classStyle={cartStyle.button}><FaTrashAlt className="fs-5"/></CButton></span>
-                            <Image src={`/images/${item.image}`} width={69} height={83}/>
-                            <span className="ms-5">{item.name}</span>
+                            <span className="py-5 me-3"><CButton classStyle={cartStyle.button} onClick={()=>handleDelete(index)}><FaTrashAlt className="fs-5"/></CButton></span>
+                            <Image src={item.data.product_image.image} alt="product" width={69} height={83}/>
+                            <span className="ms-5">{item.data.product.name}</span>
                           </div>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
-                            <span className="fw-bold">{item.price}</span>
+                            <span className="fw-bold">{formatter.format(item.data.product.price)}</span>
                         </Col>
                         <Col  xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
-                          <span><div className="d-flex justify-content-between"><CButton classStyle={cartStyle.button}>-</CButton><CInput classVariant={cartStyle.formQty} type="number" value={item.quantity}/><CButton classStyle={cartStyle.button}>+</CButton></div></span>
+                          <span><div className="d-flex justify-content-between"><CButton classStyle={cartStyle.button} onClick={()=>countDecrement(index)}>-</CButton><CInput classVariant={cartStyle.formQty} type="number" value={item.qty}/><CButton classStyle={cartStyle.button} onClick={()=>countIncrement(index)}>+</CButton></div></span>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span className="text-muted d-inline d-lg-none">Total: </span>
-                          <span className="fw-bold">{item.total}</span>
+                          <span className="fw-bold">{formatter.format(item.qty * item.data.product.price)}</span>
                         </Col>
                       </Row>
                     )
@@ -103,8 +222,8 @@ const cart = ()=>{
                   <CButton className={`${cartStyle.buttonUpdate} fw-bold`}>Apply Cupon</CButton>
                 </div>
                 <div className="text-end">
-                  <CButton classStyle={`${cartStyle.buttonDelete}`}>Clear Cart</CButton>
-                  <CButton classStyle={`${cartStyle.buttonUpdate} fw-bold`}>Update Cart</CButton>
+                  <CButton classStyle={`${cartStyle.buttonDelete}`} onClick={handleClearCart}>Clear Cart</CButton>
+                  <CButton classStyle={`${cartStyle.buttonUpdate} fw-bold`} onClick={handleUpdate}>Update Cart</CButton>
                 </div>
               </div>
              
@@ -114,14 +233,22 @@ const cart = ()=>{
                   <div className="fs-6 fw-bold mb-5">Cart Total</div>
                     <Row className="mb-5">
                       <Col xs={4}><div className="fw-bold">Subtotal</div></Col>
-                      <Col><div className="fw-bold">$125</div></Col>
+                      <Col><div className="fw-bold">{formatter.format(subtotal)}</div></Col>
                     </Row>
                     <Row className="mb-5">
                       <Col md={4}><div className="fw-bold mb-3">Shipping</div></Col>
                       <Col>
                         <div className="me-5 me-md-3">
-                          <Form.Select className={cartStyle.selectShipping}>
-                            <option>Disabled select</option>
+                          <Form.Select className={cartStyle.selectShipping} onChange={handleChange}>
+                          <option selected style={{display:'none'}}>Select Shipping Method</option>
+                            {
+                              shipping!==null && shipping.listShipping.length > 0 &&
+                              shipping.listShipping.map((item)=>{
+                                return(
+                                    <option value={JSON.stringify(item)} key={item.id}>{item.name} - {formatter.format(item.cost)}</option>
+                                )
+                              })
+                            }
                           </Form.Select>
                         </div>
                       </Col>
@@ -129,18 +256,18 @@ const cart = ()=>{
                     <hr className="w-80 me-5"></hr>
                     <Row className="pb-5">
                       <Col xs={4}><div className="fw-bold">Total Price</div></Col>
-                      <Col><div className="fw-bold">$125</div></Col>
+                      <Col><div className="fw-bold">{formatter.format(totalPrice())}</div></Col>
                     </Row>
                 </div>
                 <div className="ms-md-4 mb-5 d-grid gap-2">
-                  <CButton classStyle={`${cartStyle.buttonProcessCheckout} bg-color2`}>Procced To Check Out</CButton>
+                  <CButton classStyle={`${cartStyle.buttonProcessCheckout} bg-color2`} onClick={handleProcessCheckout}>Procced To Check Out</CButton>
                 </div>
             </Col>
           </Row>
-        </Form>
+        </Form> }
       </Container>
     </Layout>
   )
 }
 
-export default cart
+export default Cart
