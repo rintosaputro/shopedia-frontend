@@ -5,6 +5,7 @@ const initialState = {
   errMessage: null,
   product: [],
   productDetail: {},
+  myProduct: [],
 }
 
 const product = (state = initialState, action) => {
@@ -17,6 +18,12 @@ const product = (state = initialState, action) => {
     }
     case 'GET_PRODUCT_DETAIL': {
       const newState = { productDetail: action.payload }
+      return { ...state, ...newState }
+    }
+    case 'GET_MY_PRODUCT': {
+      const newState = {
+        myProduct: action.payload
+      }
       return { ...state, ...newState }
     }
     case 'PRODUCT_ERROR': {
