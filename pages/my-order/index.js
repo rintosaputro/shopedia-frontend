@@ -1,15 +1,51 @@
 import Image from "next/image";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import Layout from "../../components/Layout"
 import NavProduct from "../../components/NavProduct";
 import { BsCheck } from 'react-icons/bs';
 import styles from './MyOrder.module.css';
+import { getListOrder } from "../../redux/actions/order";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const MyOrder = () => {
-  const dataOrder = [
-    {pict: '/images/Mask.png', desc: 'Fabric mid century chair', price: 10.50, qty: 2, status: 'sent', total: 21},
-    {pict: '/images/Mask.png', desc: 'Fabric mid century chair', price: 10.50, qty: 2, status: 'sent', total: 21}
-  ]
+  const [dataOrder, setDataOrder] = useState({})
+  const [filterOrder, setFilterOrder] = useState()
+  const route = useRouter();
+  const dispatch = useDispatch();
+
+  const { order } = useSelector(state => state)
+
+  useEffect(() => {
+    if (order.listOrder.length === 0) {
+      dispatch(getListOrder(1))
+    }
+  }, [])
+  useEffect(() => {
+    if (order.listOrder.length > 0) {
+      setDataOrder({...order})
+    }
+  }, [order])
+  // useEffect(() => {
+  //   const dataQuery = ['Processed', 'sent', 'Completed', 'Cancelled']
+  //     for (let i = 0; i < dataQuery.length; i ++) {
+  //       if (route.query.status === dataQuery[i]) {
+  //         const filt = dataOrder.listOrder.orderStatus.filter(data => data.orderStatus.name === dataQuery[i])
+  //         setFilterOrder(filt)
+  //         console.log('test', dataQuery[i])
+  //       }
+  //     }
+  // }, [])
+
+  const nextPage = (e) => {
+    e.preventDefault();
+    if (order.pageInfo.next) {
+      dispatch(getListOrder(order.pageInfo.currentPage + 1))
+    }
+    console.log('tes', dataOrder)
+  }
+
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -44,29 +80,29 @@ const MyOrder = () => {
             <span>Total</span>
           </Col>
         </Row>
-        {dataOrder.map((data, index) => {
+        {order.listOrder && order.listOrder.map((data, index) => {
           return (
             <Row key={index} className='my-5'>
               <Col lg={4}>
                 <div className='d-flex flex-row align-items-center'>
-                  <Image src={data.pict} width={100} height={100} alt='Product picture' />
-                  <span className="ms-5">{data.desc}</span>
+                  {data.product_images && <Image src={data.product_images[0].image} width={100} height={100} alt='Product picture' />}
+                  <span className="ms-5">{data.product.name}</span>
                 </div>
               </Col>
               <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto'>
                 <div>
                   <span className="text-muted d-inline d-lg-none">Price: </span>
-                  <span className="fw-bold">{formatter.format(data.price)}</span>
+                  <span className="fw-bold">{formatter.format(Number(data.product.price))}</span>
                 </div>
               </Col>
               <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto'>
                 <span className="text-muted d-inline d-lg-none">Qty: </span>
-                <span>{data.qty < 10 ? '0'+data.qty : data.qty}</span>
+                <span>{data.qty < 10 ? '0' + data.qty : data.qty}</span>
               </Col>
               <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto'>
                 <div>
                   <span className="text-muted d-inline d-lg-none">Status order: </span>
-                  <span className={styles.pill}><BsCheck/></span> {data.status}
+                  <span className={styles.pill}><BsCheck/></span> {data.orderStatus.name}
                 </div>
               </Col>
               <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto'>
@@ -76,6 +112,13 @@ const MyOrder = () => {
             </Row>
           )
         })}
+        {order.pageInfo.next && 
+          <div className="mx-auto text-center">
+            <Button onClick={nextPage} className='mt-4 px-5' variant="color2" size="lg" active>
+              Next
+            </Button>
+          </div>
+        }
         <hr className="mb-5"/>
       </section>
     </Layout>
