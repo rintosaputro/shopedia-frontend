@@ -6,12 +6,13 @@ import { BiSearchAlt2, BiHeart, BiCartAlt } from 'react-icons/bi';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCart } from "../redux/actions/cart";
+import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const route = useRouter();
-  const {cart, wishlists} = useSelector(state=>state)
+  const { cart, wishlists } = useSelector(state => state)
   const dispatch = useDispatch()
-  const [dataCart,setDataCart] = useState(0) 
+  const [dataCart, setDataCart] = useState(0)
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
 
   useEffect(()=>{
@@ -31,15 +32,15 @@ const Navbar = () => {
     if (input.style.display === 'block') {
       input.style.display = 'none'
     } else {
-    input.style.display = 'block'
+      input.style.display = 'block'
     }
   }
 
-  const handleAddtoCart = (event)=>{
+  const handleAddtoCart = (event) => {
     event.preventDefault()
     if(dataCart.length > 0){
       route.push("/cart")
-    }else{
+    } else {
       route.push("/cart/no-cart")
     }
   }
@@ -137,7 +138,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-   </>
+    </>
   )
 }
 

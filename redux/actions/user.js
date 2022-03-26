@@ -15,7 +15,7 @@ export const getProfile = async (dispatch) => {
   })
 }
 
-export const editProfile = (email, name, gender, description) => {
+export const editProfile = (email, name, gender, description, images) => {
   console.log(email, gender)
   return async (dispatch) => {
     try {
@@ -29,8 +29,8 @@ export const editProfile = (email, name, gender, description) => {
       param.append('gender', gender)
       param.append('name', name)
       param.append('description', description)
-      // param.append('image', picture)
-      const { data } = await http(token, true).patch('/users/profile', param)
+      param.append('image', images)
+      const { data } = await http(token, true).patch('http://localhost:3000/users/profile', param)
       dispatch({
         type: 'EDIT_PROFILE',
         payload: data.results

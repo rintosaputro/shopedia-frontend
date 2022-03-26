@@ -9,7 +9,7 @@ import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfile, editProfile } from '../../redux/actions/user' 
+import { getProfile, editProfile } from '../../redux/actions/user'
 
 const Index = () => {
   const dispatch = useDispatch()
@@ -48,9 +48,9 @@ const Index = () => {
     console.log(email)
     const description = document.getElementById('description').value;
     const gender = document.querySelector('#gender option:checked').value;
-    // const picture = datas.picture
+    const images = datas.picture
     console.log(gender);
-    dispatch(editProfile(email, name, gender, description))
+    dispatch(editProfile(email, name, gender, description, images))
     // route.push('/login')
   }
   return (
@@ -149,7 +149,7 @@ const Index = () => {
             />
           </div>
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
-            <FiLogOut />&nbsp;Logout
+            <FiLogOut />&nbsp;Save
           </Button>{' '}
         </Form>
       </Container>

@@ -6,32 +6,39 @@ import CButton from "../../components/CButton";
 import { Row, Col } from "react-bootstrap";
 import { BsCheck } from 'react-icons/bs';
 import styles from './MyProduct.module.css';
+import { getMyProduct } from '../../redux/actions/product'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from "react";
+import pict from '../../public/images/mask.png'
 
 const MyProduct = () => {
-  const route = useRouter();
 
+  const dispatch = useDispatch()
+  const datas = useSelector(state => state.product.myProduct)
+  const error = useSelector(state => state.product)
+  const route = useRouter()
+  console.log(error.errMessage)
+  useEffect(
+    () => {
+      dispatch(getMyProduct)
+    }, []
+  )
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
 
-  const dataProduct = [
-    {pict: '/images/Mask.png', desc: 'Eugene Accent Table 18.9 inches Espresso', stock: 10, price: 765},
-    {pict: '/images/Mask.png', desc: 'Eugene Accent Table 18.9 inches Espresso', stock: 10, price: 765},
-    {pict: '/images/Mask.png', desc: 'Eugene Accent Table 18.9 inches Espresso', stock: 10, price: 765}
-  ]
-
   return (
     <Layout>
       <header className="text-center bg-color4 py-5">
-        <div className="my-5 container">     
+        <div className="my-5 container">
           <h1>My Product</h1>
           <p>See your notifications for the last updates</p>
         </div>
       </header>
       <section className={`container ${styles.contain}`}>
         <div className="my-5">
-          <NavProduct/>
+          <NavProduct />
         </div>
         <Row className="border-bottom border-top py-3 fw-bold d-none d-lg-flex">
           <Col lg={4}>
@@ -44,16 +51,16 @@ const MyProduct = () => {
             <span className="ms-0 ms-lg-5">Price</span>
           </Col>
         </Row>
-        {dataProduct.map((data, index) => {
+        {datas.map((data, index) => {
           return (
             <Row key={index} className='my-5'>
               <Col xs={12} sm={6} lg={4} className='d-flex flex-row align-items-center'>
-                <Image src={data.pict} alt='product' width={100} height={100} />
+                <Image src={pict} alt='product' width={100} height={100} />
                 <span className="ps-4">{data.desc}</span>
               </Col>
               <Col xs={12} sm={6} lg={4} className='my-auto'>
                 <div className="my-3 my-lg-0 ms-0 ms-lg-5">
-                  <span className={styles.pill}><BsCheck/></span> {data.stock} Stock
+                  <span className={styles.pill}><BsCheck /></span> {data.name} Stock
                 </div>
               </Col>
               <Col xs={12} sm={12} lg={4} className='my-auto'>
