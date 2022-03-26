@@ -15,12 +15,12 @@ const Navbar = () => {
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
 
   useEffect(()=>{
-    setDataCart(cart.listCart.length)
+    setDataCart(JSON.parse(window.localStorage.getItem("cart")))
   },[])
 
   useEffect(()=>{
     if(cart.isAddCart){
-      setDataCart(cart.listCart.length)
+      setDataCart(JSON.parse(window.localStorage.getItem("cart")))
     }
   }, [cart])
 
@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const handleAddtoCart = (event)=>{
     event.preventDefault()
-    if(cart.listCart.length > 0){
+    if(dataCart.length > 0){
       route.push("/cart")
     }else{
       route.push("/cart/no-cart")
@@ -125,7 +125,7 @@ const Navbar = () => {
             <li className="nav-item">
               <button className="btn position-relative mx-lg-1" onClick={handleAddtoCart}>
                 <BiCartAlt className="fs-2"/>
-                <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{dataCart}</div>
+                <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{dataCart ? dataCart.length : 0}</div>
               </button>
             </li>
             <li className="nav-item">

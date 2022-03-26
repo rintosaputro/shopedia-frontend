@@ -5,7 +5,7 @@ export const getProfile = async (dispatch) => {
     type: 'TOGGLE_LOADING'
   })
   const token = window.localStorage.getItem('token')
-  const { data } = await http(token).get('http://localhost:3000/users/profile')
+  const { data } = await http(token).get('http://localhost:5000/users/profile')
   dispatch({
     type: 'GET_PROFILE',
     payload: data.results
@@ -30,7 +30,7 @@ export const editProfile = (email, name, gender, description) => {
       param.append('name', name)
       param.append('description', description)
       // param.append('image', picture)
-      const { data } = await http(token, true).patch('http://localhost:3000/users/profile', param)
+      const { data } = await http(token, true).patch('/users/profile', param)
       dispatch({
         type: 'EDIT_PROFILE',
         payload: data.results

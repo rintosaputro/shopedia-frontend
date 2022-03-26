@@ -1,17 +1,26 @@
 const dataCart = {
   isLoading : false,
   isAddCart : false,
-  listCart : []
+  listCart : [],
+  dataTransaction : null
 }
 
 const cart = (state = dataCart, action) => {
   switch (action.type) {
     case 'ADD_CART': {
-      let { isAddCart,listCart } = state
-      isAddCart = true
-      listCart = JSON.parse(window.localStorage.getItem("cart"))
-      return { ...state,isAddCart,listCart}
+      const newCart = {
+        isAddCart : true
+      }
+      return { ...state,...newCart}
     }
+    
+    case 'ADD_TRANSACTION': {
+      let { isAddCart,dataTransaction} = state
+      isAddCart = true
+      dataTransaction = JSON.parse(window.localStorage.getItem("transaction"))
+      return { ...state,isAddCart,dataTransaction}
+    }
+
     default: {
       return { ...state }
     }

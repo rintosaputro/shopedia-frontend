@@ -22,6 +22,8 @@ const Cart = ()=>{
   const route = useRouter()
   const [isEmpty,setIsEmpty] = useState(false)
   const [dataShipping,setDataShipping] = useState({})
+  const [error,setError] = useState("")
+  const [listCart,setListCart] = useState([])
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -29,70 +31,78 @@ const Cart = ()=>{
   });
 
   useEffect(()=>{
-    setTitleTable(["Products","Price","Quantity","Total"])
-    dispatch(addCart)
-    dispatch(getListShipping)
-    // handleSubtotal(false)
-    handleSubtotal()
+    setListCart(JSON.parse(window.localStorage.getItem("cart")))
+      setTitleTable(["Products","Price","Quantity","Total"])
+      setListCart(JSON.parse(window.localStorage.getItem("cart")))
+      dispatch(getListShipping)
+      // handleSubtotal(false)
+      setSubtotal(handleSubtotal())
   },[])
 
   useEffect(()=>{
+    if(cart.isAddCart){
+      setSubtotal(handleSubtotal())
+    }
+  },[cart])
+
+
+  useEffect(()=>{
     if(!statusCounter){
-      handleSubtotal()
+      setListCart(JSON.parse(window.localStorage.getItem("cart")))
+      setSubtotal(handleSubtotal())
     }
   },[statusCounter])
 
 
   const countIncrement = (index) =>{
     console.log("masuk@@")
-    cart.listCart[index].qty++;
-    const parsed = JSON.stringify(cart.listCart);
+    listCart[index].qty++;
+    const parsed = JSON.stringify(listCart);
     window.localStorage.setItem("cart",parsed)
-    dispatch(addCart)
+    setListCart(JSON.parse(window.localStorage.getItem("cart")))
     setStatusCounter(true)
   }
 
   const countDecrement = (index) =>{
-    if(cart.listCart[index].qty>0){
-      cart.listCart[index].qty--;
+    if(listCart[index].qty>0){
+      listCart[index].qty--;
     }
-    const parsed = JSON.stringify(cart.listCart);
+    const parsed = JSON.stringify(listCart);
     window.localStorage.setItem("cart",parsed)
-    dispatch(addCart)
+    setListCart(JSON.parse(window.localStorage.getItem("cart")))
     setStatusCounter(true)
   }
 
   const handleSubtotal = () =>{
     if(!statusCounter){
-        const subtotal = cart.listCart.map((item)=>{
+        const subtotal = listCart.map((item)=>{
           var result = 0
           result +=(item.qty * item.data.product.price) 
           return result
       })
 
-      setSubtotal(subtotal.reduce(function (total, num) {
+      return subtotal.reduce(function (total, num) {
         return total+num
-        }, 0))
-    } 
+        }, 0)
+      }
   }
 
   const handleDelete = (index)=>{
-    var getListcart = cart.listCart.filter((item,indexCart)=>indexCart!==index);
-    cart.listCart = getListcart
-    const parsed = JSON.stringify(cart.listCart);
-    window.localStorage.setItem("cart",parsed)
+    var getListcart = listCart.filter((item,indexCart)=>indexCart!==index);
+    const parsed = JSON.stringify(getListcart);
+    window.localStorage.setItem("cart",parsed);
+    setListCart(JSON.parse(window.localStorage.getItem("cart")))
+    setStatusCounter(false)
     dispatch(addCart)
-    if(cart.listCart.length == 0){
+    setSubtotal(handleSubtotal())
+    if(listCart.length == 0){
       setIsEmpty(true)
-    }else{
-      setStatusCounter(false)
-      handleSubtotal()
     }
   }
 
   const handleUpdate = ()=>{
     setStatusCounter(false)
-    handleSubtotal()
+    setSubtotal(handleSubtotal())
   }
 
   const handleChange = (event)=>{
@@ -113,19 +123,25 @@ const Cart = ()=>{
 
   const handleClearCart = (event)=>{
       event.preventDefault()
-      cart.listCart = []
-      const parsed = JSON.stringify(cart.listCart);
+      setListCart([])
+      const parsed = JSON.stringify([]);
       window.localStorage.setItem("cart",parsed)
       dispatch(addCart)
       setStatusCounter(false)
-      handleSubtotal()
+      setSubtotal(handleSubtotal())
       totalPrice()
-      setIsEmpty(true)
   }
 
   const handleProcessCheckout = (event)=>{
     event.preventDefault()
-    route.push("/checkout")
+    if(Object.keys(dataShipping).length > 0){
+      const data = {shipping:dataShipping,total:totalPrice()}
+      const parsed = JSON.stringify(data);
+      window.localStorage.setItem("transaction",parsed)
+      route.push("/checkout")
+    }else{
+      setError("Shipping method must be filled!")
+    }
   }
     
   return(
@@ -137,7 +153,7 @@ const Cart = ()=>{
       <HeaderPage breadcumb={[{name:"Cart",active:true}]} title="Your cart" detail="Buy everything in your cart now!"/>
       <Container>
         {
-          isEmpty ?  
+          listCart.length ==0 ?  
           <div className="text-center py-5">
             <div  className="pt-4">
               <Image src="/images/shopping-cart.png" width={200} height={200}/>
@@ -150,7 +166,7 @@ const Cart = ()=>{
         <Form>
           <Row>
             <Col md={6} lg={7} xl={8}>
-              <Row className="mt-5 pb-2 pt-5 text-color1 text-uppercase text-center d-none d-lg-flex border-bottom border-2 fw-bold">
+              <Row className="mt-5 pb-2 text-color1 text-uppercase text-center d-none d-lg-flex border-bottom border-2 fw-bold">
                   {
                     titleTable.map((item)=>{
                         return(
@@ -161,7 +177,7 @@ const Cart = ()=>{
                   }
               </Row>
                 {
-                  cart.listCart.map((item,index)=>{
+                  listCart.map((item,index)=>{
                     return(
                       <Row key={index}>
                         <Col lg={6}>
@@ -250,6 +266,7 @@ const Cart = ()=>{
                               })
                             }
                           </Form.Select>
+                          {error!=="" && <div className={cartStyle.error}>{error}</div>}
                         </div>
                       </Col>
                     </Row>
