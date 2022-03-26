@@ -35,6 +35,15 @@ const Navbar = () => {
     }
   }
 
+  const handleAddtoCart = (event)=>{
+    event.preventDefault()
+    if(cart.listCart.length > 0){
+      route.push("/cart")
+    }else{
+      route.push("/cart/no-cart")
+    }
+  }
+
   return (
     <>
     <nav className="navbar navbar-expand-lg navbar-light bg-white fixed-top">
@@ -114,7 +123,7 @@ const Navbar = () => {
               </button>
             </li>
             <li className="nav-item">
-              <button className="btn position-relative mx-lg-1">
+              <button className="btn position-relative mx-lg-1" onClick={handleAddtoCart}>
                 <BiCartAlt className="fs-2"/>
                 <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{dataCart}</div>
               </button>
