@@ -35,3 +35,7 @@ iframe{
   outline: 0 !important;
   box-shadow: 0 0 0 0.25rem rgba(93, 197, 119, 0.25) !important;
 }
+.btn:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 0%) !important;
+}

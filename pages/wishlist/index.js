@@ -90,10 +90,10 @@ const Index = () => {
         <Row className='pb-5 pt-2'>
           <Col xs={12} md={12}>
             {
-              wishlists.listWishlist.map((item)=>{
+              wishlists.listWishlist && wishlists.listWishlist.map((item)=>{
                 return(<Row key={item.id} className='my-5'>
                   <Col xs={12} sm={6} lg={4} className='d-flex flex-row align-items-center'>
-                    <Image src={item.product_image.image} alt='product' width={100} height={100} />
+                    {item.product_image && <Image src={item.product_image.image} alt='product' width={100} height={100} />}
                     <span className="ps-4">{item.product.name}</span>
                   </Col>
                   <Col xs={12} sm={6} lg={4} className='my-auto'>
