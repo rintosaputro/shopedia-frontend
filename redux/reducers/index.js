@@ -7,6 +7,7 @@ import pages from './pages'
 import cart from './cart'
 import shipping from './shipping'
 import order from './order'
+import review from './review'
 
 const rootReducer = combineReducers({
   auth,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   wishlists,
   cart,
   shipping,
-  order
+  order,
+  review
 })
 
 export default rootReducer

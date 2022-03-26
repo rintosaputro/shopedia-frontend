@@ -19,33 +19,35 @@ import { getProductDetail } from '../../redux/actions/product';
 import capitalFirst from '../../helper/capitalFirst';
 import http from '../../helper/http';
 import { addCart } from '../../redux/actions/cart';
+import noImg from '../../images/noImg.jpg'
+import { getWishLlists } from '../../redux/actions/wishlist';
+import { getListReview, addReview } from '../../redux/actions/review';
 
 const ProductDetail = () => {
-  const [key, setKey] = useState('home');
   const [count, setCount] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [whislist, setWhislist] = useState(false);
   const [errWhislist, setErrWhislist] = useState(false);
   const [reviewMessage, setReviewMessage] = useState('')
-  const [delWishlist, setDelWhislist] = useState(false);
   const [cartSuccess, setCartSuccess] = useState(false)
   
 
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const { product, user } = useSelector(state => state)
-  const {id, name, price, description, product_images, product_reviews, stock } = product.productDetail;
+  const { product, user, review } = useSelector(state => state)
+  const {id, name, price, description, product_images, stock } = product.productDetail;
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   useEffect(() => {
     dispatch(getProductDetail(route.query.id))
-  }, [dispatch, route.query.id])
+    dispatch(getListReview(route.query.id))
+  }, [dispatch])
 
   const imgClick = (e, currentImg) => {
     e.preventDefault();
     const bigImg = document.getElementById('mainImg')
     bigImg.innerHTML = `<Image src=${currentImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />`
-    // bigImg.innerHTML = `<div style={{backgroundImage: ${`url(${currentImg})`}}} className=${styles.relatedBg} ></div>`
   }
   const countInc = (e) => {
     e.preventDefault();
@@ -73,13 +75,15 @@ const ProductDetail = () => {
     e.preventDefault();
     const parsed = JSON.stringify(dataCart);
     const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
-    // window.localStorage.setItem('cart', [JSON.stringify(dataCart), parsed])
-    // dispatch(addCart);
-    const data = {data: dataCart, qty: 1}
-    const resData = [...cartStorage, data]
-    window.localStorage.setItem("cart", JSON.stringify(resData))
+    const data = {data: dataCart, qty: count}
+    if (cartStorage) {
+      const resData = [...cartStorage, data]
+      window.localStorage.setItem("cart", JSON.stringify(resData))
+    } else {
+      window.localStorage.setItem("cart", JSON.stringify([data]))
+    }
     setCartSuccess(true)
-    console.log([...cartStorage, data]);
+    dispatch(addCart)
   }
 
   const addWhislist = async (e) => {
@@ -93,7 +97,7 @@ const ProductDetail = () => {
     .then(res => {
       if (res.status < 400) {
         setWhislist(res.data.results)
-        console.log(res.data.results)
+        dispatch(getWishLlists)
       }
     }) 
     .catch(err => {
@@ -105,13 +109,13 @@ const ProductDetail = () => {
   const deleteWihslist = async (e) => {
     e.preventDefault();
     setIsLoading(true)
-    setErrWhislist(false)
+    // setErrWhislist(false)
     const token = window.localStorage.getItem('token');
     await http(token).delete(`/users/favorite-product/${whislist.id}`)
     .then(res => {
       if (res.status < 400) {
-        setWhislist(false)
-        console.log(res.data.results)
+        setErrWhislist(false)
+        dispatch(getWishLlists)
       }
     }) 
     .catch(err => {
@@ -120,7 +124,7 @@ const ProductDetail = () => {
     })
     setIsLoading(true)
   }
-  const addReview = async (e) => {
+  const handleReview = async (e) => {
     e.preventDefault();
     setReviewMessage('')
     setIsLoading(true)
@@ -129,15 +133,34 @@ const ProductDetail = () => {
     const name = document.getElementById('comment').value
     const email = document.getElementById('comment').value
     if (comment && name && email) {
-      const param = new URLSearchParams();
-      param.append('userId', user.dataUser.id)
-      param.append('productId', Number(route.query.id))
-      param.append('comment', comment)
-      await http(token).post('/products/review', param)
-      dispatch(getProductDetail(route.query.id))
+      dispatch(addReview(Number(route.query.id), comment))
+      dispatch(getListReview(route.query.id))
     } else {
       setReviewMessage('Please fill the form')
     }
+  }
+
+  const replyClick = (idx) => {
+    // e.preventDefault();
+    const form = document.getElementById(`formReply${idx}`)
+    if (form.style.display === 'block') {
+      form.style.display = 'none'
+    } else {
+      form.style.display = 'block'
+    }
+    // form.style.display = 'block'
+  }
+  const replyReview = (id, idx, e) => {
+    e.preventDefault();
+    const input = document.getElementById(`replyForm${id}`).value
+    const form = document.getElementById(`formReply${idx}`)
+    if (form.style.display === 'block') {
+      form.style.display = 'none'
+    } else {
+      form.style.display = 'block'
+    }
+    dispatch(addReview(Number(route.query.id), input, id))
+    dispatch(getListReview(route.query.id))
   }
 
   const relatedProducts = [
@@ -153,13 +176,16 @@ const ProductDetail = () => {
           <Col lg={3} className='p-lg-5'>
             <aside className="h-100">
               <div className={`d-flex justify-content-center h-100 ${styles.asideImg}`}>
-                {product_images && product_images.map((data, index) => {
+                {product_images && product_images[0]
+                ? product_images.map((data, index) => {
                   return (
                     <div  key={index} style={{cursor: 'pointer'}} onClick={e => imgClick(e, data.image)}>
                       <Image src={data.image} alt={data.alt} width={120} height={120} />
                     </div>
                   )
-                })}
+                })
+                : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                }
               </div>
             </aside>
           </Col>
@@ -170,7 +196,14 @@ const ProductDetail = () => {
               </div>
             </div>
             <div id="mainImg" className="d-flex justify-content-center align-items-center h-100 overflow-hidden">
-              {product_images && <Image src={product_images[0].image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />}
+              {product_images && product_images[0]
+              ? product_images.map((data, index) => {
+              if (index === 0) {
+                return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+              }
+              })
+              : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+              }
             </div>
           </Col>
         </Row>
@@ -178,8 +211,8 @@ const ProductDetail = () => {
       <main className="container mb-5">
         <div className="fs-2">{name && capitalFirst(name)}</div>
         <div className="mt-5 mb-3">
-          {(product_reviews && product_reviews.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index}/> ))}
-          <span>{product_reviews && product_reviews.length} (reviews)</span>
+          {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index}/> ))}
+          <span>{review.results && review.results.length} (reviews)</span>
         </div>
         <Row className="mb-5">
           <Col xs={6}>
@@ -204,12 +237,23 @@ const ProductDetail = () => {
           {cartSuccess
           ? <span>Successfully added to cart</span>
           : <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>}
-          {/* <button className="btn btn-dark ms-3"><AiOutlineHeart /></button> */}
           {whislist 
           ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
           : <button onClick={addWhislist} className="btn btn-outline-dark ms-3">Add to Whislist</button>
           }
+          {errWhislist && <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>}
           {errWhislist && <span className='ms-3 text-danger'>Product already in whislist</span>}
+          {/* {errWhislist 
+          ? <>
+              <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
+              <span className='ms-3 text-danger'>Product already in whislist</span>
+            </>
+          : (
+            whislist 
+            ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
+            : (!errWhislist && <button onClick={addWhislist} className="btn btn-outline-dark ms-3">Add to Whislist</button>)
+            )
+          } */}
         </div>
         <div>
           <div>SKU: N/A</div>
@@ -259,9 +303,16 @@ const ProductDetail = () => {
         </nav>
         <div className="tab-content" id="nav-tabContent">
           <div className="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
-            <Row className='align-items-center'>
+            <Row className='align-items-center mt-5'>
               <Col xs={12} lg={5}>
-                {product_images && <Image src={product_images[0].image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />}
+                {product_images && product_images[0]
+                ? product_images.map((data, index) => {
+                if (index === 0) {
+                  return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                }
+                })
+                : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                }
               </Col>
               <Col xs={12} lg={7}>
                 <div>
@@ -272,16 +323,38 @@ const ProductDetail = () => {
           </div>
           <div className="tab-pane mt-5 px-lg-5 fade text-dark" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
             <div className='px-lg-5 my-5 py-4'>
-              {product_reviews && product_reviews.map((data) => {
+              {review.results && review.results.map((data, idx) => {
+                const date = data.createdAt
                 return (
                   <div key={data.id} className='pt-5'>
                     <div className='d-flex flex-row'>
-                      <div style={{backgroundImage: `url(${'/images/defaultpp.jpg'})`}} className={styles.photoReview}></div>
+                      <div style={{backgroundImage: `url(${data.user.image || '/images/defaultpp.jpg'})`}} className={styles.photoReview}></div>
                       <div className={`${styles.commentReview} ms-4`}>
                         <div>“{data.comment}”</div>
                         <div className='text-muted mt-3'>
-                          35 mins ago, 28 March 2022
-                          <button className='fw-bold btn ms-3'>Reply</button>
+                          {date}
+                          <button onClick={e => replyClick(idx)} className='fw-bold btn ms-3'>Reply</button>
+                        </div>
+                        <form id={`formReply${idx}`} style={{display: 'none'}}>
+                          <input id={`replyForm${data.id}`} type='text' placeholder='reply' />
+                          <button onClick={e => replyReview(data.id, idx, e)} className='btn btn-color2 fw-bold'>Send</button>
+                        </form>
+                        <div>
+                          {data.replies && data.replies.map((item) => {
+                            return (
+                              <div key={item.id} className='pt-5'>
+                                <div className='d-flex flex-row'>
+                                  <div style={{backgroundImage: `url(${item.user.image || '/images/defaultpp.jpg'})`}} className={styles.photoReview}></div>
+                                  <div className={`${styles.commentReview} ms-4`}>
+                                    <div>“{item.comment}”</div>
+                                    <div className='text-muted mt-3'>
+                                      {item.createdAt}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     </div>
@@ -310,7 +383,7 @@ const ProductDetail = () => {
                   </Col>
                 </Row>
                 {reviewMessage && <Alert variant='color2' className='text-danger'>{reviewMessage}</Alert>}
-                <CButton onClick={addReview} classStyle='px-5 mt-3' color='dark'>Send</CButton>
+                <CButton onClick={handleReview} classStyle='px-5 mt-3' color='dark'>Send</CButton>
               </form>
             </div>
           </div>
