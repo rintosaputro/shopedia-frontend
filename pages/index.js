@@ -11,12 +11,14 @@ import NavProductHomepage from '../components/NavProductHomepage'
 import { getProduct } from '../redux/actions/product'
 import { useDispatch, useSelector } from 'react-redux'
 import NumberFormat from 'react-number-format';
+import { useRouter } from 'next/router'
 
 
 export default function Home() {
   const dispatch = useDispatch()
   const data = useSelector(state => state.product.product)
   const error = useSelector(state => state.product)
+  const route = useRouter()
   console.log(error.errMessage)
   useEffect(
     () => {
@@ -73,7 +75,7 @@ export default function Home() {
               {data?.map((data, idx) => {
                 return (
                   <>
-                    <Col key={data.name} md={4} className="mb-4">
+                    <Col style={{cursor: 'pointer'}} onClick={e => route.push(`/product/${data.id}`)} key={data.name} md={4} className="mb-4">
                       <Image src="/images/chair2.png" width={360} height={450} alt="chair2" />
                       <div className="text-md-start ms-auto me-auto">
                         <p className='fs-5'>{data.name}</p>

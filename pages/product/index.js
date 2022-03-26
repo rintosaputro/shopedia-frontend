@@ -10,6 +10,7 @@ import Layout from '../../components/Layout'
 import BreadCrumb from '../../components/BrreadCrumb'
 import Image from 'next/image'
 import NumberFormat from 'react-number-format';
+import { useRouter } from 'next/router';
 
 
 const Index = () => {
@@ -18,6 +19,8 @@ const Index = () => {
   const [brands, setBrands] = useState([])
   const [page, setPage] = useState({})
   const [errorMsg, setErrorMsg] = useState(null)
+
+  const route = useRouter()
 
   useEffect(() => {
     getProduct(`/products?limit=12`)
@@ -290,7 +293,7 @@ const Index = () => {
               {product?.map((data, idx) => {
                 return (
                   <>
-                    <Col key={String(idx)} md={4} className="mb-4">
+                    <Col style={{cursor: 'pointer'}} onClick={e => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
                       <Image src="/images/chair2.png" width={360} height={450} alt="chair2" />
                       <div className="text-md-start ms-auto me-auto">
                         <p className='fs-5'>{data.name}</p>
