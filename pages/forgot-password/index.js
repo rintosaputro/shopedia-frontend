@@ -5,6 +5,9 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 import { useRouter } from "next/router"
 import http from '../../helper/http'
+import { forgotPassword } from "../../redux/actions/auth"
+import { useDispatch, useSelector } from 'react-redux'
+import { Alert } from "react-bootstrap"
 
 const Index = () => {
   const [requested, setRequested] = useState(false)
@@ -14,29 +17,41 @@ const Index = () => {
   const [resetError, setResetError] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
+  const dispatch = useDispatch();
+
+  const { auth } = useSelector(state => state);
+
   useEffect(() => {
     setToken(router.query.token)
   }, [router.query])
 
+  useEffect(() => {
+    if (doneReset) {
+      router.push('/login')
+    }
+  }, [doneReset, router])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setRequested(true)
-    const data = new URLSearchParams()
-    data.append('email', e.target.elements['email'].value)
-    const request = await http().post('http://localhost:3000/auth/reset-verify?callbackUrl=http://localhost:3001', data, {
-      validateStatus: (status) => {
-        return status < 400
-      }
-    }).catch((error) => {
-      console.log(error.response)
-    })
+    const email = e.target.elements['email'].value
+    dispatch(forgotPassword(email));
+    // const data = new URLSearchParams()
+    // data.append('email', e.target.elements['email'].value)
+    // const request = await http().post('http://localhost:3000/auth/reset-verify?callbackUrl=http://localhost:3001/forgot-password', data, {
+    //   validateStatus: (status) => {
+    //     return status < 400
+    //   }
+    // }).catch((error) => {
+    //   console.log(error.response)
+    // })
   }
 
   const handleResetPassword = async (e) => {
     e.preventDefault()
     const data = new URLSearchParams()
     data.append('token', token)
-    data.append('password', e.target.elements['password'].value)
+    data.append('password', e.target.elements['newPassword'].value)
     data.append('confirmPassword', e.target.elements['confirmPassword'].value)
 
     const request = await http().post('http://localhost:3000/auth/reset-verify', data, {
@@ -69,10 +84,12 @@ const Index = () => {
           </Col>
           <Col xs={12} md={4}>
             {
-
+              !token &&
               <Form className='my-5' onSubmit={handleSubmit}>
                 <h3>Forgot your Password?</h3>
                 <div>Don’t worry! Just fill in your email and we’ll send you a link</div>
+                {auth.isError && <Alert variant='color1' className='text-danger text-center mt-5'>{auth.errMessage}</Alert>}
+                {auth.forgot && <Alert variant='color1' className='text-color2  text-center mt-5'>Code sent, Check your email!</Alert>}
                 <Input
                   type="email"
                   id="email"
@@ -81,14 +98,21 @@ const Index = () => {
                   className='me-5 py-3 mt-5'
                   placeholder='Your email address *'
                 />
-                <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
+                {auth.isLoading ? 
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                : 
+                (!auth.forgot && <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
                   Reset Password
-                </Button>{' '}<br />
+                </Button>)
+                }
+                {' '}<br />
               </Form>
             }
             {
               token && !doneReset &&
-              <Container className="d-flex flex-column justify-content-center h-lg-100 vh-100">
+              <Container className="d-flex flex-column justify-content-center">
                 <div>
                   <h2>
                     Did You Forgot Your Password?
@@ -103,8 +127,8 @@ const Index = () => {
                 </div>
                 <form className="mb-4" onSubmit={handleResetPassword}>
                   <div>
-                    <Input name="newPassword" type='password' placeholder='New Password ..' className='py-3 mx-4' />
-                    <Input name="confirmPassword" type='password' placeholder='Confirm Password ..' className='py-3 mx-4' />
+                    <Input name="newPassword" type='password' placeholder='New Password ..' className='me-5 py-3 mt-5' />
+                    <Input name="confirmPassword" type='password' placeholder='Confirm Password ..' className='me-5 py-3 mt-5' />
                   </div>
                   {
                     resetError &&
@@ -112,7 +136,7 @@ const Index = () => {
                       <h3 className="error-message">{errorMsg}</h3>
                     </div>
                   }
-                  <Button type='submit' isBlock={true} variant='primary'>Confirm</Button>
+                  <Button type='submit' isBlock={true} className='mt-3' variant='dark'>Confirm</Button>
                 </form>
               </Container>
             }
