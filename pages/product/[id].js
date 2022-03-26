@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProductDetail } from '../../redux/actions/product';
 import capitalFirst from '../../helper/capitalFirst';
 import http from '../../helper/http';
+import { addCart } from '../../redux/actions/cart';
 
 const ProductDetail = () => {
   const [key, setKey] = useState('home');
@@ -27,12 +28,13 @@ const ProductDetail = () => {
   const [errWhislist, setErrWhislist] = useState(false);
   const [reviewMessage, setReviewMessage] = useState('')
   const [delWishlist, setDelWhislist] = useState(false);
+  
 
   const route = useRouter();
   const dispatch = useDispatch();
 
   const { product, user } = useSelector(state => state)
-  const {name, price, description, product_images, product_reviews, stock } = product.productDetail;
+  const {id, name, price, description, product_images, product_reviews, stock } = product.productDetail;
 
   useEffect(() => {
     dispatch(getProductDetail(route.query.id))
@@ -55,6 +57,31 @@ const ProductDetail = () => {
     if (count > 1) {
       setCount(count -1)
     }
+  }
+  let imageProduct = {}
+  if (product_images) {
+    imageProduct = product_images[0]
+  }
+  let idUser;
+  if (user.id) {
+
+  }
+  const dataCart = {
+    id,
+    userId: user.dataUser.id,
+    product: {id, name, price, stock},
+    product_images: imageProduct,
+  }
+  const addtoCart = (e) => {
+    e.preventDefault();
+    const parsed = JSON.stringify(dataCart);
+    const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
+    // window.localStorage.setItem('cart', [JSON.stringify(dataCart), parsed])
+    // dispatch(addCart);
+    const data = {data: dataCart, qty: 1}
+    const resData = [...cartStorage, data]
+    window.localStorage.setItem("cart", JSON.stringify(resData))
+    console.log([...cartStorage, data]);
   }
 
   const addWhislist = async (e) => {
@@ -176,7 +203,7 @@ const ProductDetail = () => {
             <span>{count}</span>
             <button onClick={countInc} className="btn">+</button>
           </div>
-          <button className="btn btn-dark">Add to Cart</button>
+          <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>
           {/* <button className="btn btn-dark ms-3"><AiOutlineHeart /></button> */}
           {whislist 
           ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>

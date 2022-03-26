@@ -9,7 +9,7 @@ import { addCart } from "../redux/actions/cart";
 
 const Navbar = () => {
   const route = useRouter();
-  const {cart} = useSelector(state=>state)
+  const {cart, wishlists} = useSelector(state=>state)
   const dispatch = useDispatch()
   const [dataCart,setDataCart] = useState(0) 
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
@@ -22,7 +22,7 @@ const Navbar = () => {
     if(cart.isAddCart){
       setDataCart(cart.listCart.length)
     }
-  })
+  }, [])
 
 
   const searchBtn = (e) => {
@@ -117,9 +117,9 @@ const Navbar = () => {
               </form>
             </li>
             <li className="nav-item">
-              <button className="btn position-relative ms-lg-1">
+              <button className="btn position-relative ms-lg-1" onClick={e => route.push('/wishlist')}>
                 <BiHeart className="fs-2"/>
-                <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}></div>
+                <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{wishlists.listWishlist ? wishlists.listWishlist.length : 0}</div>
               </button>
             </li>
             <li className="nav-item">

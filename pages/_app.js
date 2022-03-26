@@ -6,6 +6,7 @@ import '@popperjs/core'
 import { Provider, useDispatch } from 'react-redux';
 import store from '../redux/store'
 import { getProfile } from '../redux/actions/user';
+import { getWishLlists } from '../redux/actions/wishlist';
 
 const MyComponent = ({children}) => {
   const dispatch = useDispatch();
@@ -14,8 +15,9 @@ const MyComponent = ({children}) => {
     const token = window.localStorage.getItem('token')
     if (token) {
       dispatch(getProfile)
+      dispatch(getWishLlists)
     }
-  }, [])
+  }, [dispatch])
 
   return <>{children}</>
 }
