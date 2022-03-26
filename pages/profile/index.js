@@ -149,7 +149,7 @@ const Index = () => {
             />
           </div>
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
-            <FiLogOut />&nbsp;Logout
+            <FiLogOut />&nbsp;Save
           </Button>{' '}
         </Form>
       </Container>
