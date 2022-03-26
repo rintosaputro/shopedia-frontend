@@ -28,6 +28,7 @@ const ProductDetail = () => {
   const [errWhislist, setErrWhislist] = useState(false);
   const [reviewMessage, setReviewMessage] = useState('')
   const [delWishlist, setDelWhislist] = useState(false);
+  const [cartSuccess, setCartSuccess] = useState(false)
   
 
   const route = useRouter();
@@ -62,10 +63,6 @@ const ProductDetail = () => {
   if (product_images) {
     imageProduct = product_images[0]
   }
-  let idUser;
-  if (user.id) {
-
-  }
   const dataCart = {
     id,
     userId: user.dataUser.id,
@@ -81,6 +78,7 @@ const ProductDetail = () => {
     const data = {data: dataCart, qty: 1}
     const resData = [...cartStorage, data]
     window.localStorage.setItem("cart", JSON.stringify(resData))
+    setCartSuccess(true)
     console.log([...cartStorage, data]);
   }
 
@@ -203,7 +201,9 @@ const ProductDetail = () => {
             <span>{count}</span>
             <button onClick={countInc} className="btn">+</button>
           </div>
-          <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>
+          {cartSuccess
+          ? <span>Successfully added to cart</span>
+          : <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>}
           {/* <button className="btn btn-dark ms-3"><AiOutlineHeart /></button> */}
           {whislist 
           ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>

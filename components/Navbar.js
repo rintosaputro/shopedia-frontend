@@ -22,7 +22,7 @@ const Navbar = () => {
     if(cart.isAddCart){
       setDataCart(cart.listCart.length)
     }
-  }, [])
+  }, [cart])
 
 
   const searchBtn = (e) => {
