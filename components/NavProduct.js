@@ -37,12 +37,12 @@ const NavProduct = () => {
               <span className={`${route.pathname === '/my-order' ? 'text-color1' : 'text-muted'} h4`}>My Order</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="/my-order/all">All</Dropdown.Item>
-              <Dropdown.Item href="/my-order">Get Paid</Dropdown.Item>
-              <Dropdown.Item href="/my-order">Processed</Dropdown.Item>
-              <Dropdown.Item href="/my-order">Sent</Dropdown.Item>
-              <Dropdown.Item href="/my-order">Completed</Dropdown.Item>
-              <Dropdown.Item href="/my-order">Order Cancel</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order')}>All</Dropdown.Item>
+              {/* <Dropdown.Item onClick={e => route.push('/my-order?status=get-paid')}>Get Paid</Dropdown.Item> */}
+              <Dropdown.Item onClick={e => route.push('/my-order?status=Processed')}>Processed</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=Sent')}>Sent</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=Completed')}>Completed</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=Cancelled')}>Order Cancel</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </li>
