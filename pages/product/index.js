@@ -68,8 +68,9 @@ const Index = () => {
 
   const onSearch = async (event) => {
     event.preventDefault();
-    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&limit=12`
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&store=${productStore}&limit=12`
     let name = document.getElementById('name').value;
+    let productStore = document.getElementById('productStore').value;
     let brand = document.querySelector('.form-check-input:checked').value;
     let minPrice = document.querySelector('#min-value').value;
     let maxPrice = document.querySelector('#max-value').value;
@@ -191,6 +192,14 @@ const Index = () => {
                 className='me-5 py-3 mt-5'
                 placeholder='Search Product'
               />
+              <Form.Control
+                type="text"
+                id="productStore"
+                name="productStore"
+                aria-describedby="productStore"
+                className='me-5 py-3 mt-5'
+                placeholder='Product By Store'
+              />
               <ListGroup >
                 <h3 className='ms-3'>Categories</h3>
                 <ListGroup.Item onClick={onCategories1} id="category" value='1' className='bg-transparent border-0 d-flex justify-content-between' action >
@@ -293,7 +302,7 @@ const Index = () => {
               {product?.map((data, idx) => {
                 return (
                   <>
-                    <Col style={{cursor: 'pointer'}} onClick={e => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
+                    <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
                       <Image src="/images/chair2.png" width={360} height={450} alt="chair2" />
                       <div className="text-md-start ms-auto me-auto">
                         <p className='fs-5'>{data.name}</p>
