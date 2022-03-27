@@ -146,7 +146,7 @@ const Navbar = () => {
                       <Dropdown.Item href="/my-store">
                         My Store
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/") }} >
+                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/"); route.reload() }} >
                         Log Out
                       </Dropdown.Item>
                     </Dropdown.Menu>
