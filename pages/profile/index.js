@@ -9,7 +9,7 @@ import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfile, editProfile } from '../../redux/actions/user'
+import { getProfile, editProfile, editStore } from '../../redux/actions/user'
 import { useRouter } from "next/router";
 
 const Index = () => {
@@ -61,8 +61,6 @@ const Index = () => {
       dispatch(editProfile(email, name, gender, images))
     }
 
-    // console.log(email)
-    // route.push('/login')
   }
   return (
     <Layout>
@@ -111,7 +109,7 @@ const Index = () => {
                 defaultValue={data.name || 'Your Name'}
               // placeholder='Your Name*'
               />
-              <div>as {role?.name}</div>
+              <div className='ms-2'>as {role?.name}</div>
             </div>
           </div>
 
