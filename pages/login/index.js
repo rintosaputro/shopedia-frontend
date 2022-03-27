@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Layout from '../../components/Layout'
 import { login } from '../../redux/actions/auth'
 import { useRouter } from 'next/router'
+import ModalNotifError from '../../components/ModalNotifError'
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,6 @@ const Login = () => {
     const email = document.getElementById('email').value;
     const pwd = document.getElementById('password').value;
     dispatch(login(email, pwd));
-    // route.reload()
   }
 
 
@@ -54,7 +54,7 @@ const Login = () => {
             <Col xs={12} md={5}>
               <div className='my-5'>
                 <h3>Login</h3>
-                {auth.isError && <Alert variant='color2' className='mt-5 text-danger text-center'>{auth.errMessage}</Alert>}
+                <ModalNotifError message={auth.errMessage} />
                 <Form.Control
                   type="email"
                   id="email"
