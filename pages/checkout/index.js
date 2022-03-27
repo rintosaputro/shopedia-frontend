@@ -1,7 +1,7 @@
 import Layout from "../../components/Layout"
 import HeaderPage from "../../components/HeaderPage"
 import Head from 'next/head'
-import { Container,Row,Col } from "react-bootstrap"
+import { Container,Row,Col,Alert } from "react-bootstrap"
 import { Form } from "react-bootstrap"
 import CInput from "../../components/CInput"
 import CButton from "../../components/CButton"
@@ -13,18 +13,24 @@ import { checkoutProcess } from "../../redux/actions/checkout"
 import { useDispatch, useSelector } from "react-redux"
 import { validationCheckout } from "../../helper/validation"
 import styles from './checkout.module.scss';
+import { route } from "next/dist/server/router"
+import { useRouter } from "next/router"
 
 const Checkout = ()=>{
   
   // const [paymentMethod,setPaymentMethod] = useState([])
 
-  const {payment,cart,checkout} = useSelector(state=>state)
+  const {payment,checkout} = useSelector(state=>state)
   const [error,setError] = useState({})
+  const route = useRouter()
+  const [listCart,setListCart] = useState([])
+  const [dataTransaction,setDataTransaction] = useState([])
 
   const dispatch = useDispatch()
 
   useEffect(()=>{
-      dispatch(addCart)
+      setListCart(JSON.parse(window.localStorage.getItem("cart")))
+      setDataTransaction(JSON.parse(window.localStorage.getItem("transaction")))
       dispatch(addTransaction)
       dispatch(getPaymentMethod)
     // setPaymentMethod(["Cash","Transfer","Credit Card"])
@@ -45,8 +51,16 @@ const Checkout = ()=>{
     if(Object.keys(validate).length > 0){
       setError(validate)
     }else{
-      dispatch(checkoutProcess(data,cart.dataTransaction,cart.listCart))
-      setError({})
+      dispatch(checkoutProcess(data,dataTransaction,listCart))
+      console.log(checkout.isError)
+      if(checkout.isError){
+        setError({errMsg :checkout.errMessage })
+      }else{
+        window.localStorage.setItem("cart",JSON.stringify([]))
+        route.push("/my-order")
+        setError({})
+      }
+     
     }
   }
 
@@ -64,6 +78,13 @@ const Checkout = ()=>{
                   <Col xs={12} md={3}></Col>
                   <Col xs={12} md={6}>
                     <div className="fs-2">Self Information</div>
+                    {checkout.isError &&  
+                    <Alert variant="danger" dismissible>
+                    <Alert.Heading>ERROR</Alert.Heading>
+                    <p>
+                      {error.errMsg}
+                    </p>
+                  </Alert>}
                     <CInput type="text" name="name" classVariant="me-5 py-3 mt-5" placeholder="Your name *" ></CInput>
                     {error!==null && error.name ? <div className={styles.error}>{error.name}</div> : '' }
                     <CInput as="textarea" name="address" className="me-5 py-3 mt-3" rows={3} placeholder="Address *"/>

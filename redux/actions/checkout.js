@@ -19,19 +19,20 @@ export const checkoutProcess = (dataSend,transaction,cart) => {
         param.append('total',transaction.total)
         
         const { data} = await http(token).post('/transactions',param)
-        const orderProduct = await Promise.all(
+        const transactionOrder = await Promise.all(
           cart.map(async(item) => {
             const param = new URLSearchParams();
             param.append('transactionId',data.results.id)
-            param.append('productId', item.data.product.id)
+            param.append('productId', item.data.id)
             param.append('qty',item.qty)
+            const token = window.localStorage.getItem('token')
             const orderProduct = await http(token).post('/transactions/ordered-product',param)
             return orderProduct.data.results
           }))
         
        
         console.log("dispatch fullfilled")
-        const result = {transaction:data.results,orderProduct}
+        const result = {transaction:data.results,tranaction_detail : transactionOrder}
         dispatch({
           type: 'CHECKOUT_FULFILLED',
           payload: result

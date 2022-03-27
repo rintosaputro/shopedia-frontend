@@ -4,7 +4,7 @@ import Layout from "../../components/Layout"
 import NavProduct from "../../components/NavProduct";
 import { BsCheck } from 'react-icons/bs';
 import styles from './MyOrder.module.css';
-import { getListOrder } from "../../redux/actions/order";
+import { getListOrder,filterListOrder } from "../../redux/actions/order";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -22,11 +22,21 @@ const MyOrder = () => {
       dispatch(getListOrder(1))
     }
   }, [])
+
   useEffect(() => {
     if (order.listOrder.length > 0) {
       setDataOrder({...order})
     }
   }, [order])
+
+  useEffect(() => {
+    if (route.query.status) {
+      dispatch(filterListOrder(1,route.query.status))
+    }else{
+      dispatch(getListOrder(1))
+    }
+  }, [route.query.status])
+
   // useEffect(() => {
   //   const dataQuery = ['Processed', 'sent', 'Completed', 'Cancelled']
   //     for (let i = 0; i < dataQuery.length; i ++) {
@@ -85,7 +95,7 @@ const MyOrder = () => {
             <Row key={index} className='my-5'>
               <Col lg={4}>
                 <div className='d-flex flex-row align-items-center'>
-                  {data.product_images && <Image src={data.product_images[0].image} width={100} height={100} alt='Product picture' />}
+                  {data.product.product_images && <Image src={data.product.product_images[0].image} width={100} height={100} alt='Product picture' />}
                   <span className="ms-5">{data.product.name}</span>
                 </div>
               </Col>

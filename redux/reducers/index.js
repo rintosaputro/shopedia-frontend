@@ -8,6 +8,7 @@ import cart from './cart'
 import shipping from './shipping'
 import payment from './payment'
 import checkout from './checkout'
+import order from './order'
 
 const rootReducer = combineReducers({
   auth,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   cart,
   shipping,
   payment,
-  checkout
+  checkout,
+  order
 })
 
 export default rootReducer

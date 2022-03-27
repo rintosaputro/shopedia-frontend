@@ -21,6 +21,13 @@ const cart = (state = dataCart, action) => {
       return { ...state,isAddCart,dataTransaction}
     }
 
+    case 'UPDATE_CART': {
+      const newState = {
+        listCart: action.payload,
+      }
+      return { ...state,...newState}
+    }
+
     default: {
       return { ...state }
     }

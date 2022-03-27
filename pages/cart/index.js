@@ -12,9 +12,10 @@ import { addCart } from "../../redux/actions/cart"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 import { getListShipping } from "../../redux/actions/shipping"
+import { getProductDetail } from "../../redux/actions/product"
 
 const Cart = ()=>{
-  const {cart,shipping} = useSelector(state=>state)
+  const {cart,shipping,product} = useSelector(state=>state)
   const [titleTable,setTitleTable] = useState([])
   const dispatch = useDispatch() 
   const [statusCounter,setStatusCounter] = useState(false)
@@ -24,7 +25,7 @@ const Cart = ()=>{
   const [dataShipping,setDataShipping] = useState({})
   const [error,setError] = useState("")
   const [listCart,setListCart] = useState([])
-
+  
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -35,8 +36,17 @@ const Cart = ()=>{
       setTitleTable(["Products","Price","Quantity","Total"])
       setListCart(JSON.parse(window.localStorage.getItem("cart")))
       dispatch(getListShipping)
-      // handleSubtotal(false)
+      dispatch(addCart)
       setSubtotal(handleSubtotal())
+  },[])
+
+  useEffect(()=>{
+    if(listCart.length>0){
+      listCart.forEach((item)=>{
+        dispatch(getProductDetail(item.data.id))
+        item.data = product.productDetail
+      })
+    }
   },[])
 
   useEffect(()=>{
@@ -53,14 +63,15 @@ const Cart = ()=>{
     }
   },[statusCounter])
 
-
+ 
   const countIncrement = (index) =>{
-    console.log("masuk@@")
-    listCart[index].qty++;
-    const parsed = JSON.stringify(listCart);
-    window.localStorage.setItem("cart",parsed)
-    setListCart(JSON.parse(window.localStorage.getItem("cart")))
-    setStatusCounter(true)
+    if(listCart[index].qty < listCart[index].data.stock){
+      listCart[index].qty++;
+      const parsed = JSON.stringify(listCart);
+      window.localStorage.setItem("cart",parsed)
+      setListCart(JSON.parse(window.localStorage.getItem("cart")))
+      setStatusCounter(true)
+    }
   }
 
   const countDecrement = (index) =>{
@@ -77,7 +88,7 @@ const Cart = ()=>{
     if(!statusCounter){
         const subtotal = listCart.map((item)=>{
           var result = 0
-          result +=(item.qty * item.data.product.price) 
+          result +=(item.qty * item.data.price) 
           return result
       })
 
@@ -117,7 +128,6 @@ const Cart = ()=>{
       }else{
         total = subtotal
       }
-    
       return total
   }
 
@@ -183,19 +193,19 @@ const Cart = ()=>{
                         <Col lg={6}>
                           <div className='d-flex flex-row align-items-center'>
                             <span className="py-5 me-3"><CButton classStyle={cartStyle.button} onClick={()=>handleDelete(index)}><FaTrashAlt className="fs-5"/></CButton></span>
-                            {item.data.product_image && <Image src={item.data.product_image.image} alt="product" width={69} height={83}/>}
-                            <span className="ms-5">{item.data.product.name}</span>
+                            {item.product_image && <Image src={item.product_image.image} alt="product" width={69} height={83}/>}
+                            <span className="ms-5">{item.data.name}</span>
                           </div>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
-                            <span className="fw-bold">{formatter.format(item.data.product.price)}</span>
+                            <span className="fw-bold">{formatter.format(item.data.price)}</span>
                         </Col>
                         <Col  xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span><div className="d-flex justify-content-between"><CButton classStyle={cartStyle.button} onClick={()=>countDecrement(index)}>-</CButton><CInput classVariant={cartStyle.formQty} type="number" value={item.qty}/><CButton classStyle={cartStyle.button} onClick={()=>countIncrement(index)}>+</CButton></div></span>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span className="text-muted d-inline d-lg-none">Total: </span>
-                          <span className="fw-bold">{formatter.format(item.qty * item.data.product.price)}</span>
+                          <span className="fw-bold">{formatter.format(item.qty * item.data.price)}</span>
                         </Col>
                       </Row>
                     )
