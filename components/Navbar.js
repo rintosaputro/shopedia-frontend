@@ -10,7 +10,7 @@ import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const route = useRouter();
-  const token = useSelector(state => state.auth.token)
+  const token = useSelector(state => state.user.token)
   const { cart, wishlists } = useSelector(state => state)
   const dispatch = useDispatch()
   const [dataCart, setDataCart] = useState(0)
