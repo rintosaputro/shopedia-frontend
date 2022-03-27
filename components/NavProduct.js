@@ -17,7 +17,7 @@ const NavProduct = () => {
             <a className={`${route.pathname === '/profile' ? 'text-color1' : 'text-muted'} h4 text-decoration-none `}>Profile</a>
           </Link>
         </li>
-        {user.dataUser.rolw && user.dataUser.role.name 
+        {user.dataUser.role && user.dataUser.role.name === 'seller'
         && <li className={`mx-3 ${styles.list}`}>
           <Dropdown>
             <Dropdown.Toggle variant="white" id="dropdown-basic">
@@ -30,7 +30,7 @@ const NavProduct = () => {
             </Dropdown.Menu>
           </Dropdown>
         </li>}
-        {user.dataUser.rolw && user.dataUser.role.name  
+        {user.dataUser.role && user.dataUser.role.name === 'seller'
         && <li className={`mx-3 ${styles.list}`}>
           <Link href='/selling-product'>
             <a className={`${route.pathname === '/selling-product' ? 'text-color1' : 'text-muted'} h4 text-decoration-none `}>Selling Product</a>
