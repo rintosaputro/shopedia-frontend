@@ -4,7 +4,8 @@ const initialState = {
   token: null,
   errMessage: null,
   dataUser: {},
-  editProfile: false
+  editProfile: false,
+  editStore: false
 }
 
 const user = (state = initialState, action) => {
@@ -22,6 +23,9 @@ const user = (state = initialState, action) => {
       return { ...state };
     }
     case 'USER_ERROR': {
+      return { ...state, isError: true, errMessage: action.payload }
+    }
+    case 'STORE_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
     }
     case 'USER_CLEAR_STATE': {

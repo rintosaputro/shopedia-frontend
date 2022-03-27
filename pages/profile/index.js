@@ -9,7 +9,7 @@ import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfile, editProfile } from '../../redux/actions/user'
+import { getProfile, editProfile, editStore } from '../../redux/actions/user'
 import { useRouter } from "next/router";
 
 const Index = () => {
@@ -52,11 +52,13 @@ const Index = () => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const name = document.getElementById('name').value;
+    const store = document.getElementById('store').value;
     const description = document.getElementById('description').value;
     const gender = document.querySelector('#gender option:checked').value;
     const images = datas.picture
-    dispatch(editProfile(email, name, gender, description, images))
-    // route.push('/login')
+    dispatch(editProfile(email, name, gender, images))
+    // dispatch(editStore(store, description))
+    dispatch(getProfile)
   }
   return (
     <Layout>
@@ -104,7 +106,7 @@ const Index = () => {
                 defaultValue={data.name || 'Your Name'}
               // placeholder='Your Name*'
               />
-              <div>as {role?.name}</div>
+              <div className='ms-2'>as {role?.name}</div>
             </div>
           </div>
 
