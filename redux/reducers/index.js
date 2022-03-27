@@ -6,6 +6,8 @@ import wishlists from './wishlist'
 import pages from './pages'
 import cart from './cart'
 import shipping from './shipping'
+import payment from './payment'
+import checkout from './checkout'
 import order from './order'
 import review from './review'
 import store from './store'
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   wishlists,
   cart,
   shipping,
+  payment,
+  checkout,
   order,
   review,
   store

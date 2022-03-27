@@ -44,10 +44,10 @@ const NavProduct = () => {
             <Dropdown.Menu>
               <Dropdown.Item onClick={e => route.push('/my-order')}>All</Dropdown.Item>
               {/* <Dropdown.Item onClick={e => route.push('/my-order?status=get-paid')}>Get Paid</Dropdown.Item> */}
-              <Dropdown.Item onClick={e => route.push('/my-order?status=Processed')}>Processed</Dropdown.Item>
-              <Dropdown.Item onClick={e => route.push('/my-order?status=Sent')}>Sent</Dropdown.Item>
-              <Dropdown.Item onClick={e => route.push('/my-order?status=Completed')}>Completed</Dropdown.Item>
-              <Dropdown.Item onClick={e => route.push('/my-order?status=Cancelled')}>Order Cancel</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=2')}>Processed</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=3')}>Sent</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=4')}>Completed</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push('/my-order?status=5')}>Order Cancel</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </li>

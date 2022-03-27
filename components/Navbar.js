@@ -16,13 +16,13 @@ const Navbar = () => {
   const [dataCart, setDataCart] = useState(0)
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
 
-  useEffect(() => {
-    setDataCart(cart.listCart.length)
-  }, [])
+  useEffect(()=>{
+    setDataCart(JSON.parse(window.localStorage.getItem("cart")))
+  },[])
 
-  useEffect(() => {
-    if (cart.isAddCart) {
-      setDataCart(cart.listCart.length)
+  useEffect(()=>{
+    if(cart.isAddCart){
+      setDataCart(JSON.parse(window.localStorage.getItem("cart")))
     }
   }, [cart])
 
@@ -39,7 +39,7 @@ const Navbar = () => {
 
   const handleAddtoCart = (event) => {
     event.preventDefault()
-    if (cart.listCart.length > 0) {
+    if(dataCart.length > 0){
       route.push("/cart")
     } else {
       route.push("/cart/no-cart")
@@ -166,7 +166,8 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
     </>
   )
 }

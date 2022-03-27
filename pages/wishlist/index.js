@@ -38,16 +38,17 @@ const Index = () => {
 
   const handleAddtoCart = (dataCart)=>{
     if(cartUser.length > 0){
-      const getDataCart = cartUser.filter((item)=>item.data.id==dataCart.id)
+
+      const getDataCart = cartUser.filter((item)=>item.data.id==dataCart.product.id)
       if(getDataCart.length == 0){
-          cartUser.push({data:dataCart,qty:1})
+          cartUser.push({data:dataCart.product,product_image:dataCart.product_image,qty:1})
           setCartUser(cartUser) 
           const parsed = JSON.stringify(cartUser);
           window.localStorage.setItem("cart",parsed)
           dispatch(addCart)
       }
     }else{
-      cartUser.push({data:dataCart,qty:1})
+      cartUser.push({data:dataCart.product,product_image:dataCart.product_image,qty:1})
       setCartUser(cartUser) 
       const parsed = JSON.stringify(cartUser);
       window.localStorage.setItem("cart",parsed);
