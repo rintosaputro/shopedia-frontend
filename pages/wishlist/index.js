@@ -13,6 +13,7 @@ import { getWishLlists } from '../../redux/actions/wishlist'
 import { useRouter } from 'next/router'
 import { addCart } from '../../redux/actions/cart'
 import cart from '../cart'
+import withAuth from '../../helper/withAuth'
 
 const Index = () => {
   const {wishlists} = useSelector(state=>state)
@@ -133,4 +134,4 @@ const Index = () => {
     </Layout>
   )
 }
-export default Index
+export default withAuth(Index)

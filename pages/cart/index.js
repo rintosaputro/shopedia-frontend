@@ -12,6 +12,7 @@ import { addCart } from "../../redux/actions/cart"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 import { getListShipping } from "../../redux/actions/shipping"
+import withAuth from "../../helper/withAuth"
 
 const Cart = ()=>{
   const {cart,shipping} = useSelector(state=>state)
@@ -65,7 +66,7 @@ const Cart = ()=>{
     if(!statusCounter){
         const subtotal = cart.listCart.map((item)=>{
           var result = 0
-          result +=(item.qty * item.data.product.price) 
+          result +=(item.qty * item.data.price) 
           return result
       })
 
@@ -167,18 +168,18 @@ const Cart = ()=>{
                           <div className='d-flex flex-row align-items-center'>
                             <span className="py-5 me-3"><CButton classStyle={cartStyle.button} onClick={()=>handleDelete(index)}><FaTrashAlt className="fs-5"/></CButton></span>
                             {item.data.product_image && <Image src={item.data.product_image.image} alt="product" width={69} height={83}/>}
-                            <span className="ms-5">{item.data.product.name}</span>
+                            <span className="ms-5">{item.data.name}</span>
                           </div>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
-                            <span className="fw-bold">{formatter.format(item.data.product.price)}</span>
+                            <span className="fw-bold">{formatter.format(item.data.price)}</span>
                         </Col>
                         <Col  xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span><div className="d-flex justify-content-between"><CButton classStyle={cartStyle.button} onClick={()=>countDecrement(index)}>-</CButton><CInput classVariant={cartStyle.formQty} type="number" value={item.qty}/><CButton classStyle={cartStyle.button} onClick={()=>countIncrement(index)}>+</CButton></div></span>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span className="text-muted d-inline d-lg-none">Total: </span>
-                          <span className="fw-bold">{formatter.format(item.qty * item.data.product.price)}</span>
+                          <span className="fw-bold">{formatter.format(item.qty * item.data.price)}</span>
                         </Col>
                       </Row>
                     )
@@ -269,4 +270,4 @@ const Cart = ()=>{
   )
 }
 
-export default Cart
+export default withAuth(Cart)
