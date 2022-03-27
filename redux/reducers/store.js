@@ -21,6 +21,9 @@ const store = (state = initialState, action) => {
     case 'STORE_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
     }
+    case 'CREATE_STORE_ERROR': {
+      return { ...state, isError: true, errMessage: action.payload }
+    }
     case 'STORE_CLEAR_STATE': {
       return {
         isError: false,
