@@ -95,7 +95,7 @@ const MyOrder = () => {
             <Row key={index} className='my-5'>
               <Col lg={4}>
                 <div className='d-flex flex-row align-items-center'>
-                  {data.product.product_images && <Image src={data.product.product_images[0].image} width={100} height={100} alt='Product picture' />}
+                  {data.product.product_images.length > 0 && <Image src={data.product.product_images[0].image} width={100} height={100} alt='Product picture' />}
                   <span className="ms-5">{data.product.name}</span>
                 </div>
               </Col>
