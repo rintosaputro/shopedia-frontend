@@ -15,8 +15,8 @@ export const getProfile = async (dispatch) => {
   })
 }
 
-export const editProfile = (email, name, gender, description, images) => {
-  console.log(email, gender)
+export const editProfile = (name, gender, images) => {
+  console.log(gender)
   return async (dispatch) => {
     try {
       dispatch({
@@ -25,7 +25,7 @@ export const editProfile = (email, name, gender, description, images) => {
       const token = window.localStorage.getItem('token')
       const param = new FormData()
 
-      param.append('email', email)
+      // param.append('email', email)
       param.append('gender', gender)
       param.append('name', name)
       param.append('description', description)

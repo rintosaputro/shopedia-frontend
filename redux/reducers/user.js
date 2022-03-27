@@ -4,12 +4,15 @@ const initialState = {
   token: null,
   errMessage: null,
   dataUser: {},
-  editProfile: false
+  editProfile: false,
+  editStore: false
 }
 
 const user = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_PROFILE': {
+      const token = window.localStorage.getItem('token')
+      state.token = token;
       const newState = {
         dataUser: action.payload
       }
@@ -20,6 +23,9 @@ const user = (state = initialState, action) => {
       return { ...state };
     }
     case 'USER_ERROR': {
+      return { ...state, isError: true, errMessage: action.payload }
+    }
+    case 'STORE_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
     }
     case 'USER_CLEAR_STATE': {

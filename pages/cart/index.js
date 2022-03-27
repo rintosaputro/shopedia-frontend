@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 import { getListShipping } from "../../redux/actions/shipping"
 import { getProductDetail } from "../../redux/actions/product"
+import withAuth from "../../helper/withAuth"
 
 const Cart = ()=>{
   const {cart,shipping,product} = useSelector(state=>state)
@@ -193,7 +194,11 @@ const Cart = ()=>{
                         <Col lg={6}>
                           <div className='d-flex flex-row align-items-center'>
                             <span className="py-5 me-3"><CButton classStyle={cartStyle.button} onClick={()=>handleDelete(index)}><FaTrashAlt className="fs-5"/></CButton></span>
+<<<<<<< HEAD
                             {item.product_image && <Image src={item.product_image.image} alt="product" width={69} height={83}/>}
+=======
+                            {item.data.product_image && <Image src={item.data.product_image.image} alt="product" width={69} height={83}/>}
+>>>>>>> 1e11a15b8789ca2eb73da8f05574bb4dea001c9e
                             <span className="ms-5">{item.data.name}</span>
                           </div>
                         </Col>
@@ -297,4 +302,4 @@ const Cart = ()=>{
   )
 }
 
-export default Cart
+export default withAuth(Cart)

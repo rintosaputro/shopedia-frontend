@@ -3,16 +3,22 @@ const initialState = {
   isLoading: false,
   token: null,
   errMessage: null,
-  store: false
+  successMsg: "",
+  store: false,
+  editStore: false
 }
 
 const store = (state = initialState, action) => {
   switch (action.type) {
     case 'CREATE_STORE': {
-      state.store = true;
+      state.store = action.payload.results;
       return { ...state };
     }
-    case 'sTORE_ERROR': {
+    case 'EDIT_STORE': {
+      state.editStore = true;
+      return { ...state };
+    }
+    case 'STORE_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
     }
     case 'STORE_CLEAR_STATE': {

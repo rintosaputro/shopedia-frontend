@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Dropdown } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import styles from '../pages/my-product/MyProduct.module.css';
 
 const NavProduct = () => {
   const route = useRouter();
+
+  const { user } = useSelector(state => state);
 
   return (
     <nav>
@@ -14,7 +17,8 @@ const NavProduct = () => {
             <a className={`${route.pathname === '/profile' ? 'text-color1' : 'text-muted'} h4 text-decoration-none `}>Profile</a>
           </Link>
         </li>
-        <li className={`mx-3 ${styles.list}`}>
+        {user.dataUser.role && user.dataUser.role.name === 'seller'
+        && <li className={`mx-3 ${styles.list}`}>
           <Dropdown>
             <Dropdown.Toggle variant="white" id="dropdown-basic">
               <span className={`${route.pathname === '/my-product' ? 'text-color1' : 'text-muted'} h4`}>My Product</span>
@@ -25,12 +29,13 @@ const NavProduct = () => {
               <Dropdown.Item href="/my-product/sold-out">Sold Out</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        </li>
-        <li className={`mx-3 ${styles.list}`}>
+        </li>}
+        {user.dataUser.role && user.dataUser.role.name === 'seller'
+        && <li className={`mx-3 ${styles.list}`}>
           <Link href='/selling-product'>
             <a className={`${route.pathname === '/selling-product' ? 'text-color1' : 'text-muted'} h4 text-decoration-none `}>Selling Product</a>
           </Link>
-        </li>
+        </li>}
         <li className={`mx-3 ${styles.list}`}>
           <Dropdown>
             <Dropdown.Toggle variant="white" id="dropdown-basic">
