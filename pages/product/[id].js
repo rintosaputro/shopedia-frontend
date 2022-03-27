@@ -22,6 +22,7 @@ import { addCart } from '../../redux/actions/cart';
 import noImg from '../../images/noImg.jpg'
 import { getWishLlists } from '../../redux/actions/wishlist';
 import { getListReview, addReview } from '../../redux/actions/review';
+import ReactStars from "react-rating-stars-component";
 
 const ProductDetail = () => {
   const [count, setCount] = useState(1)
@@ -32,13 +33,13 @@ const ProductDetail = () => {
   const [cartReady, setCartReady] = useState();
   const [whislistReady, setWhislistReady] = useState();
   const [idWishlist, setIdWishlist] = useState();
-  
+
 
   const route = useRouter();
   const dispatch = useDispatch();
 
   const { product, user, review, wishlists } = useSelector(state => state)
-  const {id, name, price, description, product_images, stock } = product.productDetail;
+  const { id, name, price, description, rates, product_images, stock } = product.productDetail;
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const ProductDetail = () => {
     if (review.results.length === 0 && token) {
       dispatch(getListReview(route.query.id))
     }
-    
+
     // dispatch(addCart)
   }, [route.query.id])
 
@@ -71,11 +72,11 @@ const ProductDetail = () => {
       if (filt.length > 0) {
         setCartReady(true)
         dispatch(addCart)
-      }else {
+      } else {
         setCartReady(false)
         dispatch(addCart)
       }
-    } 
+    }
   }, [id, dispatch])
 
   const imgClick = (e, currentImg) => {
@@ -92,7 +93,7 @@ const ProductDetail = () => {
   const countDec = (e) => {
     e.preventDefault();
     if (count > 1) {
-      setCount(count -1)
+      setCount(count - 1)
     }
   }
   let imageProduct = {}
@@ -102,14 +103,14 @@ const ProductDetail = () => {
   const dataCart = {
     id,
     userId: user.dataUser.id,
-    product: {id, name, price, stock},
+    product: { id, name, price, stock },
     product_images: imageProduct,
   }
   const addtoCart = (e) => {
     e.preventDefault();
     const parsed = JSON.stringify(dataCart);
     const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
-    const data = {data: dataCart, qty: count}
+    const data = { data: dataCart, qty: count }
     if (cartStorage) {
       const filt = cartStorage.filter(item => item.data.product.id === dataCart.product.id)
       if (filt.length === 0) {
@@ -139,17 +140,17 @@ const ProductDetail = () => {
     const param = new URLSearchParams();
     param.append('productId', Number(route.query.id))
     await http(token).post('/users/favorite-product', param)
-    .then(res => {
-      if (res.status < 400) {
-        // setWhislist(res.data.results)
-        setWhislistReady(true)
-        dispatch(getWishLlists)
-      }
-    }) 
-    .catch(err => {
-      // setWhislist(false)
-      setWhislistReady(false)
-    })
+      .then(res => {
+        if (res.status < 400) {
+          // setWhislist(res.data.results)
+          setWhislistReady(true)
+          dispatch(getWishLlists)
+        }
+      })
+      .catch(err => {
+        // setWhislist(false)
+        setWhislistReady(false)
+      })
     setIsLoading(false)
   }
   const deleteWihslist = async (e) => {
@@ -157,17 +158,17 @@ const ProductDetail = () => {
     setIsLoading(true)
     const token = window.localStorage.getItem('token');
     await http(token).delete(`/users/favorite-product/${idWishlist}`)
-    .then(res => {
-      if (res.status < 400) {
-        setWhislist(true)
-        setWhislistReady(false)
-        dispatch(getWishLlists)
-      }
-    }) 
-    .catch(err => {
-      setWhislist(false)
-      // setWhislistReady(true)
-    })
+      .then(res => {
+        if (res.status < 400) {
+          setWhislist(true)
+          setWhislistReady(false)
+          dispatch(getWishLlists)
+        }
+      })
+      .catch(err => {
+        setWhislist(false)
+        // setWhislistReady(true)
+      })
     setIsLoading(true)
   }
   const handleReview = async (e) => {
@@ -210,9 +211,9 @@ const ProductDetail = () => {
   }
 
   const relatedProducts = [
-    {pict: '/images/product1.png', name: 'Coaster 506222-CO Loveseat', price: 765.99},
-    {pict: '/images/product2.png', name: 'Coaster 506222-CO Loveseat', price: 765.99},
-    {pict: '/images/product2.png', name: 'Coaster 506222-CO Loveseat', price: 765.99}
+    { pict: '/images/product1.png', name: 'Coaster 506222-CO Loveseat', price: 765.99 },
+    { pict: '/images/product2.png', name: 'Coaster 506222-CO Loveseat', price: 765.99 },
+    { pict: '/images/product2.png', name: 'Coaster 506222-CO Loveseat', price: 765.99 }
   ]
   return (
     <Layout>
@@ -223,14 +224,14 @@ const ProductDetail = () => {
             <aside className="h-100">
               <div className={`d-flex justify-content-center h-100 ${styles.asideImg}`}>
                 {product_images && product_images[0]
-                ? product_images.map((data, index) => {
-                  return (
-                    <div  key={index} style={{cursor: 'pointer'}} onClick={e => imgClick(e, data.image)}>
-                      <Image src={data.image} alt={data.alt} width={120} height={120} />
-                    </div>
-                  )
-                })
-                : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                  ? product_images.map((data, index) => {
+                    return (
+                      <div key={index} style={{ cursor: 'pointer' }} onClick={e => imgClick(e, data.image)}>
+                        <Image src={data.image} alt={data.alt} width={120} height={120} />
+                      </div>
+                    )
+                  })
+                  : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
                 }
               </div>
             </aside>
@@ -243,12 +244,12 @@ const ProductDetail = () => {
             </div>
             <div id="mainImg" className="d-flex justify-content-center align-items-center h-100 overflow-hidden">
               {product_images && product_images[0]
-              ? product_images.map((data, index) => {
-              if (index === 0) {
-                return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
-              }
-              })
-              : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                ? product_images.map((data, index) => {
+                  if (index === 0) {
+                    return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                  }
+                })
+                : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
               }
             </div>
           </Col>
@@ -258,18 +259,39 @@ const ProductDetail = () => {
         <button onClick={e => console.log('testWish', idWishlist)}>Test</button>
         <div className="fs-2">{name && capitalFirst(name)}</div>
         <div className="mt-5 mb-3">
-          {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index}/> ))}
+          {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index} />))}
           <span>{review.results && review.results.length} (reviews)</span>
         </div>
         <Row className="mb-5">
           <Col xs={6}>
             <div className="fw-bold h2">{priceFormat.format(price)}</div>
+            {rates && rates[0]
+              ? rates.map((data, index) => {
+                if (index === 0) {
+                  return <>
+                    <div className='d-flex flex-row align-items-center'>
+                      <ReactStars
+                        count={5}
+                        size={50}
+                        activeColor="#ffd700"
+                        value={Number(data.rate)}
+                        edit={false}
+                        isHalf={true}
+                      />
+                      <h4 className='mt-2 ms-3'>({Number(data.rate)})</h4>
+                    </div>
+                  </>
+                }
+              })
+              : ""
+            }
+
           </Col>
           <Col xs={6}>
             <div className={`${styles.pill} d-inline pe-2`}>
               <BsCheck className="border border-dark rounded-pill" />
             </div>
-              {stock} In Stock
+            {stock} In Stock
           </Col>
         </Row>
         <p>
@@ -281,13 +303,13 @@ const ProductDetail = () => {
             <span>{count}</span>
             <button onClick={countInc} className="btn">+</button>
           </div>
-          {cartReady 
-          ? <button onClick={deleteCart} className="btn btn-outline-danger ms-3">Delete from Cart</button>
-          : <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>
+          {cartReady
+            ? <button onClick={deleteCart} className="btn btn-outline-danger ms-3">Delete from Cart</button>
+            : <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>
           }
-          {whislistReady 
-          ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
-          : <button onClick={addWhislist} className="btn btn-outline-dark ms-3">Add to Whislist</button>
+          {whislistReady
+            ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
+            : <button onClick={addWhislist} className="btn btn-outline-dark ms-3">Add to Whislist</button>
           }
         </div>
         <div>
@@ -298,21 +320,21 @@ const ProductDetail = () => {
         </div>
         <div className='my-5'>
           <span><GrDeliver /> Delivery and return</span>
-          <span className="mx-5"><CgRuler/> Size Guide</span>
-          <span><BiMap/> Store Available</span>
+          <span className="mx-5"><CgRuler /> Size Guide</span>
+          <span><BiMap /> Store Available</span>
         </div>
         <div className="mb-5">
           <div className="border d-inline px-2 py-1 border-dark  rounded-pill me-3">
             <FaFacebookF />
           </div>
           <div className="border d-inline px-2 py-1 border-dark  rounded-pill me-3">
-            <FaTwitter/>
+            <FaTwitter />
           </div>
           <div className="border d-inline px-2 py-1 border-dark  rounded-pill me-3">
-            <FaYoutube/>
-          </div>         
+            <FaYoutube />
+          </div>
         </div>
-        
+
         <nav>
           <style jsx>
             {`
@@ -341,12 +363,12 @@ const ProductDetail = () => {
             <Row className='align-items-center mt-5'>
               <Col xs={12} lg={5}>
                 {product_images && product_images[0]
-                ? product_images.map((data, index) => {
-                if (index === 0) {
-                  return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
-                }
-                })
-                : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                  ? product_images.map((data, index) => {
+                    if (index === 0) {
+                      return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                    }
+                  })
+                  : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
                 }
               </Col>
               <Col xs={12} lg={7}>
@@ -363,14 +385,14 @@ const ProductDetail = () => {
                 return (
                   <div key={data.id} className='pt-5'>
                     <div className='d-flex flex-row'>
-                      <div style={{backgroundImage: `url(${data.user.image || '/images/defaultpp.jpg'})`}} className={styles.photoReview}></div>
+                      <div style={{ backgroundImage: `url(${data.user.image || '/images/defaultpp.jpg'})` }} className={styles.photoReview}></div>
                       <div className={`${styles.commentReview} ms-4`}>
                         <div>“{data.comment}”</div>
                         <div className='text-muted mt-3'>
                           {date}
                           <button onClick={e => replyClick(idx)} className='fw-bold btn ms-3'>Reply</button>
                         </div>
-                        <form id={`formReply${idx}`} style={{display: 'none'}}>
+                        <form id={`formReply${idx}`} style={{ display: 'none' }}>
                           <input id={`replyForm${data.id}`} type='text' placeholder='reply' />
                           <button onClick={e => replyReview(data.id, idx, e)} className='btn btn-color2 fw-bold'>Send</button>
                         </form>
@@ -379,7 +401,7 @@ const ProductDetail = () => {
                             return (
                               <div key={item.id} className='pt-5'>
                                 <div className='d-flex flex-row'>
-                                  <div style={{backgroundImage: `url(${item.user.image || '/images/defaultpp.jpg'})`}} className={styles.photoReview}></div>
+                                  <div style={{ backgroundImage: `url(${item.user.image || '/images/defaultpp.jpg'})` }} className={styles.photoReview}></div>
                                   <div className={`${styles.commentReview} ms-4`}>
                                     <div>“{item.comment}”</div>
                                     <div className='text-muted mt-3'>
@@ -393,7 +415,7 @@ const ProductDetail = () => {
                         </div>
                       </div>
                     </div>
-                    <hr className='mt-5'/>
+                    <hr className='mt-5' />
                   </div>
                 )
               })
@@ -430,14 +452,14 @@ const ProductDetail = () => {
           <Row>
             {relatedProducts.map((data, index) => {
               return <Col key={index} lg={4}>
-                <div style={{backgroundImage: `url(${data.pict})`}} className={`${styles.relatedBg}`} ></div>
+                <div style={{ backgroundImage: `url(${data.pict})` }} className={`${styles.relatedBg}`} ></div>
                 <div className='fs-5 my-4'>{data.name}</div>
                 <div className='fw-bold'>{priceFormat.format(data.price)}</div>
               </Col>
             })}
           </Row>
         </div>
-      
+
       </main>
     </Layout>
   )
