@@ -27,22 +27,56 @@ const ProductDetail = () => {
   const [count, setCount] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [whislist, setWhislist] = useState(false);
-  const [errWhislist, setErrWhislist] = useState(false);
   const [reviewMessage, setReviewMessage] = useState('')
   const [cartSuccess, setCartSuccess] = useState(false)
+  const [cartReady, setCartReady] = useState();
+  const [whislistReady, setWhislistReady] = useState();
+  const [idWishlist, setIdWishlist] = useState();
   
 
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const { product, user, review } = useSelector(state => state)
+  const { product, user, review, wishlists } = useSelector(state => state)
   const {id, name, price, description, product_images, stock } = product.productDetail;
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   useEffect(() => {
-    dispatch(getProductDetail(route.query.id))
-    dispatch(getListReview(route.query.id))
-  }, [dispatch])
+    const id = route.query.id
+    dispatch(getProductDetail(id))
+    dispatch(getWishLlists)
+    const token = window.localStorage.getItem('token')
+    if (review.results.length === 0 && token) {
+      dispatch(getListReview(route.query.id))
+    }
+    
+    // dispatch(addCart)
+  }, [route.query.id])
+
+  useEffect(() => {
+    const filtWishlist = wishlists.listWishlist.filter(item => item.product.name === name)
+    if (filtWishlist.length > 0) {
+      setWhislistReady(true)
+      setIdWishlist(filtWishlist[0].id)
+    } else {
+      setWhislistReady(false)
+      setIdWishlist(null)
+    }
+  }, [wishlists])
+
+  useEffect(() => {
+    const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
+    if (cartStorage) {
+      const filt = cartStorage.filter(item => item.data.product.id === id)
+      if (filt.length > 0) {
+        setCartReady(true)
+        dispatch(addCart)
+      }else {
+        setCartReady(false)
+        dispatch(addCart)
+      }
+    } 
+  }, [id, dispatch])
 
   const imgClick = (e, currentImg) => {
     e.preventDefault();
@@ -77,50 +111,62 @@ const ProductDetail = () => {
     const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
     const data = {data: dataCart, qty: count}
     if (cartStorage) {
-      const resData = [...cartStorage, data]
-      window.localStorage.setItem("cart", JSON.stringify(resData))
+      const filt = cartStorage.filter(item => item.data.product.id === dataCart.product.id)
+      if (filt.length === 0) {
+        cartStorage.push(data)
+        window.localStorage.setItem("cart", JSON.stringify(cartStorage))
+      }
     } else {
       window.localStorage.setItem("cart", JSON.stringify([data]))
     }
     setCartSuccess(true)
+    setCartReady(true)
     dispatch(addCart)
+  }
+  const deleteCart = (e) => {
+    e.preventDefault();
+    const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
+    const filt = cartStorage.filter(data => data.data.product.id !== dataCart.product.id)
+    window.localStorage.setItem('cart', JSON.stringify(filt))
+    dispatch(addCart)
+    setCartReady(false)
   }
 
   const addWhislist = async (e) => {
     e.preventDefault();
     setIsLoading(true)
-    setErrWhislist(false)
     const token = window.localStorage.getItem('token');
     const param = new URLSearchParams();
     param.append('productId', Number(route.query.id))
     await http(token).post('/users/favorite-product', param)
     .then(res => {
       if (res.status < 400) {
-        setWhislist(res.data.results)
+        // setWhislist(res.data.results)
+        setWhislistReady(true)
         dispatch(getWishLlists)
       }
     }) 
     .catch(err => {
-      setWhislist(false)
-      setErrWhislist(true)
+      // setWhislist(false)
+      setWhislistReady(false)
     })
-    setIsLoading(true)
+    setIsLoading(false)
   }
   const deleteWihslist = async (e) => {
     e.preventDefault();
     setIsLoading(true)
-    // setErrWhislist(false)
     const token = window.localStorage.getItem('token');
-    await http(token).delete(`/users/favorite-product/${whislist.id}`)
+    await http(token).delete(`/users/favorite-product/${idWishlist}`)
     .then(res => {
       if (res.status < 400) {
-        setErrWhislist(false)
+        setWhislist(true)
+        setWhislistReady(false)
         dispatch(getWishLlists)
       }
     }) 
     .catch(err => {
       setWhislist(false)
-      setErrWhislist(true)
+      // setWhislistReady(true)
     })
     setIsLoading(true)
   }
@@ -209,6 +255,7 @@ const ProductDetail = () => {
         </Row>
       </header>
       <main className="container mb-5">
+        <button onClick={e => console.log('testWish', idWishlist)}>Test</button>
         <div className="fs-2">{name && capitalFirst(name)}</div>
         <div className="mt-5 mb-3">
           {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index}/> ))}
@@ -234,26 +281,14 @@ const ProductDetail = () => {
             <span>{count}</span>
             <button onClick={countInc} className="btn">+</button>
           </div>
-          {cartSuccess
-          ? <span>Successfully added to cart</span>
-          : <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>}
-          {whislist 
+          {cartReady 
+          ? <button onClick={deleteCart} className="btn btn-outline-danger ms-3">Delete from Cart</button>
+          : <button onClick={addtoCart} className="btn btn-dark">Add to Cart</button>
+          }
+          {whislistReady 
           ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
           : <button onClick={addWhislist} className="btn btn-outline-dark ms-3">Add to Whislist</button>
           }
-          {errWhislist && <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>}
-          {errWhislist && <span className='ms-3 text-danger'>Product already in whislist</span>}
-          {/* {errWhislist 
-          ? <>
-              <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
-              <span className='ms-3 text-danger'>Product already in whislist</span>
-            </>
-          : (
-            whislist 
-            ? <button onClick={deleteWihslist} className="btn btn-outline-danger ms-3">Delete from Whislist</button>
-            : (!errWhislist && <button onClick={addWhislist} className="btn btn-outline-dark ms-3">Add to Whislist</button>)
-            )
-          } */}
         </div>
         <div>
           <div>SKU: N/A</div>
@@ -340,7 +375,7 @@ const ProductDetail = () => {
                           <button onClick={e => replyReview(data.id, idx, e)} className='btn btn-color2 fw-bold'>Send</button>
                         </form>
                         <div>
-                          {data.replies && data.replies.map((item) => {
+                          {review.results && data.replies.map((item) => {
                             return (
                               <div key={item.id} className='pt-5'>
                                 <div className='d-flex flex-row'>
