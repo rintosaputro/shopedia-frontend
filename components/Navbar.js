@@ -10,7 +10,7 @@ import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const route = useRouter();
-  const token = useSelector(state => state.auth.token)
+  const token = useSelector(state => state.user.token)
   const { cart, wishlists } = useSelector(state => state)
   const dispatch = useDispatch()
   const [dataCart, setDataCart] = useState(0)
@@ -146,7 +146,7 @@ const Navbar = () => {
                       <Dropdown.Item href="/my-store">
                         My Store
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/") }} >
+                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/"); route.reload() }} >
                         Log Out
                       </Dropdown.Item>
                     </Dropdown.Menu>
