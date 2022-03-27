@@ -20,7 +20,7 @@ const user = (state = initialState, action) => {
     }
     case 'EDIT_PROFILE': {
       state.editProfile = true;
-      return { ...state, isError: false, };
+      return { ...state, isError: false, successMsg: action.payload.message };
     }
     case 'USER_ERROR': {
       state.editProfile = false;

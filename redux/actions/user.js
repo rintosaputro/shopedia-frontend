@@ -33,7 +33,7 @@ export const editProfile = (name, gender, images) => {
       const { data } = await http(token, true).patch('http://localhost:3000/users/profile', param)
       dispatch({
         type: 'EDIT_PROFILE',
-        payload: data.results
+        payload: data
       })
       dispatch({
         type: 'TOGGLE_LOADING'

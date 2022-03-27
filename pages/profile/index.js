@@ -12,11 +12,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProfile, editProfile } from '../../redux/actions/user'
 import { useRouter } from "next/router";
 import ModalLoading from '../../components/ModalLoading'
+import ModalNotifSuccess from '../../components/ModalNotifSuccess'
+import ModalNotifError from '../../components/ModalNotifError'
 
 const Index = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.user?.dataUser)
   const user = useSelector(state => state.user)
+  console.log(user.successMsg)
   const pages = useSelector(state => state.pages)
   // const token = useSelector(state => state.user.token)
   const role = data.role
@@ -75,9 +78,10 @@ const Index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
+
         <ModalLoading isLoading={pages.isLoading} />
-        {user.isError && <Alert variant='color3' className='mt-5 text-danger text-center'>{user.errMessage}</Alert>}
-        {user.editProfile && <Alert variant='color2' className='mt-5 text-danger text-center'>Edit Profile Succesfully</Alert>}
+        <ModalNotifSuccess message={user.successMsg} />
+        <ModalNotifError message={user.errMessage} />
         {/* {role && role.name === 'seller' && <NavProduct />} */}
         <NavProduct />
         <Form onSubmit={handleSubmit}>
