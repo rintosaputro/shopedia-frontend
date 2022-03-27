@@ -7,8 +7,9 @@ import CInput from "../../components/CInput"
 import CButton from "../../components/CButton"
 import 'react-phone-number-input/style.css'
 import { useEffect, useState } from "react"
+import withAuth from "../../helper/withAuth"
 
-const checkout = ()=>{
+const Checkout = ()=>{
   const [paymentMethod,setPaymentMethod] = useState([])
 
   useEffect(()=>{
@@ -54,4 +55,4 @@ const checkout = ()=>{
   )
 }
 
-export default checkout
+export default Checkout

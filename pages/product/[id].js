@@ -47,8 +47,9 @@ const ProductDetail = () => {
     dispatch(getProductDetail(id))
     dispatch(getWishLlists)
     const token = window.localStorage.getItem('token')
+    dispatch(getListReview(route.query.id))
     if (review.results.length === 0 && token) {
-      dispatch(getListReview(route.query.id))
+      
     }
 
     // dispatch(addCart)
@@ -68,7 +69,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
     if (cartStorage) {
-      const filt = cartStorage.filter(item => item.data.product.id === id)
+      const filt = cartStorage.filter(item => item.data.id === id)
       if (filt.length > 0) {
         setCartReady(true)
         dispatch(addCart)
@@ -101,18 +102,18 @@ const ProductDetail = () => {
     imageProduct = product_images[0]
   }
   const dataCart = {
-    id,
-    userId: user.dataUser.id,
-    product: { id, name, price, stock },
-    product_images: imageProduct,
+    id, name, price, stock,
+    // userId: user.dataUser.id,
+    // product: { id, name, price, stock },
+    // product_images: imageProduct,
   }
   const addtoCart = (e) => {
     e.preventDefault();
     const parsed = JSON.stringify(dataCart);
     const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
-    const data = { data: dataCart, qty: count }
+    const data = { data: dataCart, product_image: product_images[0] || null, qty: count }
     if (cartStorage) {
-      const filt = cartStorage.filter(item => item.data.product.id === dataCart.product.id)
+      const filt = cartStorage.filter(item => item.data.id === dataCart.id)
       if (filt.length === 0) {
         cartStorage.push(data)
         window.localStorage.setItem("cart", JSON.stringify(cartStorage))
@@ -127,7 +128,7 @@ const ProductDetail = () => {
   const deleteCart = (e) => {
     e.preventDefault();
     const cartStorage = JSON.parse(window.localStorage.getItem("cart"))
-    const filt = cartStorage.filter(data => data.data.product.id !== dataCart.product.id)
+    const filt = cartStorage.filter(data => data.data.id !== dataCart.id)
     window.localStorage.setItem('cart', JSON.stringify(filt))
     dispatch(addCart)
     setCartReady(false)
@@ -256,7 +257,6 @@ const ProductDetail = () => {
         </Row>
       </header>
       <main className="container mb-5">
-        <button onClick={e => console.log('testWish', idWishlist)}>Test</button>
         <div className="fs-2">{name && capitalFirst(name)}</div>
         <div className="mt-5 mb-3">
           {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index} />))}
