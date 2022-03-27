@@ -10,6 +10,8 @@ const initialState = {
 const user = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_PROFILE': {
+      const token = window.localStorage.getItem('token')
+      state.token = token;
       const newState = {
         dataUser: action.payload
       }
