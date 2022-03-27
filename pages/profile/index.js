@@ -11,11 +11,13 @@ import { FiEdit3, FiLogOut } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProfile, editProfile } from '../../redux/actions/user'
 import { useRouter } from "next/router";
+import ModalLoading from '../../components/ModalLoading'
 
 const Index = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.user?.dataUser)
   const user = useSelector(state => state.user)
+  const pages = useSelector(state => state.pages)
   // const token = useSelector(state => state.user.token)
   const role = data.role
   const genders = String(data.gender)
@@ -55,13 +57,8 @@ const Index = () => {
     const name = document.getElementById('name').value;
     const gender = document.querySelector('#gender option:checked').value;
     const images = datas.picture
-    if (role.name === 'seller') {
-      const description = document.getElementById('description').value;
-      dispatch(editProfile(email, name, gender, description, images))
-    } else {
-      dispatch(editProfile(email, name, gender, images))
-    }
-
+    dispatch(editProfile(name, gender, images))
+    dispatch(getProfile)
   }
   return (
     <Layout>
@@ -78,6 +75,7 @@ const Index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
+        <ModalLoading isLoading={pages.isLoading} />
         {user.isError && <Alert variant='color3' className='mt-5 text-danger text-center'>{user.errMessage}</Alert>}
         {user.editProfile && <Alert variant='color2' className='mt-5 text-danger text-center'>Edit Profile Succesfully</Alert>}
         {/* {role && role.name === 'seller' && <NavProduct />} */}

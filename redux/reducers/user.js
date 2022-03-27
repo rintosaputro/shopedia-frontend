@@ -20,12 +20,14 @@ const user = (state = initialState, action) => {
     }
     case 'EDIT_PROFILE': {
       state.editProfile = true;
-      return { ...state };
+      return { ...state, isError: false, };
     }
     case 'USER_ERROR': {
+      state.editProfile = false;
       return { ...state, isError: true, errMessage: action.payload }
     }
     case 'STORE_ERROR': {
+
       return { ...state, isError: true, errMessage: action.payload }
     }
     case 'USER_CLEAR_STATE': {
