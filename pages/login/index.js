@@ -31,7 +31,7 @@ const Login = () => {
     const email = document.getElementById('email').value;
     const pwd = document.getElementById('password').value;
     dispatch(login(email, pwd));
-    route.reload()
+    // route.reload()
   }
 
 
