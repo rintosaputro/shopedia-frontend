@@ -76,3 +76,53 @@ export const getMyProduct = async (dispatch) => {
     })
   }
 }
+
+
+export const updateProduct = (id, data) => {
+  const {name, description, price, stock} = data
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+      const token = window.localStorage.getItem('token')
+      const param = new URLSearchParams()
+      if (name) {
+        param.append('name', name)
+      }
+      if (description) {
+        param.append('description', description)
+      }
+      if (price) {
+        param.append('price', price)
+      }
+      if (stock) {
+        param.append('stock', stock)
+      }
+      const { data } = await http(token).patch(`products/${id}`)
+      dispatch({
+        type: 'UPDATE_PRODUCT',
+        payload: data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    } catch(err) {
+      dispatch({
+        type: 'PRODUCT_ERROR',
+        payload: err.response.data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    }
+  }
+}
+
+export const addImages = (image, productId) => {
+  try {
+
+  } catch (err) {
+
+  }
+}

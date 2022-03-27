@@ -17,12 +17,12 @@ const Navbar = () => {
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
 
   useEffect(()=>{
-    setDataCart(JSON.parse(window.localStorage.getItem("cart")))
+    setDataCart(cart.listCart.length)
   },[])
 
   useEffect(()=>{
     if(cart.isAddCart){
-      setDataCart(JSON.parse(window.localStorage.getItem("cart")))
+      setDataCart(cart.listCart.length)
     }
   }, [cart])
 
@@ -146,7 +146,7 @@ const Navbar = () => {
                       <Dropdown.Item href="/my-store">
                         My Store
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/"); route.reload() }} >
+                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/") }} >
                         Log Out
                       </Dropdown.Item>
                     </Dropdown.Menu>
