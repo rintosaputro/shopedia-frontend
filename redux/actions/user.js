@@ -41,7 +41,7 @@ export const editProfile = (name, gender, images) => {
     } catch (err) {
       dispatch({
         type: 'USER_ERROR',
-        payload: err.response.data
+        payload: err.response.data.message
       })
       dispatch({
         type: 'TOGGLE_LOADING'
