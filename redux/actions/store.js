@@ -67,7 +67,7 @@ export const editStore = (store, description) => {
     } catch (err) {
       dispatch({
         type: 'STORE_ERROR',
-        payload: err.response.data
+        payload: err.response.data.message
       })
       dispatch({
         type: 'TOGGLE_LOADING'

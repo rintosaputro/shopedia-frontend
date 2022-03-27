@@ -16,7 +16,7 @@ const store = (state = initialState, action) => {
     }
     case 'EDIT_STORE': {
       state.editStore = true;
-      return { ...state };
+      return { ...state, isError: false, };
     }
     case 'STORE_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
