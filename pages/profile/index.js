@@ -79,7 +79,8 @@ const Index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
-        {role && role.name === 'seller' && <NavProduct />}
+        {/* {role && role.name === 'seller' && <NavProduct />} */}
+        <NavProduct />
         <Form onSubmit={handleSubmit}>
           <div className='d-flex flex-row'>
             <div className='ms-4 my-5 d-inline position-relative '>
