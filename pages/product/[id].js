@@ -257,7 +257,6 @@ const ProductDetail = () => {
         </Row>
       </header>
       <main className="container mb-5">
-        <button onClick={e => console.log('testWish', idWishlist)}>Test</button>
         <div className="fs-2">{name && capitalFirst(name)}</div>
         <div className="mt-5 mb-3">
           {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index} />))}
