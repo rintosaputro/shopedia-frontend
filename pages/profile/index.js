@@ -52,13 +52,15 @@ const Index = () => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const name = document.getElementById('name').value;
-    const store = document.getElementById('store').value;
-    const description = document.getElementById('description').value;
     const gender = document.querySelector('#gender option:checked').value;
     const images = datas.picture
-    dispatch(editProfile(email, name, gender, images))
-    // dispatch(editStore(store, description))
-    dispatch(getProfile)
+    if (role.name === 'seller') {
+      const description = document.getElementById('description').value;
+      dispatch(editProfile(email, name, gender, description, images))
+    } else {
+      dispatch(editProfile(email, name, gender, images))
+    }
+
   }
   return (
     <Layout>
@@ -75,6 +77,7 @@ const Index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
+        {/* {role && role.name === 'seller' && <NavProduct />} */}
         <NavProduct />
         <Form onSubmit={handleSubmit}>
           <div className='d-flex flex-row'>
@@ -119,7 +122,7 @@ const Index = () => {
               <option value={'others'}>others</option>
             </Form.Select>
           </div>
-          <div className='border border-3 border-bottom-0 px-3 pt-3'>
+          <div className={`border border-3 border-bottom-1 px-3 pt-3`}>
             <Form.Label className='px-3'><p>Your Email :</p></Form.Label>
             <Input
               type="email"
@@ -131,30 +134,34 @@ const Index = () => {
               placeholder='Your email address *'
             />
           </div>
-          <div className='border border-3 border-bottom-0 px-3 pt-3'>
-            <Form.Label className='px-3'><p>Store Name :</p></Form.Label>
-            <Input
-              type="text"
-              id="store"
-              name="store"
-              aria-describedby="store"
-              className='me-5 pb-3 border-0'
-              defaultValue={data.store?.name}
-              placeholder='Your Store'
-            />
-          </div>
-          <div className='border border-3  px-3 pt-3'>
-            <p className='px-3'>Store Description :</p>
-            <Input
-              type="text"
-              id="description"
-              name="description"
-              aria-describedby="description"
-              className='me-5 mb-3 border-0'
-              defaultValue={data.store?.description}
-              placeholder='Description Store'
-            />
-          </div>
+          {role && role.name === 'seller' && 
+           <>
+            <div className='border border-3 border-bottom-0 px-3 pt-3'>
+              <Form.Label className='px-3'><p>Store Name :</p></Form.Label>
+              <Input
+                type="text"
+                id="store"
+                name="store"
+                aria-describedby="store"
+                className='me-5 pb-3 border-0'
+                defaultValue={data.store?.name}
+                placeholder='Your Store'
+              />
+            </div>
+            <div className='border border-3  px-3 pt-3'>
+              <p className='px-3'>Store Description :</p>
+              <Input
+                type="text"
+                id="description"
+                name="description"
+                aria-describedby="description"
+                className='me-5 mb-3 border-0'
+                defaultValue={data.store?.description}
+                placeholder='Description Store'
+              />
+            </div>
+          </> 
+          }
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
             <FiLogOut />&nbsp;Save
           </Button>{' '}

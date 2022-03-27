@@ -25,7 +25,7 @@ const Index = () => {
 
   const route = useRouter();
 
-  const { auth } = useSelector(state => state);
+  const { user } = useSelector(state => state);
 
   const [img, setImg] = useState();
 
@@ -117,6 +117,8 @@ const Index = () => {
   }
 
   return (
+    <>
+    {user.dataUser.role && user.dataUser.role.name === 'seller' &&  
     <Layout>
     <style jsx>
       {`
@@ -277,7 +279,8 @@ const Index = () => {
           </Col>
         </Row>
       </Container>
-    </Layout >
+    </Layout >}
+    </>
   )
 }
 export default Index
