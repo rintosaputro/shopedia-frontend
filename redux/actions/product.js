@@ -31,8 +31,8 @@ export const getProductDetail = (id) => {
       dispatch({
         type: 'TOGGLE_LOADING'
       })
-      const token = window.localStorage.getItem('token')
-      const { data } = await http(token).get(`/products/${id}`)
+      // const token = window.localStorage.getItem('token')
+      const { data } = await http().get(`/products/${id}`)
       dispatch({
         type: 'GET_PRODUCT_DETAIL',
         payload: data.results
