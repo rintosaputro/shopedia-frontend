@@ -32,6 +32,13 @@ const auth = (state = initialState, action) => {
     case 'AUTH_ERROR': {
       return { ...state, isError: true, errMessage: action.payload }
     }
+    case 'AUTH_LOGOUT': {
+      state.token = null
+      state.dataUser = {}
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('cart')
+      return { ...state }
+    }
     case 'AUTH_CLEAR_STATE': {
       return initialState
     }

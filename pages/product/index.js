@@ -13,8 +13,6 @@ import NumberFormat from 'react-number-format';
 import { useRouter } from 'next/router';
 import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs'
 
-
-
 const Index = () => {
   const [value, setValue] = useState(25);
   const [product, setProduct] = useState([])
