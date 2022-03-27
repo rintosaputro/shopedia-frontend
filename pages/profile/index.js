@@ -10,18 +10,25 @@ import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProfile, editProfile } from '../../redux/actions/user'
+import { useRouter } from "next/router";
 
 const Index = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.user?.dataUser)
+  // const token = useSelector(state => state.user.token)
   const role = data.role
   const genders = String(data.gender)
-  console.log(genders)
   const hiddenFileInput = useRef(null)
   const [datas, setDatas] = useState({})
+  const route = useRouter();
   useEffect(
     () => {
-      dispatch(getProfile)
+      const token = window.localStorage.getItem('token')
+      if (token) {
+        dispatch(getProfile)
+      } else {
+        route.push('/')
+      }
     }, []
   )
   const uploadFile = (e) => {
@@ -45,11 +52,9 @@ const Index = () => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const name = document.getElementById('name').value;
-    console.log(email)
     const description = document.getElementById('description').value;
     const gender = document.querySelector('#gender option:checked').value;
     const images = datas.picture
-    console.log(gender);
     dispatch(editProfile(email, name, gender, description, images))
     // route.push('/login')
   }
