@@ -46,11 +46,7 @@ const ProductDetail = () => {
     const id = route.query.id
     dispatch(getProductDetail(id))
     dispatch(getWishLlists)
-    const token = window.localStorage.getItem('token')
-    if (review.results.length === 0 && token) {
-      dispatch(getListReview(route.query.id))
-    }
-
+    dispatch(getListReview(route.query.id))
     // dispatch(addCart)
   }, [route.query.id])
 
@@ -256,7 +252,6 @@ const ProductDetail = () => {
         </Row>
       </header>
       <main className="container mb-5">
-        <button onClick={e => console.log('testWish', idWishlist)}>Test</button>
         <div className="fs-2">{name && capitalFirst(name)}</div>
         <div className="mt-5 mb-3">
           {(review.results && review.results.length > 0) && ([...Array(5)].map((data, index) => <AiFillStar key={index} />))}
