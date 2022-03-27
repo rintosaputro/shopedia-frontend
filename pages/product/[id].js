@@ -46,8 +46,9 @@ const ProductDetail = () => {
     dispatch(getProductDetail(id))
     dispatch(getWishLlists)
     const token = window.localStorage.getItem('token')
+    dispatch(getListReview(route.query.id))
     if (review.results.length === 0 && token) {
-      dispatch(getListReview(route.query.id))
+      
     }
     
     // dispatch(addCart)
