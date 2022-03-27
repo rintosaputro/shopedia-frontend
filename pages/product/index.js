@@ -167,7 +167,7 @@ const Index = () => {
   let items = [];
   for (let number = 1; number <= page.lastPage; number++) {
     items.push(
-      <Pagination.Item size="lg" className='mx-1' key={number} active={number === active}>
+      <Pagination.Item onClick={() => getNextData(`/products?page=${number}&limit=9`)} size="lg" className='mx-1' key={number} active={number === active}>
         {number}
       </Pagination.Item>,
     );
@@ -192,14 +192,14 @@ const Index = () => {
                 name="name"
                 aria-describedby="name"
                 className='me-5 py-3 mt-5'
-                placeholder='Search Product'
+                placeholder='Product Name'
               />
               <Form.Control
                 type="text"
                 id="productStore"
                 name="productStore"
                 aria-describedby="productStore"
-                className='me-5 py-3 mt-5'
+                className='me-5 py-3 mt-1 mb-5'
                 placeholder='Product By Store'
               />
               <ListGroup >
@@ -282,6 +282,11 @@ const Index = () => {
           <Col md={9}>
             <Row>
               <Col md={9}>
+                <div className='d-flex flex-row'>
+                  {page.prev !== null && <button onClick={() => getNextData(page.prev)} className='btn '><p><BsChevronDoubleLeft size={28} /> </p></button>}
+                  <Pagination size="lg">{items}</Pagination>
+                  {page.next !== null && <button onClick={() => getNextData(page.next)} className='btn '><p><BsChevronDoubleRight size={28} /> </p></button>}
+                </div>
               </Col>
               <Col md={3}>
                 <Form onSubmit={onSort}>
@@ -298,11 +303,6 @@ const Index = () => {
               </Col>
             </Row>
             <Row className='mt-5 mb-5 text-center'>
-              <div className='d-flex flex-row'>
-                {page.prev !== null && <button onClick={() => getNextData(page.prev)} className='btn '><p><BsChevronDoubleLeft size={28} /> </p></button>}
-                <Pagination size="lg">{items}</Pagination>
-                {page.next !== null && <button onClick={() => getNextData(page.next)} className='btn '><p><BsChevronDoubleRight size={28} /> </p></button>}
-              </div>
               {errorMsg &&
                 <Alert variant='color3'>{errorMsg}</Alert>
               }
