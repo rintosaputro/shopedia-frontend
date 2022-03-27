@@ -11,6 +11,8 @@ import BreadCrumb from '../../components/BrreadCrumb'
 import Image from 'next/image'
 import NumberFormat from 'react-number-format';
 import { useRouter } from 'next/router';
+import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs'
+
 
 
 const Index = () => {
@@ -21,9 +23,9 @@ const Index = () => {
   const [errorMsg, setErrorMsg] = useState(null)
 
   const route = useRouter()
-
+  console.log(page)
   useEffect(() => {
-    getProduct(`/products?limit=12`)
+    getProduct(`/products?limit=9`)
     getBrands(`/brands`)
   }, [])
 
@@ -68,7 +70,7 @@ const Index = () => {
 
   const onSearch = async (event) => {
     event.preventDefault();
-    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&store=${productStore}&limit=12`
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&store=${productStore}&limit=9`
     let name = document.getElementById('name').value;
     let productStore = document.getElementById('productStore').value;
     let brand = document.querySelector('.form-check-input:checked').value;
@@ -79,7 +81,7 @@ const Index = () => {
 
   const onSort = async (event) => {
     event.preventDefault();
-    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&sort=${sort}&orderBy=${orderBy}&limit=12`
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&sort=${sort}&orderBy=${orderBy}&limit=9`
     let name = document.getElementById('name').value;
     let brand = document.querySelector('.form-check-input:checked').value;
     let minPrice = document.querySelector('#min-value').value;
@@ -102,68 +104,68 @@ const Index = () => {
 
   const onCategories1 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '1'
     await getNextData(url(category), true)
   }
   const onCategories2 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '2'
     await getNextData(url(category), true)
   }
   const onCategories3 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '3'
     await getNextData(url(category), true)
   }
   const onCategories4 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '4'
     await getNextData(url(category), true)
   }
   const onCategories5 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '5'
     await getNextData(url(category), true)
   }
   const onCategories6 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '6'
     await getNextData(url(category), true)
   }
   const onCategories7 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '7'
     await getNextData(url(category), true)
   }
   const onCategories8 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '8'
     await getNextData(url(category), true)
   }
   const onCategories9 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '9'
     await getNextData(url(category), true)
   }
   const onCategories10 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=12`
+    const url = () => `/products?categoryId=${category}&limit=9`
     const category = '10'
     await getNextData(url(category), true)
   }
 
-  let active = 2;
+  let active = page.currentPage;
   let items = [];
-  for (let number = 1; number <= 5; number++) {
+  for (let number = 1; number <= page.lastPage; number++) {
     items.push(
       <Pagination.Item size="lg" className='mx-1' key={number} active={number === active}>
         {number}
@@ -296,6 +298,11 @@ const Index = () => {
               </Col>
             </Row>
             <Row className='mt-5 mb-5 text-center'>
+              <div className='d-flex flex-row'>
+                {page.prev !== null && <button onClick={() => getNextData(page.prev)} className='btn '><p><BsChevronDoubleLeft size={28} /> </p></button>}
+                <Pagination size="lg">{items}</Pagination>
+                {page.next !== null && <button onClick={() => getNextData(page.next)} className='btn '><p><BsChevronDoubleRight size={28} /> </p></button>}
+              </div>
               {errorMsg &&
                 <Alert variant='color3'>{errorMsg}</Alert>
               }
@@ -315,8 +322,11 @@ const Index = () => {
                 )
               })}
             </Row>
-
-            <Pagination>{items}</Pagination>
+            <div className='d-flex flex-row'>
+              {page.prev !== null && <button onClick={() => getNextData(page.prev)} className='btn '><p><BsChevronDoubleLeft size={28} /> </p></button>}
+              <Pagination size="lg">{items}</Pagination>
+              {page.next !== null && <button onClick={() => getNextData(page.next)} className='btn '><p><BsChevronDoubleRight size={28} /> </p></button>}
+            </div>
           </Col>
         </Row>
       </Container >

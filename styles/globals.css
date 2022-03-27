@@ -39,3 +39,15 @@ iframe{
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 0%) !important;
 }
+.page-item.active .page-link{
+  background-color: #05595B !important;
+  border-color: #05595B !important;
+  color:white!important;
+  border-radius: 10px;
+
+}
+.page-link{
+  color:#05595B!important;
+  border-radius: 10px;
+}
+
