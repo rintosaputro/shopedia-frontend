@@ -313,7 +313,10 @@ const Index = () => {
                 return (
                   <>
                     <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
-                      <Image src={noImg} width={360} quality={50} height={360} alt="chair2" />
+                      {data.product_images.length > 0 
+                      ? <Image src={data.product_images[0].image} width={360} quality={50} height={360} alt="chair2" />
+                      : <Image src={noImg} width={360} quality={50} height={360} alt="chair2" />
+                      }
                       <div className="text-md-start ms-auto me-auto">
                         <p className='fs-5'>{data.name}</p>
                         <div className='fs-6 fw-bold'>
