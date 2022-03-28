@@ -1,19 +1,22 @@
 import http from "../../helper/http";
 
 export const createStore = (name, description) => {
+
   return async (dispatch) => {
     try {
       dispatch({
         type: 'TOGGLE_LOADING'
       })
       const token = window.localStorage.getItem('token')
-      const param = new FormData()
+      const param = new URLSearchParams();
       param.append('name', name)
       param.append('description', description)
-      const { data } = await http(token, true).post('http://localhost:3000/stores', param)
+      console.log(name, description)
+      const { data } = await http(token, true).post('/stores', param)
+      console.log(data)
       dispatch({
         type: 'CREATE_STORE',
-        payload: data.results
+        payload: data
       })
       dispatch({
         type: 'TOGGLE_LOADING'

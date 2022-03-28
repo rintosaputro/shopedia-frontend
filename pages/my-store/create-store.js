@@ -35,7 +35,7 @@ const CreateStore = () => {
       </div>
       <Container className='my-5'>
         {store.isError && <Alert variant='color3' className='mt-5 text-danger text-center'>{store.errMessage}</Alert>}
-        {store.store && <Alert variant='color2' className='mt-5 text-danger text-center'>Create Store Succesfully</Alert>}
+        {store.createStore && <Alert variant='color2' className='mt-5 text-danger text-center'>Create Store Succesfully</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Label className='px-3'><p>Your Store Name :</p></Form.Label>
           <Input

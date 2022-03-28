@@ -144,11 +144,12 @@ const Index = () => {
               <div className='border border-3 border-bottom-0 px-3 pt-3'>
                 <Form.Label className='px-3'><p>Store Name :</p></Form.Label>
                 <Input
+                  disabled
                   type="text"
                   id="store"
                   name="store"
                   aria-describedby="store"
-                  className='me-5 pb-3 border-0'
+                  className='me-5 pb-3 border-0 bg-transparent'
                   defaultValue={data.store?.name}
                   placeholder='Your Store'
                 />
@@ -156,11 +157,12 @@ const Index = () => {
               <div className='border border-3  px-3 pt-3'>
                 <p className='px-3'>Store Description :</p>
                 <Input
+                  disabled
                   type="text"
                   id="description"
                   name="description"
                   aria-describedby="description"
-                  className='me-5 mb-3 border-0'
+                  className='me-5 mb-3 border-0 bg-transparent'
                   defaultValue={data.store?.description}
                   placeholder='Description Store'
                 />
@@ -169,6 +171,9 @@ const Index = () => {
           }
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
             <FiLogOut />&nbsp;Save
+          </Button>{' '}
+          <Button href="/my-store/create-store" className='mt-4 px-4' variant="color2" size="lg" active>
+            Create Store
           </Button>{' '}
         </Form>
       </Container>
