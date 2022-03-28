@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import Input from '../../components/CInput'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Alert } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 import BreadCrumb from '../../components/BrreadCrumb'
 import NavProduct from '../../components/NavProduct'
@@ -9,12 +9,18 @@ import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfile, editProfile, editStore } from '../../redux/actions/user'
+import { getProfile, editProfile } from '../../redux/actions/user'
 import { useRouter } from "next/router";
+import ModalLoading from '../../components/ModalLoading'
+import ModalNotifSuccess from '../../components/ModalNotifSuccess'
+import ModalNotifError from '../../components/ModalNotifError'
 
 const Index = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.user?.dataUser)
+  const user = useSelector(state => state.user)
+  console.log(user.successMsg)
+  const pages = useSelector(state => state.pages)
   // const token = useSelector(state => state.user.token)
   const role = data.role
   const genders = String(data.gender)
@@ -54,13 +60,8 @@ const Index = () => {
     const name = document.getElementById('name').value;
     const gender = document.querySelector('#gender option:checked').value;
     const images = datas.picture
-    if (role.name === 'seller') {
-      const description = document.getElementById('description').value;
-      dispatch(editProfile(email, name, gender, description, images))
-    } else {
-      dispatch(editProfile(email, name, gender, images))
-    }
-
+    dispatch(editProfile(name, gender, images))
+    dispatch(getProfile)
   }
   return (
     <Layout>
@@ -77,6 +78,10 @@ const Index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
+
+        <ModalLoading isLoading={pages.isLoading} />
+        <ModalNotifSuccess message={user.successMsg} />
+        <ModalNotifError message={user.errMessage} />
         {/* {role && role.name === 'seller' && <NavProduct />} */}
         <NavProduct />
         <Form onSubmit={handleSubmit}>
@@ -134,36 +139,41 @@ const Index = () => {
               placeholder='Your email address *'
             />
           </div>
-          {role && role.name === 'seller' && 
-           <>
-            <div className='border border-3 border-bottom-0 px-3 pt-3'>
-              <Form.Label className='px-3'><p>Store Name :</p></Form.Label>
-              <Input
-                type="text"
-                id="store"
-                name="store"
-                aria-describedby="store"
-                className='me-5 pb-3 border-0'
-                defaultValue={data.store?.name}
-                placeholder='Your Store'
-              />
-            </div>
-            <div className='border border-3  px-3 pt-3'>
-              <p className='px-3'>Store Description :</p>
-              <Input
-                type="text"
-                id="description"
-                name="description"
-                aria-describedby="description"
-                className='me-5 mb-3 border-0'
-                defaultValue={data.store?.description}
-                placeholder='Description Store'
-              />
-            </div>
-          </> 
+          {role && role.name === 'seller' &&
+            <>
+              <div className='border border-3 border-bottom-0 px-3 pt-3'>
+                <Form.Label className='px-3'><p>Store Name :</p></Form.Label>
+                <Input
+                  disabled
+                  type="text"
+                  id="store"
+                  name="store"
+                  aria-describedby="store"
+                  className='me-5 pb-3 border-0 bg-transparent'
+                  defaultValue={data.store?.name}
+                  placeholder='Your Store'
+                />
+              </div>
+              <div className='border border-3  px-3 pt-3'>
+                <p className='px-3'>Store Description :</p>
+                <Input
+                  disabled
+                  type="text"
+                  id="description"
+                  name="description"
+                  aria-describedby="description"
+                  className='me-5 mb-3 border-0 bg-transparent'
+                  defaultValue={data.store?.description}
+                  placeholder='Description Store'
+                />
+              </div>
+            </>
           }
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
             <FiLogOut />&nbsp;Save
+          </Button>{' '}
+          <Button href="/my-store/create-store" className='mt-4 px-4' variant="color2" size="lg" active>
+            Create Store
           </Button>{' '}
         </Form>
       </Container>

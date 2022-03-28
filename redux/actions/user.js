@@ -33,7 +33,7 @@ export const editProfile = (name, gender, images) => {
       const { data } = await http(token, true).patch('/users/profile', param)
       dispatch({
         type: 'EDIT_PROFILE',
-        payload: data.results
+        payload: data
       })
       dispatch({
         type: 'TOGGLE_LOADING'
@@ -41,7 +41,7 @@ export const editProfile = (name, gender, images) => {
     } catch (err) {
       dispatch({
         type: 'USER_ERROR',
-        payload: err.response.data
+        payload: err.response.data.message
       })
       dispatch({
         type: 'TOGGLE_LOADING'

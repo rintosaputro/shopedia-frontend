@@ -4,6 +4,7 @@ import http from '../../helper/http'
 import Head from 'next/head'
 import Carousel from '../../components/Carousel'
 import { Container, Row, Col, ListGroup, Form, Pagination, Button, Alert } from 'react-bootstrap'
+import noImg from '../../images/noImg.jpg'
 // import RangeSlider from 'react-bootstrap-range-slider';
 import RangeSlider from '../../components/RangeSlider';
 import Layout from '../../components/Layout'
@@ -20,8 +21,8 @@ const Index = () => {
   const [page, setPage] = useState({})
   const [errorMsg, setErrorMsg] = useState(null)
 
+
   const route = useRouter()
-  console.log(page)
   useEffect(() => {
     getProduct(`/products?limit=9`)
     getBrands(`/brands`)
@@ -36,7 +37,6 @@ const Index = () => {
 
   const getBrands = async (url) => {
     const { data } = await http().get(url)
-    console.log(data)
     setBrands(data?.results)
   }
 
@@ -305,10 +305,15 @@ const Index = () => {
                 <Alert variant='color3'>{errorMsg}</Alert>
               }
               {product?.map((data, idx) => {
+
+                let imageProduct = []
+                if (data.product_images) {
+                  imageProduct = data.product_images[0]
+                }
                 return (
                   <>
                     <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
-                      <Image src="/images/chair2.png" width={360} height={450} alt="chair2" />
+                      <Image src={noImg} width={360} quality={50} height={360} alt="chair2" />
                       <div className="text-md-start ms-auto me-auto">
                         <p className='fs-5'>{data.name}</p>
                         <div className='fs-6 fw-bold'>
