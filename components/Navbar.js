@@ -10,29 +10,39 @@ import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const route = useRouter();
-  const token = useSelector(state => state.user.token)
+  const {token,cart} = useSelector(state => state)
+
   const { wishlists } = useSelector(state => state)
   const dispatch = useDispatch()
   const [dataCart, setDataCart] = useState(0)
-  const [cart, setCart] = useState()
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
 
   useEffect(()=>{
     const cartList = JSON.parse(window.localStorage.getItem('cart'))
     // setDataCart(cartList.length)
-    setCart(cartList)
+    if(cartList!==null){
+      setDataCart(cartList.length)
+    }else{
+      setDataCart(0)
+    }
   },[])
 
+  useEffect(()=>{
+    if(cart.isAddCart){
+      const cartList = JSON.parse(window.localStorage.getItem("cart"))
+      if(cartList!==null){
+        setDataCart(cartList.length)
+    }else{
+      setDataCart(0)
+    }
+  }
+  }, [cart])
+
   // useEffect(()=>{
-  //   if(cart.isAddCart){
-  //     setDataCart(cart.listCart.length)
+  //   if(cart){
+  //     setDataCart(cart.length)
   //   }
   // }, [cart])
-  useEffect(()=>{
-    if(cart){
-      setDataCart(cart.length)
-    }
-  }, [cart])
 
 
   const searchBtn = (e) => {
