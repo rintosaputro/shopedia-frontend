@@ -8,6 +8,7 @@ import NavProduct from '../../components/NavProduct'
 import Image from 'next/image'
 import profile from '../../images/about1.png'
 import { FiEdit3, FiLogOut } from 'react-icons/fi'
+import { BiPencil, BiCheckCircle } from "react-icons/bi"
 import { useDispatch, useSelector } from 'react-redux'
 import { getProfile, editProfile } from '../../redux/actions/user'
 import { useRouter } from "next/router";
@@ -19,7 +20,6 @@ const Index = () => {
   const dispatch = useDispatch()
   const data = useSelector(state => state.user?.dataUser)
   const user = useSelector(state => state.user)
-  console.log(user.successMsg)
   const pages = useSelector(state => state.pages)
   // const token = useSelector(state => state.user.token)
   const role = data.role
@@ -78,7 +78,14 @@ const Index = () => {
         <div className={'text-center pb-5'}>See your notifications for the latest updates</div>
       </div>
       <Container className='mb-5'>
-
+        {
+          !data.confirmed &&
+          <div className="d-flex justify-content-center alert alert-warning fade show" role="alert">
+            <strong>Please Verify Your Account
+              <Button block variant='danger ms-2 radius' onClick={() => { route.push("/verify-email") }}> Verify Acount </Button>
+            </strong>
+          </div>
+        }
         <ModalLoading isLoading={pages.isLoading} />
         <ModalNotifSuccess message={user.successMsg} />
         <ModalNotifError message={user.errMessage} />
@@ -117,7 +124,15 @@ const Index = () => {
               <div className='ms-2'>as {role?.name}</div>
             </div>
           </div>
-
+          {
+            data?.confirmed &&
+            <div className='my-3'>
+              <div className="d-inline alert alert-success fade show" role="alert">
+                <strong>Verified Account  <BiCheckCircle size={25} />
+                </strong>
+              </div>
+            </div>
+          }
           <div className='border border-3 border-bottom-0 px-3 pt-3'>
             <Form.Label className='px-3'><p>Gender :</p></Form.Label>
             <Form.Select className='border-0' size="lg" id="gender" defaultValue={genders}>
