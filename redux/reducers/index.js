@@ -11,6 +11,7 @@ import checkout from './checkout'
 import order from './order'
 import review from './review'
 import store from './store'
+import rating from './rating'
 
 const rootReducer = combineReducers({
   auth,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   checkout,
   order,
   review,
-  store
+  store,
+  rating
 })
 
 export default rootReducer
