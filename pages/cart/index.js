@@ -12,7 +12,8 @@ import { addCart } from "../../redux/actions/cart"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
 import { getListShipping } from "../../redux/actions/shipping"
-import { getProductDetail } from "../../redux/actions/product"
+import { getProduct } from "../../redux/actions/product"
+import NumberFormat from "react-number-format"
 import withAuth from "../../helper/withAuth"
 
 const Cart = ()=>{
@@ -26,35 +27,55 @@ const Cart = ()=>{
   const [dataShipping,setDataShipping] = useState({})
   const [error,setError] = useState("")
   const [listCart,setListCart] = useState([])
-  
+  const [listProduct,setProduct] = useState([])
+
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
 
   useEffect(()=>{
-    setListCart(JSON.parse(window.localStorage.getItem("cart")))
       setTitleTable(["Products","Price","Quantity","Total"])
       setListCart(JSON.parse(window.localStorage.getItem("cart")))
       dispatch(getListShipping)
       dispatch(addCart)
+      dispatch(getProduct)
       setSubtotal(handleSubtotal())
+     
   },[])
 
-  useEffect(()=>{
-    if(listCart.length>0){
-      listCart.forEach((item)=>{
-        dispatch(getProductDetail(item.data.id))
-        item.data = product.productDetail
-      })
-    }
-  },[])
+  // useEffect(()=>{
+  //   if(listCart.length > 0){
+  //     listCart.forEach((item)=>{
+  //       dispatch(getProductDetail(item.data.id))
+  //       item.data = product.productDetail
+  //     })
+  //   }
+  //   const parsed = JSON.stringify(listCart)
+  //   window.localStorage.setItem("cart",parsed)
+  //   setListCart(JSON.parse(window.localStorage.getItem("cart")))
+  // },[listCart])
 
   useEffect(()=>{
     if(cart.isAddCart){
-      setSubtotal(handleSubtotal())
+      console.log("masuk add cart")
+      dispatch(getProduct)
+      console.log(product.product)
+      var parseCart = JSON.parse(window.localStorage.getItem("cart"))
+        if(parseCart.length > 0){
+          parseCart.forEach((item)=>{
+            product.product.forEach((itemProduct)=>{
+              if(itemProduct.id===item.data.id){
+                  item.data = itemProduct
+              }
+            })
+        })
+      }
+      const parsed = JSON.stringify(parseCart)
+      window.localStorage.setItem("cart",parsed)
+      setListCart(JSON.parse(window.localStorage.getItem("cart")))
     }
-  },[cart])
+  },[cart.isAddCart])
 
 
   useEffect(()=>{
@@ -199,14 +220,16 @@ const Cart = ()=>{
                           </div>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
-                            <span className="fw-bold">{formatter.format(item.data.price)}</span>
+                            <span className="fw-bold"><NumberFormat value={String(item.data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} /></span>
+                            {/* <span className="fw-bold">{formatter.format(item.data.price)}</span> */}
                         </Col>
                         <Col  xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span><div className="d-flex justify-content-between"><CButton classStyle={cartStyle.button} onClick={()=>countDecrement(index)}>-</CButton><CInput classVariant={cartStyle.formQty} type="number" value={item.qty}/><CButton classStyle={cartStyle.button} onClick={()=>countIncrement(index)}>+</CButton></div></span>
                         </Col>
                         <Col xs={6} lg={2} className='my-auto mt-4 mt-lg-auto text-center'>
                           <span className="text-muted d-inline d-lg-none">Total: </span>
-                          <span className="fw-bold">{formatter.format(item.qty * item.data.price)}</span>
+                          <span className="fw-bold"><NumberFormat value={String(item.qty * item.data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} /></span>
+                          {/* <span className="fw-bold">{formatter.format(item.qty * item.data.price)}</span> */}
                         </Col>
                       </Row>
                     )
@@ -259,20 +282,21 @@ const Cart = ()=>{
                 <div className="ms-md-4 ps-5 mt-5 pt-4 bg-color4 ">
                   <div className="fs-6 fw-bold mb-5">Cart Total</div>
                     <Row className="mb-5">
-                      <Col xs={4}><div className="fw-bold">Subtotal</div></Col>
-                      <Col><div className="fw-bold">{formatter.format(subtotal)}</div></Col>
+                      <Col xs={4} md={3}><div className="fw-bold">Subtotal</div></Col>
+                      <Col><div className="fw-bold"><NumberFormat value={String(subtotal)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} /></div></Col>
+                      {/* <Col><div className="fw-bold">{formatter.format(subtotal)}</div></Col> */}
                     </Row>
                     <Row className="mb-5">
-                      <Col md={4}><div className="fw-bold mb-3">Shipping</div></Col>
+                      <Col md={3}><div className="fw-bold mb-3">Shipping</div></Col>
                       <Col>
-                        <div className="me-5 me-md-3">
+                        <div className="me-5 me-md-4">
                           <Form.Select className={cartStyle.selectShipping} onChange={handleChange}>
                           <option selected style={{display:'none'}}>Select Shipping Method</option>
                             {
                               shipping!==null && shipping.listShipping.length > 0 &&
                               shipping.listShipping.map((item)=>{
                                 return(
-                                    <option value={JSON.stringify(item)} key={item.id}>{item.name} - {formatter.format(item.cost)}</option>
+                                    <option value={JSON.stringify(item)} key={item.id}>{item.name} - Rp. {item.cost.toLocaleString("id-ID")}</option>
                                 )
                               })
                             }
@@ -284,7 +308,7 @@ const Cart = ()=>{
                     <hr className="w-80 me-5"></hr>
                     <Row className="pb-5">
                       <Col xs={4}><div className="fw-bold">Total Price</div></Col>
-                      <Col><div className="fw-bold">{formatter.format(totalPrice())}</div></Col>
+                      <Col><div className="fw-bold"><NumberFormat value={String(totalPrice())} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'}/></div></Col>
                     </Row>
                 </div>
                 <div className="ms-md-4 mb-5 d-grid gap-2">
