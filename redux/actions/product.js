@@ -6,7 +6,7 @@ export const getProduct = async (dispatch) => {
       type: 'TOGGLE_LOADING'
     })
     const token = window.localStorage.getItem('token')
-    const { data } = await http(token).get('http://localhost:3000/products?sort=DESC&orderBy=id')
+    const { data } = await http(token).get('products?sort=DESC&orderBy=id')
     dispatch({
       type: 'GET_PRODUCT',
       payload: data.results

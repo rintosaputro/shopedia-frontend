@@ -11,16 +11,21 @@ export const login = (email, password) => {
       param.append('email', email)
       param.append('password', password)
 
-      const { data } = await http().post('/auth/login', param) 
+      const { data } = await http().post('/auth/login', param)
       dispatch({
         type: 'AUTH_LOGIN',
         payload: data.results.token
       })
-    } catch(err) {
-      const payload = err.response.data.message
+    } catch (err) {
+      let payload = ""
+      if (err.response) {
+        payload = err.response.data.message
+      } else {
+        payload = err.message
+      }
       dispatch({
         type: 'AUTH_ERROR',
-        payload: err.response.data.message
+        payload: payload
       })
     }
   }
@@ -40,7 +45,7 @@ export const signup = (email, password, role) => {
       param.append('password', password)
       param.append('roleId', role)
 
-      const { data } = await http().post('/auth/register', param) 
+      const { data } = await http().post('/auth/register', param)
       dispatch({
         type: 'AUTH_SIGNUP',
         payload: data.results
@@ -48,7 +53,7 @@ export const signup = (email, password, role) => {
       dispatch({
         type: 'TOGGLE_LOADING'
       })
-    } catch(err) {
+    } catch (err) {
       dispatch({
         type: 'AUTH_ERROR',
         payload: err.response.data.message
@@ -69,7 +74,7 @@ export const forgotPassword = (email) => {
       dispatch({
         type: 'AUTH_CLEAR_STATE'
       })
-      
+
       const param = new URLSearchParams();
       param.append('email', email)
       param.append('isReset', 1)
@@ -104,7 +109,7 @@ export const verify = (email) => {
       dispatch({
         type: 'AUTH_CLEAR_STATE'
       })
-      
+
       const param = new URLSearchParams();
       param.append('email', email)
       param.append('isReset', 0)

@@ -10,21 +10,39 @@ import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const route = useRouter();
-  const token = useSelector(state => state.user.token)
-  const { cart, wishlists } = useSelector(state => state)
+  const {token,cart} = useSelector(state => state)
+
+  const { wishlists } = useSelector(state => state)
   const dispatch = useDispatch()
   const [dataCart, setDataCart] = useState(0)
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
 
   useEffect(()=>{
-    setDataCart(cart.listCart.length)
+    const cartList = JSON.parse(window.localStorage.getItem('cart'))
+    // setDataCart(cartList.length)
+    if(cartList!==null){
+      setDataCart(cartList.length)
+    }else{
+      setDataCart(0)
+    }
   },[])
 
   useEffect(()=>{
     if(cart.isAddCart){
-      setDataCart(cart.listCart.length)
+      const cartList = JSON.parse(window.localStorage.getItem("cart"))
+      if(cartList!==null){
+        setDataCart(cartList.length)
+    }else{
+      setDataCart(0)
     }
+  }
   }, [cart])
+
+  // useEffect(()=>{
+  //   if(cart){
+  //     setDataCart(cart.length)
+  //   }
+  // }, [cart])
 
 
   const searchBtn = (e) => {
@@ -39,7 +57,8 @@ const Navbar = () => {
 
   const handleAddtoCart = (event) => {
     event.preventDefault()
-    if(dataCart.length > 0){
+    const cartList = window.localStorage.getItem('cart')
+    if(cartList){
       route.push("/cart")
     } else {
       route.push("/cart/no-cart")

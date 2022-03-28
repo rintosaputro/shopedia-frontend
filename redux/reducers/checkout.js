@@ -1,15 +1,17 @@
 const dataCheckout = {
   isLoading : false,
   data : null,
-  isError : false
+  isError : false,
+  errMessage: false,
 }
 
 const checkout = (state = dataCheckout, action) => {
   switch (action.type) {
     case 'CHECKOUT_FULFILLED': {
-      let {data,isError} = state
+      let {data,isError, errMessage} = state
       data = action.payload
       isError = false
+      errMessage = null
       return { ...state,data,isError}
     }
 

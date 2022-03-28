@@ -31,4 +31,4 @@ const cart = ()=>{
   )
 }
 
-export default withAuth(cart)
+export default cart

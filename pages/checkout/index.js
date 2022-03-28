@@ -58,10 +58,12 @@ const Checkout = ()=>{
         setError({errMsg :checkout.errMessage })
       }else{
         window.localStorage.setItem("cart",JSON.stringify([]))
-        route.push("/my-order")
+        // route.push("/my-order")
         setError({})
       }
-     
+      if (!checkout.isError) {
+        route.push("/my-order")
+      }
     }
   }
 
@@ -79,11 +81,11 @@ const Checkout = ()=>{
                   <Col xs={12} md={3}></Col>
                   <Col xs={12} md={6}>
                     <div className="fs-2">Self Information</div>
-                    {checkout.isError &&  
+                    {checkout.errMessage &&  
                     <Alert variant="danger" dismissible>
-                    <Alert.Heading>ERROR</Alert.Heading>
+                    <Alert.Heading>{checkout.errMessage}</Alert.Heading>
                     <p>
-                      {error.errMsg}
+                      {error.errMessage}
                     </p>
                   </Alert>}
                     <CInput type="text" name="name" classVariant="me-5 py-3 mt-5" placeholder="Your name *" ></CInput>

@@ -194,7 +194,7 @@ const Cart = ()=>{
                         <Col lg={6}>
                           <div className='d-flex flex-row align-items-center'>
                             <span className="py-5 me-3"><CButton classStyle={cartStyle.button} onClick={()=>handleDelete(index)}><FaTrashAlt className="fs-5"/></CButton></span>
-                            {item.data.product_image && <Image src={item.data.product_image.image} alt="product" width={69} height={83}/>}
+                            {item.product_image && <Image src={item.product_image.image} alt="product" width={69} height={83}/>}
                             <span className="ms-5">{item.data.name}</span>
                           </div>
                         </Col>
@@ -298,4 +298,4 @@ const Cart = ()=>{
   )
 }
 
-export default withAuth(Cart)
+export default Cart

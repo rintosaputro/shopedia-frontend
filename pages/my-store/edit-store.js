@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import Input from '../../components/CInput'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Alert } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 import BreadCrumb from '../../components/BrreadCrumb'
 import { FiSave } from 'react-icons/fi'
@@ -10,8 +10,8 @@ import { editStore } from '../../redux/actions/store'
 
 const EditStore = () => {
   const data = useSelector(state => state.user?.dataUser)
-  const message = useSelector(state => state.store)
-  console.log(message)
+  const store = useSelector(state => state.store)
+  console.log(store.errMessage)
   const dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const EditStore = () => {
     <Layout>
 
       <Head>
-        <title>Create Store | Shopedia</title>
+        <title>Edit Store | Shopedia</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className={'bg-color4 py-5'}>
@@ -34,6 +34,8 @@ const EditStore = () => {
         <div className={'text-center pb-5'}>Lets Create Your Own Store</div>
       </div>
       <Container className='my-5'>
+        {store.isError && <Alert variant='color3' className='mt-5 text-danger text-center'>{store.errMessage}</Alert>}
+        {store.editStore && <Alert variant='color2' className='mt-5 text-danger text-center'>Edit Store Succesfully</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Label className='px-3'><p>Your Store Name :</p></Form.Label>
           <Input
