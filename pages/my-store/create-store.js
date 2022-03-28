@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import Input from '../../components/CInput'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Alert } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 import BreadCrumb from '../../components/BrreadCrumb'
 import Image from 'next/image'
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createStore } from '../../redux/actions/store'
 
 const CreateStore = () => {
+  const store = useSelector(state => state.store)
   const dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,6 +34,8 @@ const CreateStore = () => {
         <div className={'text-center pb-5'}>Lets Create Your Own Store</div>
       </div>
       <Container className='my-5'>
+        {store.isError && <Alert variant='color3' className='mt-5 text-danger text-center'>{store.errMessage}</Alert>}
+        {store.createStore && <Alert variant='color2' className='mt-5 text-danger text-center'>Create Store Succesfully</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Label className='px-3'><p>Your Store Name :</p></Form.Label>
           <Input
