@@ -14,7 +14,7 @@ import noImg from '../../images/noImg.jpg'
 import http from '../../helper/http'
 import { Alert, Spinner } from 'react-bootstrap'
 import { useRouter } from 'next/router'
-import { getMyProduct, getProductDetail } from '../../redux/actions/product'
+import { getMyProduct, getProductDetail, updateProduct, addImages } from '../../redux/actions/product'
 
 const Index = () => {
   const [brand, setBrand] = useState([])
@@ -44,7 +44,7 @@ const Index = () => {
     getBrand();
     getCategory();
     dispatch(getProductDetail(Number(route.query.id)))
-  }, [route.query.id])
+  }, [route.query.id, dispatch])
   
   const imageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -53,19 +53,22 @@ const Index = () => {
   }
 
 
-  const updateProduct = (e) => {
-    // e.preventDefault();
-    const goods = document.getElementById('goods').value
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const name = document.getElementById('goods').value
     const description = document.getElementById('description').value
     const price = document.getElementById('price').value
     const stock = document.getElementById('stock').value
-    // const condition = document.querySelector('.stockRadio .form-check-input:checked');
-    // const brand = document.querySelector('.brandRadio .form-check-input:checked');
-    // const category = document.querySelector('.categoriesRadio .form-check-input:checked');
     const file = document.getElementById('fileImg').files[0]
-    const data = {goods, description, price, stock}
-    dispatch(updateProduct(Number(route.query.id), data))
-
+    const dataProduct = {name, description, price, stock}
+    dispatch(updateProduct(Number(route.query.id), dataProduct))
+    if (file) {
+      dispatch(addImages(file, Number(route.query.id)))
+      setImg(noImg)
+    }
+    dispatch(getProductDetail(Number(route.query.id)))
+    window.scrollTo(0, 0)
+    setSuccess(true)
   }
 
   return (
@@ -102,6 +105,7 @@ const Index = () => {
           <Col xs={12} md={3}>
           </Col>
           <Col xs={12} md={6}>
+            {success && <Alert variant='color1' className='text-center my-5'>Successfully updated product!</Alert>}
             <h4>Inventory</h4>
             <Input
               type="text"
@@ -141,56 +145,27 @@ const Index = () => {
               placeholder='Unit Stock *'
               defaultValue={product.productDetail.stock}
             />
-            {/* <Row className='mt-3'>
-              <div className='my-4'>Stock Condition</div>
-              <Col>
-                <Form.Check
-                  inline
-                  label="New Product"
-                  name="group1"
-                  className='stockRadio'
-                  value='New'
-                />
-              </Col>
-              <Col>
-                <Form.Check
-                  inline
-                  label="Second Product"
-                  name="group1"
-                  className='stockRadio'
-                  value='Second'
-                />
-              </Col>
-            </Row>
-            <Row className='mt-5 g-1'>
-              <div className='mb-3'>Brands</div>
-              {brand.map((data, index) => {
-                return <Col key={data.name} xs={6} lg={4}>
-                  <Form.Check
-                  inline
-                  label={data.name}
-                  name="group1"
-                  className='brandRadio'
-                  value={data.id}
-                />
-                </Col>
-              })}
-            </Row>
-            <Row className='mt-5 g-1'>
-              <div className='mb-3'>Categories</div>
-              {categories.map((data, index) => {
-                return <Col key={data.name} xs={6} lg={4}>
-                  <Form.Check
-                  inline
-                  label={data.name}
-                  name="group1"
-                  className='categoriesRadio'
-                  value={data.id}
-                />
-                </Col>
-              })}
-            </Row> */}
             <h4 className='mt-5'>Photo of Goods</h4>
+            <Row className='my-5'>
+              {product.productDetail.product_images.length > 0 &&
+              product.productDetail.product_images.map((data, idx) => {
+                return (
+                  <Col xs={12} md={4} key={idx}>
+                    <div height={30} className="my-3">
+                      <Image
+                        src={data.image}
+                        width="500px"
+                        height="500px"
+                        className="img-thumbnail"
+                        alt="..." 
+                      />
+                    </div>
+                  </Col>
+                )
+              })
+              }
+            </Row>
+            <h4 className='mt-5'>Add new Photo</h4>
             <Row className='my-5'>
               <Col xs={12} md={4}>
                 <div height={30} className="my-3">
@@ -224,9 +199,8 @@ const Index = () => {
               </Col>
             </Row>
             {err && <Alert variant='color1' className='text-danger text-center mt-5'>{message}</Alert>}
-            {success && <Alert variant='color1' className='text-center mt-5'>Successfully added new product!</Alert>}
-            <Button onClick={updateProduct} className={`mt-4 px-4 ${styles.btnSell}`} variant="color2" size="lg" active>
-              {loading ? <Spinner animation="border" /> : 'Update Product'}
+            <Button onClick={handleSubmit} className={`mt-4 px-4 ${styles.btnSell}`} variant="color2" size="lg" active>
+              {product.isLoading ? <Spinner animation="border" /> : 'Update Product'}
             </Button>
             {' '}
           </Col>
