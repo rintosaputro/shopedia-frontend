@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    NEXT_BACKEND_URL: 'http://localhost:3000/'
+    NEXT_BACKEND_URL: 'http://52.87.179.217:3000'
   },
   images: {
     domains: ['res.cloudinary.com'],
