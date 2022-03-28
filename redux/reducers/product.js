@@ -6,6 +6,8 @@ const initialState = {
   product: [],
   productDetail: {},
   myProduct: [],
+  updateProduct: null,
+  addImage: null
 }
 
 const product = (state = initialState, action) => {
@@ -25,6 +27,13 @@ const product = (state = initialState, action) => {
         myProduct: action.payload
       }
       return { ...state, ...newState }
+    }
+    case 'UPDATE_PRODUCT': {
+      state.updateProduct = action.payload
+      return { ...state }
+    }
+    case 'ADD_IMAGE_PRODUCT': {
+      state.addImage = action.payload
     }
     case 'PRODUCT_ERROR': {
       return { ...state, isError: true, errMessage: action.payload.message }

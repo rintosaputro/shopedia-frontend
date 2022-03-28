@@ -60,9 +60,9 @@ const MyProduct = () => {
           {datas.map((data, index) => {
             return (
               <Row key={index} className='my-5'>
-                <Col xs={12} sm={6} lg={4} className='d-flex flex-row align-items-center'>
-                  <Image src={pict} alt='product' width={100} height={100} />
-                  <span className="ps-4">{data.desc}</span>
+                <Col xs={12} sm={6} lg={4} onClick={e => route.push(`/my-product/${data.id}`)} className='d-flex flex-row align-items-center'>
+                  {data.product_images.length > 0 && <Image src={data.product_images[0].image} alt='product' width={100} height={100} />}
+                  <span className="ps-4">{data.name}</span>
                 </Col>
                 <Col xs={12} sm={6} lg={4} className='my-auto'>
                   <div className="my-3 my-lg-0 ms-0 ms-lg-5">

@@ -24,9 +24,9 @@ const NavProduct = () => {
               <span className={`${route.pathname === '/my-product' ? 'text-color1' : 'text-muted'} h4`}>My Product</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="/my-product">All</Dropdown.Item>
-              <Dropdown.Item href="/my-product/archive">Archive</Dropdown.Item>
-              <Dropdown.Item href="/my-product/sold-out">Sold Out</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push("/my-product")}>All</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push("/my-product/archive")}>Archive</Dropdown.Item>
+              <Dropdown.Item onClick={e => route.push("/my-product/sold-out")}>Sold Out</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </li>}

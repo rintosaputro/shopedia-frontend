@@ -10,7 +10,8 @@ import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const route = useRouter();
-  const {token,cart} = useSelector(state => state)
+  const [token, setToken] = useState('')
+  const {cart} = useSelector(state => state)
 
   const { wishlists } = useSelector(state => state)
   const dispatch = useDispatch()
@@ -24,6 +25,10 @@ const Navbar = () => {
       setDataCart(cartList.length)
     }else{
       setDataCart(0)
+    }
+    const token = window.localStorage.getItem('token')
+    if (token) {
+      setToken(token)
     }
   },[])
 
@@ -159,23 +164,23 @@ const Navbar = () => {
 
                   {token &&
                     <Dropdown.Menu>
-                      <Dropdown.Item href="/profile">
+                      <Dropdown.Item onClick={e => route.push("/profile")}>
                         Profile
                       </Dropdown.Item>
-                      <Dropdown.Item href="/my-store">
+                      <Dropdown.Item onClick={e => route.push("/my-store")}>
                         My Store
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/"); route.reload() }} >
+                      <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/") }} >
                         Log Out
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   }
                   {!token &&
                     <Dropdown.Menu>
-                      <Dropdown.Item href="/login">
+                      <Dropdown.Item onClick={e => route.push("/login")}>
                         Login
                       </Dropdown.Item>
-                      <Dropdown.Item href="/signup">
+                      <Dropdown.Item onClick={e => route.push('/signup')}>
                         Signup
                       </Dropdown.Item>
                     </Dropdown.Menu>
