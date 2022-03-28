@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ReactStars from "react-rating-stars-component";
 import { postRating } from "../../redux/actions/rating";
+import CButton from "../../components/CButton";
 
 const MyOrder = () => {
   const [rating, setRating] = useState(null)
@@ -142,7 +143,7 @@ const MyOrder = () => {
                 fullIcon={<i className="fa fa-star"></i>}
                 activeColor="#ffd700"
               />
-              <button onClick={() => handleRating(data.id)} style={{ cursor: 'pointer' }} type="submit">Save</button>
+              <CButton className="bg-color2" onClick={() => handleRating(data.id)} style={{ cursor: 'pointer' }} type="submit">Save</CButton>
             </>
           )
         })}
