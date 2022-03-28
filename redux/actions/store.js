@@ -59,7 +59,7 @@ export const editStore = (store, description) => {
       const param = new URLSearchParams()
       param.append('name', store)
       param.append('description', description)
-      const { data } = await http(token, true).patch('http://localhost:3000/stores', param)
+      const { data } = await http(token, true).patch('stores', param)
       dispatch({
         type: 'EDIT_STORE',
         payload: data

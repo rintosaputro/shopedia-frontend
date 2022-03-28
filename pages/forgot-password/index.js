@@ -54,7 +54,7 @@ const Index = () => {
     data.append('password', e.target.elements['newPassword'].value)
     data.append('confirmPassword', e.target.elements['confirmPassword'].value)
 
-    const request = await http().post('http://localhost:3000/auth/reset-verify', data, {
+    const request = await http().post('auth/reset-verify', data, {
       validateStatus: (status) => {
         return status < 400
       }
