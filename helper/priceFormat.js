@@ -1,5 +1,5 @@
-const priceFormat = new Intl.NumberFormat('en-US', {
+const priceFormat = new Intl.NumberFormat('id-ID', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'IDR',
 });
 export default priceFormat
