@@ -9,13 +9,15 @@ import 'react-phone-number-input/style.css'
 import { useEffect, useState } from "react"
 import { addCart,addTransaction } from "../../redux/actions/cart"
 import { getPaymentMethod } from "../../redux/actions/payment"
-import { checkoutProcess } from "../../redux/actions/checkout"
-import { useDispatch, useSelector } from "react-redux"
+import { checkoutProcess,checkoutClear} from "../../redux/actions/checkout"
+import { useDispatch, useSelector,connect } from "react-redux"
 import { validationCheckout } from "../../helper/validation"
 import styles from './checkout.module.scss';
 import { route } from "next/dist/server/router"
 import { useRouter } from "next/router"
 import withAuth from "../../helper/withAuth"
+import ModalNotifError from "../../components/ModalNotifError"
+
 
 const Checkout = ()=>{
   
@@ -23,6 +25,7 @@ const Checkout = ()=>{
 
   const {payment,checkout} = useSelector(state=>state)
   const [error,setError] = useState({})
+  const [control,setControl] = useState(false)
   const route = useRouter()
   const [listCart,setListCart] = useState([])
   const [dataTransaction,setDataTransaction] = useState([])
@@ -34,38 +37,46 @@ const Checkout = ()=>{
       setDataTransaction(JSON.parse(window.localStorage.getItem("transaction")))
       dispatch(addTransaction)
       dispatch(getPaymentMethod)
+      dispatch(checkoutClear)
     // setPaymentMethod(["Cash","Transfer","Credit Card"])
   },[])
 
-  const handleCheckOut = (event)=>{
-
-    event.preventDefault()
-    const data = {
-      name : event.target.elements["name"].value,
-      address : event.target.elements["address"].value,
-      phoneNumber : event.target.elements["phone-number"].value,
-      paymentMethod : event.target.elements["payment-method"].value
-    }
-
-    const validate = validationCheckout(data)
-
-    if(Object.keys(validate).length > 0){
-      setError(validate)
-    }else{
-      dispatch(checkoutProcess(data,dataTransaction,listCart))
-      console.log(checkout.isError)
-      if(checkout.isError){
-        setError({errMsg :checkout.errMessage })
-      }else{
+  useEffect(()=>{
+    if(checkout.data && control){
         window.localStorage.setItem("cart",JSON.stringify([]))
-        // route.push("/my-order")
-        setError({})
-      }
-      if (!checkout.isError) {
         route.push("/my-order")
+        setError({})
+    }
+  },[checkout.data])
+
+
+  const handleCheckOut = (event)=>{
+      event.preventDefault()
+      const data = {
+        name : event.target.elements["name"].value,
+        address : event.target.elements["address"].value,
+        phoneNumber : event.target.elements["phone-number"].value,
+        paymentMethod : event.target.elements["payment-method"].value
+      }
+
+      const validate = validationCheckout(data)
+
+      if(Object.keys(validate).length > 0){
+        setError(validate)
+      }else{
+        dispatch(checkoutProcess(data,dataTransaction,listCart))
+        setControl(true)
+        // window.localStorage.setItem("cart",JSON.stringify([]))
+        // route.push("/my-order")
+        // if(checkout.isError){
+        //   setError({errMsg : checkout.errMessage})
+        // }else{
+        //   window.localStorage.setItem("cart",JSON.stringify([]))
+        //   route.push("/my-order")
+        //   setError({})
+        // }
       }
     }
-  }
 
   return(
     <Layout>
@@ -81,13 +92,11 @@ const Checkout = ()=>{
                   <Col xs={12} md={3}></Col>
                   <Col xs={12} md={6}>
                     <div className="fs-2">Self Information</div>
-                    {checkout.errMessage &&  
+                    <ModalNotifError message={checkout.errMessage} />
+                    {/* {checkout.isError && checkout.errMessage &&  
                     <Alert variant="danger" dismissible>
                     <Alert.Heading>{checkout.errMessage}</Alert.Heading>
-                    <p>
-                      {error.errMessage}
-                    </p>
-                  </Alert>}
+                  </Alert>} */}
                     <CInput type="text" name="name" classVariant="me-5 py-3 mt-5" placeholder="Your name *" ></CInput>
                     {error!==null && error.name ? <div className={styles.error}>{error.name}</div> : '' }
                     <CInput as="textarea" name="address" className="me-5 py-3 mt-3" rows={3} placeholder="Address *"/>

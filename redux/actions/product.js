@@ -76,3 +76,78 @@ export const getMyProduct = async (dispatch) => {
     })
   }
 }
+
+
+export const updateProduct = (id, dataProduct) => {
+  const {name, description, price, stock} = dataProduct
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+      const token = window.localStorage.getItem('token')
+      const param = new URLSearchParams()
+      if (name) {
+        param.append('name', name)
+      }
+      if (description) {
+        param.append('description', description)
+      }
+      if (price) {
+        param.append('price', price)
+      }
+      if (stock) {
+        param.append('stock', stock)
+      }
+      const { data } = await http(token).patch(`products/${id}`, param)
+      dispatch({
+        type: 'UPDATE_PRODUCT',
+        payload: data
+      })
+      
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    } catch(err) {
+      dispatch({
+        type: 'PRODUCT_ERROR',
+        payload: err.response.data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    }
+  }
+}
+
+export const addImages = (image, productId) => {
+  return async (dispatch) => {
+    try {
+      if (image) {
+        dispatch({
+          type: 'TOGGLE_LOADING'
+        })
+        const token = window.localStorage.getItem('token')
+        const file = new FormData();
+        file.append('image', image)
+        file.append('productId', productId)
+        const { data } = await http(token).post('/products/image', file)
+        dispatch({
+          type: 'ADD_IMAGE_PRODUCT',
+          payload: data.results
+        })
+        dispatch({
+          type: 'TOGGLE_LOADING'
+        })
+      }
+    } catch (err) {
+      dispatch({
+        type: 'PRODUCT_ERROR',
+        payload: err.response.data
+      })
+      dispatch({
+        type: 'TOGGLE_LOADING'
+      })
+    }
+  }
+}

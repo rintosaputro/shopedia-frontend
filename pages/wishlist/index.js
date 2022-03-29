@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import { addCart } from '../../redux/actions/cart'
 import cart from '../cart'
 import withAuth from '../../helper/withAuth'
+import NumberFormat from "react-number-format"
 
 const Index = () => {
   const {wishlists} = useSelector(state=>state)
@@ -93,6 +94,7 @@ const Index = () => {
           <Col xs={12} md={12}>
             {
               wishlists.listWishlist && wishlists.listWishlist.map((item)=>{
+                console.log(item)
                 return(<Row key={item.id} className='my-5'>
                   <Col xs={12} sm={6} lg={4} className='d-flex flex-row align-items-center'>
                     {item.product_image && <Image src={item.product_image.image} alt='product' width={100} height={100} />}
@@ -104,7 +106,7 @@ const Index = () => {
                     </div>
                   </Col>
                   <Col xs={12} sm={12} lg={4} className='my-auto'>
-                    <span className="fw-bold ms-0 ms-lg-5">{formatter.format(item.product.price)}</span>
+                    <span className="fw-bold ms-0 ms-lg-5"><NumberFormat value={String(item.product.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} /></span>
                     <CButton classStyle='px-5 py-2 ms-5' color='dark' disabled = {item.product.stock ===0 && true} onClick={()=>handleAddtoCart(item)}>Add To Cart</CButton>
                   </Col>
               </Row>)
