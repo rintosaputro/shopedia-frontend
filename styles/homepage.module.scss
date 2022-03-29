@@ -1,0 +1,110 @@
+$color1:#062C30;
+
+$color2:#05595B;
+
+.header{
+  height:800px;
+  // padding-top: 200px;
+  display: flex;
+  align-items: center;
+
+}
+
+.titleHeader{
+  font-size: 5vw;
+  font-weight: 700;
+}
+
+.textHeader{
+  font-size: 16px;
+}
+
+.lineHorizontal{
+  width: 119px;
+  height: 2px;
+  background-color: #062C30;
+}
+
+.menuTrend{
+  list-style: none;
+}
+
+.menuTrend li a{
+  color:$color1;
+  font-size: 3vw;
+  text-decoration: none;
+}
+
+.menuTrend li a:hover{
+  color:$color2;
+  font-size: 3vw;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menuTrend li a.active{
+  color: red !important;
+}
+
+.sectionTestimonial{
+  margin-top: 200px;
+}
+
+.titleTestimonial{
+  font-size: 5vw;
+}
+
+.lineVertical{
+  width: 4px;
+  height: 30px;
+  background-color: $color1;
+}
+
+.textTestimonial{
+  line-height: 50px;
+  font-size: 24px;
+}
+
+.buttonTestimonial{
+  background-color: transparent;
+  border: none;
+}
+
+.buttonTestimonial:hover{
+  background-color: transparent;
+  border: none;
+}
+
+.buttonTestimonial:disabled{
+  background-color: transparent;
+  border: none;
+}
+
+// @media(max-width:320px) {
+//   .titleHeader{
+//     font-size: 60px;
+//   }  
+// }
+
+@media(max-width:500px) {
+  .titleHeader{
+    font-size: 10vw;
+  }
+  
+  .menuTrend li a{
+    color:$color1;
+    font-size: 6vw;
+    text-decoration: none;
+  }
+  
+  .menuTrend li a:hover{
+    color:$color2;
+    font-size: 6vw;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .titleTestimonial{
+    font-size: 10vw;
+  }
+}

@@ -14,3 +14,40 @@ a {
 * {
   box-sizing: border-box;
 }
+.active{
+  color: brown;
+}
+.notfound{
+  font-size: 6rem;
+}
+
+iframe{
+  height: 100%;
+  width: 100%;
+}
+.form-select:focus{
+  border-color: #30bb47 !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(93, 197, 119, 0.25) !important;
+}
+.form-control:focus{
+  border-color: #30bb47 !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(93, 197, 119, 0.25) !important;
+}
+.btn:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 0%) !important;
+}
+.page-item.active .page-link{
+  background-color: #05595B !important;
+  border-color: #05595B !important;
+  color:white!important;
+  border-radius: 10px;
+
+}
+.page-link{
+  color:#05595B!important;
+  border-radius: 10px;
+}
+

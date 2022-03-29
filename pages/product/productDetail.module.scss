@@ -1,0 +1,43 @@
+.asideImg {
+  flex-direction: column;
+}
+.sideRow {
+  height: 800px;
+}
+.list {
+  list-style-type: none;
+}
+.navBottom {
+  .nav-link.active, .nav-item.show .nav-link {
+    border-color: none !important;
+  }
+}
+.comment {
+  height: 200px;
+}
+.relatedBg {
+  height: 350px;
+  background-position: center;
+  background-size: cover;
+}
+.photoReview {
+  width: 70px;
+  height: 70px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 105px;
+}
+.commentReview {
+  width: 90%;
+}
+@media all and (max-width: 992px) {
+  .asideImg {
+    flex-direction: row;
+  }
+  .sideRow {
+    flex-direction: column-reverse;
+  }
+  .sideRow {
+    height: auto;
+  }
+}

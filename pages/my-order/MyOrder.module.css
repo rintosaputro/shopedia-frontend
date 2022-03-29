@@ -1,0 +1,8 @@
+.contain {
+  margin-bottom: 120px;
+}
+.pill {
+  padding: 0px 3px;
+  border-radius: 90px;
+  border: 1px solid black;
+}
