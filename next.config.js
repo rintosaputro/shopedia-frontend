@@ -2,11 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    NEXT_BACKEND_URL: 'http://52.87.179.217:3000'
+    NEXT_BACKEND_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ["res.cloudinary.com"],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
