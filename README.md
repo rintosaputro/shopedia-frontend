@@ -34,6 +34,12 @@ cd shopedia-frontend
 npm install
 ```
 
+- Copy ```.env.example``` and rename to ```.env``` then fill the data
+
+```
+NEXT_PUBLIC_API_URL=backend_url_example
+```
+
 - Type ``` npm run dev ``` To Start The Project
 
 <br>
