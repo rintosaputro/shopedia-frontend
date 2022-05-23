@@ -1,4 +1,5 @@
 import http from "../../helper/http";
+const {CALLBACK_URL} = process.env
 
 export const login = (email, password) => {
   return async (dispatch) => {
@@ -79,7 +80,7 @@ export const forgotPassword = (email) => {
       param.append('email', email)
       param.append('isReset', 1)
 
-      const { data } = await http().post('/auth/reset-verify?callbackUrl=http://localhost:3001/forgot-password', param)
+      const { data } = await http().post(`/auth/reset-verify?callbackUrl=${CALLBACK_URL}/forgot-password`, param)
 
       dispatch({
         type: 'AUTH_FORGOT',
@@ -114,7 +115,7 @@ export const verify = (email) => {
       param.append('email', email)
       param.append('isReset', 0)
 
-      const data = await http().post('/auth/reset-verify?callbackUrl=http://localhost:3001/verify-email', param)
+      const data = await http().post(`/auth/reset-verify?callbackUrl=${CALLBACK_URL}/verify-email`, param)
 
       dispatch({
         type: 'AUTH_VERIFY',

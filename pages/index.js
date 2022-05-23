@@ -29,6 +29,7 @@ export default function Home() {
       }
     }, []
   )
+
   return (
     <Layout>
       <Head>
@@ -80,7 +81,7 @@ export default function Home() {
                 return (
                   <>
                     <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={data.name} md={4} className="mb-4">
-                      <Image src="/images/chair2.png" width={360} height={450} alt="chair2" />
+                      <Image src={data.product_images[0].image || "/images/chair2.png"} width={360} height={320} alt="chair2" />
                       <div className="text-md-start ms-auto me-auto">
                         <p className='fs-5'>{data.name}</p>
                         <div className='fs-6 fw-bold'>
