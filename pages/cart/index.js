@@ -14,7 +14,6 @@ import { useRouter } from "next/router"
 import { getListShipping } from "../../redux/actions/shipping"
 import { getProduct } from "../../redux/actions/product"
 import NumberFormat from "react-number-format"
-import withAuth from "../../helper/withAuth"
 
 const Cart = ()=>{
   const {cart,shipping,product} = useSelector(state=>state)

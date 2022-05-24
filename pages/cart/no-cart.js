@@ -5,7 +5,6 @@ import { useState,useEffect } from "react"
 import { Row,Col,Table, Container } from "react-bootstrap"
 import Image from "next/image"
 import cartStyle from "./cart.module.scss"
-import withAuth from "../../helper/withAuth"
 
 const cart = ()=>{
 

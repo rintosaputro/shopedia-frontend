@@ -13,7 +13,6 @@ import { getWishLlists } from '../../redux/actions/wishlist'
 import { useRouter } from 'next/router'
 import { addCart } from '../../redux/actions/cart'
 import cart from '../cart'
-import withAuth from '../../helper/withAuth'
 import NumberFormat from "react-number-format"
 
 const Index = () => {
@@ -137,4 +136,4 @@ const Index = () => {
     </Layout>
   )
 }
-export default withAuth(Index)
+export default Index

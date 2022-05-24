@@ -15,7 +15,6 @@ import { validationCheckout } from "../../helper/validation"
 import styles from './checkout.module.scss';
 import { route } from "next/dist/server/router"
 import { useRouter } from "next/router"
-import withAuth from "../../helper/withAuth"
 import ModalNotifError from "../../components/ModalNotifError"
 
 
