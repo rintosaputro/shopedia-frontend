@@ -9,7 +9,6 @@ import styles from './MyProduct.module.css';
 import { getMyProduct } from '../../redux/actions/product'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from "react";
-import pict from '../../public/images/mask.png'
 
 const MyProduct = () => {
 
