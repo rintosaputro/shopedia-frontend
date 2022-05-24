@@ -7,8 +7,8 @@ const nextConfig = {
     CALLBACK_URL: process.env.CALLBACK_URL
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ["res.cloudinary.com"],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

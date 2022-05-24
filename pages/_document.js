@@ -1,21 +1,32 @@
-import { Html, Head, Main, NextScript } from 'next/document'
-
+import { Html, Head, Main, NextScript } from "next/document";
 
 const _document = () => {
-    return (
-        <Html>
-            <Head>
+  return (
+    <Html>
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500&family=Nunito+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Nunito:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700;900&family=Poppins&display=swap"
+          rel="stylesheet"
+        ></link>
 
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
-                <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500&family=Nunito+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Nunito:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700;900&family=Poppins&display=swap" rel="stylesheet"></link>
-            </Head>
-            <body>
-                <Main />
-                <NextScript />
-            </body>
-        </Html>
-    )
-}
+        <link
+          rel="shortcut icon"
+          href="/public/images/logo.png"
+          type="image/x-icon"
+        />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+};
 
-export default _document
+export default _document;
