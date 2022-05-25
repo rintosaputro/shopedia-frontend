@@ -32,6 +32,19 @@ const Cart = ()=>{
     style: 'currency',
     currency: 'USD',
   });
+  const handleSubtotal = () =>{
+    if(!statusCounter){
+        const subtotal = listCart.map((item)=>{
+          var result = 0
+          result +=(item.qty * item.data.price) 
+          return result
+      })
+
+      return subtotal.reduce(function (total, num) {
+        return total+num
+        }, 0)
+      }
+  }
 
   useEffect(()=>{
       setTitleTable(["Products","Price","Quantity","Total"])
@@ -40,8 +53,17 @@ const Cart = ()=>{
       dispatch(addCart)
       dispatch(getProduct)
       setSubtotal(handleSubtotal())
-     
   },[])
+
+  useEffect(() => {
+    if (listCart.length > 0) {
+      let subTotal = 0
+      listCart.forEach((item) => {
+        subTotal += (item.qty * item.data.price)
+      })
+      setSubtotal(subTotal)
+    }
+  }, [listCart])
 
   // useEffect(()=>{
   //   if(listCart.length > 0){
@@ -103,20 +125,6 @@ const Cart = ()=>{
     window.localStorage.setItem("cart",parsed)
     setListCart(JSON.parse(window.localStorage.getItem("cart")))
     setStatusCounter(true)
-  }
-
-  const handleSubtotal = () =>{
-    if(!statusCounter){
-        const subtotal = listCart.map((item)=>{
-          var result = 0
-          result +=(item.qty * item.data.price) 
-          return result
-      })
-
-      return subtotal.reduce(function (total, num) {
-        return total+num
-        }, 0)
-      }
   }
 
   const handleDelete = (index)=>{
