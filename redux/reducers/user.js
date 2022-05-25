@@ -38,6 +38,7 @@ const user = (state = initialState, action) => {
     }
     case 'EDIT_PROFILE_CLEAR': {
       state.editProfile = false;
+      state.successMsg = ''
       return {...state}
     }
     default: {

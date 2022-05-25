@@ -13,7 +13,7 @@ const wishlists = (state = dataWishlist,action)=>{
       return{...state,...newWishlist}
     }
     case "GET_WISHLISTS_ERROR" :{
-      return { ...state, isError: true, errMessage: action.payload }
+      return { ...state, isError: true, errMessage: action.payload, listWishlist: [] }
     }
     default:{
       return {...state}

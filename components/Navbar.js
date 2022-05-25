@@ -147,7 +147,7 @@ const Navbar = () => {
               <li className="nav-item">
                 <button className="btn position-relative ms-lg-1" onClick={e => route.push('/wishlist')}>
                   <BiHeart className="fs-2" />
-                  <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{wishlists.listWishlist ? wishlists.listWishlist.length : 0}</div>
+                  <div className={`bg-color1 position-absolute text-white rounded-circle ${styles.notif}`}>{wishlists.listWishlist.length || 0}</div>
                 </button>
               </li>
               <li className="nav-item">
