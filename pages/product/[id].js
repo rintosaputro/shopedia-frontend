@@ -449,15 +449,16 @@ const ProductDetail = () => {
         <div className='d-none d-lg-block'>
           <div className='fs-3 text-center my-5'>Related Products</div>
           <Row>
-            {relatedProducts.map((data, index) => {
-              return <Col key={index} lg={4}>
-                <div style={{ backgroundImage: `url(${data.pict})` }} className={`${styles.relatedBg}`} ></div>
+            {product.product?.map((data, index) => {
+              if (index <= 2) {
+                return <Col key={index} lg={4}>
+                <div style={{ backgroundImage: `url(${data.product_images[0].image})` }} className={`${styles.relatedBg}`} ></div>
                 <div className='fs-5 my-4'>{data.name}</div>
-                {/* <div className='fw-bold'>{priceFormat.format(data.price)}</div> */}
                 <div className='fw-bold'>
-                  <NumberFormat value={String(data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} /> harga
+                  <NumberFormat value={String(data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} />
                 </div>
               </Col>
+              } 
             })}
           </Row>
         </div>
