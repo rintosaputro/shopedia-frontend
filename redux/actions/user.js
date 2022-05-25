@@ -2,7 +2,7 @@ import http from "../../helper/http";
 
 export const getProfile = async (dispatch) => {
   dispatch({
-    type: 'TOGGLE_LOADING'
+    type: 'TOGGLE_LOADING'  
   })
   const token = window.localStorage.getItem('token')
   const { data } = await http(token).get('/users/profile')
@@ -28,9 +28,9 @@ export const editProfile = (name, gender, images) => {
       // param.append('email', email)
       param.append('gender', gender)
       param.append('name', name)
-      param.append('description', description)
+      // param.append('description', description)
       param.append('image', images)
-      const { data } = await http(token, true).patch('/users/profile', param)
+      const { data } = await http(token).patch('/users/profile', param)
       dispatch({
         type: 'EDIT_PROFILE',
         payload: data
@@ -41,7 +41,7 @@ export const editProfile = (name, gender, images) => {
     } catch (err) {
       dispatch({
         type: 'USER_ERROR',
-        payload: err.response.data.message
+        payload: err.response
       })
       dispatch({
         type: 'TOGGLE_LOADING'
