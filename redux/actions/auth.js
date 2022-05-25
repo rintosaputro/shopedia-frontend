@@ -115,7 +115,7 @@ export const verify = (email) => {
       param.append('email', email)
       param.append('isReset', 0)
 
-      const data = await http().post(`/auth/reset-verify?callbackUrl=${CALLBACK_URL}/verify-email`, param)
+      const data = await http().post(`/auth/reset-verify?callbackUrl=${CALLBACK_URL}`, param)
 
       dispatch({
         type: 'AUTH_VERIFY',

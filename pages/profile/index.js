@@ -37,6 +37,14 @@ const Index = () => {
       }
     }, []
   )
+  useEffect(() => {
+    if (user.editProfile) {
+      dispatch(getProfile)
+      setTimeout(() => {
+        dispatch({type: 'EDIT_PROFILE_CLEAR'})
+      }, 5000)
+    }
+  }, [user.editProfile])
   const uploadFile = (e) => {
     e.preventDefault()
     hiddenFileInput.current.click()
@@ -61,7 +69,7 @@ const Index = () => {
     const gender = document.querySelector('#gender option:checked').value;
     const images = datas.picture
     dispatch(editProfile(name, gender, images))
-    dispatch(getProfile)
+    // dispatch(getProfile)
   }
   return (
     <Layout>
@@ -187,9 +195,9 @@ const Index = () => {
           <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
             <FiLogOut />&nbsp;Save
           </Button>{' '}
-          <Button href="/my-store/create-store" className='mt-4 px-4' variant="color2" size="lg" active>
+          {role?.name === 'seller' && <Button href="/my-store/create-store" className='mt-4 px-4' variant="color2" size="lg" active>
             Create Store
-          </Button>{' '}
+          </Button>}{' '}
         </Form>
       </Container>
     </Layout >

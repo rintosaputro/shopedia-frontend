@@ -79,17 +79,15 @@ export default function Home() {
             <Row className='mt-5 mb-5 text-center'>
               {data?.map((data, idx) => {
                 return (
-                  <>
-                    <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={data.name} md={4} className="mb-4">
-                      <Image src={data.product_images[0].image || "/images/chair2.png"} width={360} height={320} alt="chair2" />
-                      <div className="text-md-start ms-auto me-auto">
-                        <p className='fs-5'>{data.name}</p>
-                        <div className='fs-6 fw-bold'>
-                          <NumberFormat value={String(data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} />
-                        </div>
+                  <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={data.id} md={4} className="mb-4">
+                    <Image src={data.product_images[0].image || "/images/chair2.png"} width={360} height={320} alt="chair2" />
+                    <div className="text-md-start ms-auto me-auto">
+                      <p className='fs-5'>{data.name}</p>
+                      <div className='fs-6 fw-bold'>
+                        <NumberFormat value={String(data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} />
                       </div>
-                    </Col>
-                  </>
+                    </div>
+                  </Col>
                 )
               })}
             </Row>

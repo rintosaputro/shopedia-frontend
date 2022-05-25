@@ -23,6 +23,7 @@ import noImg from '../../images/noImg.jpg'
 import { getWishLlists } from '../../redux/actions/wishlist';
 import { getListReview, addReview } from '../../redux/actions/review';
 import ReactStars from "react-rating-stars-component";
+import NumberFormat from 'react-number-format';
 
 const ProductDetail = () => {
   const [count, setCount] = useState(1)
@@ -53,7 +54,7 @@ const ProductDetail = () => {
     }
 
     // dispatch(addCart)
-  }, [route.query.id])
+  }, [route.query])
 
   useEffect(() => {
     const filtWishlist = wishlists.listWishlist.filter(item => item.product.name === name)
@@ -247,7 +248,7 @@ const ProductDetail = () => {
               {product_images && product_images[0]
                 ? product_images.map((data, index) => {
                   if (index === 0) {
-                    return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                    return <Image key={index} src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
                   }
                 })
                 : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
@@ -264,12 +265,11 @@ const ProductDetail = () => {
         </div>
         <Row className="mb-5">
           <Col xs={6}>
-            <div className="fw-bold h2">{priceFormat.format(price)}</div>
+            <div className="fw-bold h2"><NumberFormat value={String(price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} /></div>
             {rates && rates[0]
               ? rates.map((data, index) => {
                 if (index === 0) {
-                  return <>
-                    <div className='d-flex flex-row align-items-center'>
+                  return <div key={index} className='d-flex flex-row align-items-center'>
                       <ReactStars
                         count={5}
                         size={50}
@@ -280,7 +280,6 @@ const ProductDetail = () => {
                       />
                       <h4 className='mt-2 ms-3'>({Number(data.rate)})</h4>
                     </div>
-                  </>
                 }
               })
               : ""
@@ -365,7 +364,7 @@ const ProductDetail = () => {
                 {product_images && product_images[0]
                   ? product_images.map((data, index) => {
                     if (index === 0) {
-                      return <Image src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
+                      return <Image key={index} src={data.image} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
                     }
                   })
                   : <Image src={noImg} quality={100} layout="intrinsic" alt='product' width={680} height={680} />
@@ -450,12 +449,16 @@ const ProductDetail = () => {
         <div className='d-none d-lg-block'>
           <div className='fs-3 text-center my-5'>Related Products</div>
           <Row>
-            {relatedProducts.map((data, index) => {
-              return <Col key={index} lg={4}>
-                <div style={{ backgroundImage: `url(${data.pict})` }} className={`${styles.relatedBg}`} ></div>
+            {product.product?.map((data, index) => {
+              if (index <= 2) {
+                return <Col key={index} lg={4}>
+                <div style={{ backgroundImage: `url(${data.product_images[0].image})` }} className={`${styles.relatedBg}`} ></div>
                 <div className='fs-5 my-4'>{data.name}</div>
-                <div className='fw-bold'>{priceFormat.format(data.price)}</div>
+                <div className='fw-bold'>
+                  <NumberFormat value={String(data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} />
+                </div>
               </Col>
+              } 
             })}
           </Row>
         </div>

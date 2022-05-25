@@ -36,6 +36,11 @@ const user = (state = initialState, action) => {
         isLoading: false,
       }
     }
+    case 'EDIT_PROFILE_CLEAR': {
+      state.editProfile = false;
+      state.successMsg = ''
+      return {...state}
+    }
     default: {
       return { ...state }
     }
