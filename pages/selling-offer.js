@@ -42,11 +42,11 @@ export default function Home() {
               </div>
               <div className='mt-5 mb-5 d-flex align-items-center'>
                 <div className={homepage.lineHorizontal}></div>
-                <Link href="#"><a className="ms-3 fs-6 text-color1 text-decoration-none fw-bold">EXPLORE MORE</a></Link>
+                <Link href="/product"><a className="ms-3 fs-6 text-color1 text-decoration-none fw-bold">EXPLORE MORE</a></Link>
               </div>
             </Col>
             <Col lg={4} className='d-none d-lg-block'>
-              <Image src="/images/image-header.png" width={500} height={500} />
+              <Image src="/images/image-header.png" width={500} height={500} alt='product spoiler' />
             </Col>
           </Row>
         </Container>
@@ -108,11 +108,11 @@ export default function Home() {
             </div>
             <div className='text-color2 fs-5 mt-5 fw-bold'>Trevor Rivera - California</div>
             <div className='mt-5 mb-5'>
-              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} /></CButton>
-              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} /></CButton>
-              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`}><Image src="/images/testimon-image.png" height={70} width={70} /></CButton>
-              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} /></CButton>
-              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} /></CButton>
+              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} alt='testimoni picture' /></CButton>
+              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} alt='testimoni picture' /></CButton>
+              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`}><Image src="/images/testimon-image.png" height={70} width={70} alt='testimoni picture' /></CButton>
+              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} alt='testimoni picture' /></CButton>
+              <CButton classStyle={`${homepage.buttonTestimonial} rounded-circle`} disabled><Image src="/images/testimon-image.png" height={70} width={70} alt='testimoni picture' /></CButton>
             </div>
 
           </div>
