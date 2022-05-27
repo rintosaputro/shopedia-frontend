@@ -72,10 +72,14 @@ const NavProductHomepage = () => {
                         {
                           active===item.link ? 
                             <div>
-                              <a className='active actived nav-link' aria-current="page" href={item.link}>{item.name}</a>
+                              <Link href={item.link}>
+                                <a className='active actived nav-link' aria-current="page">{item.name}</a>
+                              </Link>
                               <hr className='w-25 text-color2 fw-bold ms-auto me-auto'/>
                             </div> :
-                            <a className='nav-link' aria-current="page" href={item.link}>{item.name}</a>
+                            <Link href={item.link}>
+                              <a className='nav-link' aria-current="page">{item.name}</a>
+                            </Link>
                             
                         }
                       </li>
