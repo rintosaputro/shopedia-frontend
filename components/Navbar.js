@@ -13,7 +13,7 @@ const Navbar = () => {
   const [token, setToken] = useState('')
   const {cart} = useSelector(state => state)
 
-  const { wishlists } = useSelector(state => state)
+  const { wishlists, user } = useSelector(state => state)
   const dispatch = useDispatch()
   const [dataCart, setDataCart] = useState(0)
   // const [localStorage,useLocalStorage] = useState(window.localStorage.getItem("cart")) 
@@ -167,9 +167,9 @@ const Navbar = () => {
                       <Dropdown.Item onClick={e => route.push("/profile")}>
                         Profile
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={e => route.push("/my-store")}>
+                      {user.dataUser.role?.id !== 2 && <Dropdown.Item onClick={e => route.push("/my-store")}>
                         My Store
-                      </Dropdown.Item>
+                      </Dropdown.Item>}
                       <Dropdown.Item onClick={() => { dispatch({ type: 'AUTH_LOGOUT' }); route.push("/") }} >
                         Log Out
                       </Dropdown.Item>

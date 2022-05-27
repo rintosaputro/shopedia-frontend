@@ -19,7 +19,7 @@ Repository Frontend - Shopedia
 - Clone This Repo
 
 ```
-git clone https://github.com/nhardiansa/shopedia-frontend
+git clone https://github.com/rintosaputro/shopedia-frontend.git
 ```
 
 - Go To Folder Repo
