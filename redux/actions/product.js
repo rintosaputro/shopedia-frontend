@@ -58,7 +58,7 @@ export const getMyProduct = async (dispatch) => {
       type: 'TOGGLE_LOADING'
     })
     const token = window.localStorage.getItem('token')
-    const { data } = await http(token).get('/stores/my-store?page=1&limit=3')
+    const { data } = await http(token).get('/stores/my-store?page=1&limit=10')
     dispatch({
       type: 'GET_MY_PRODUCT',
       payload: data.results
