@@ -4,7 +4,7 @@ const initialState = {
   createRating: false,
   message: null,
   errMessage: null,
-}
+};
 
 const auth = (state = initialState, action) => {
   switch (action.type) {
@@ -13,12 +13,12 @@ const auth = (state = initialState, action) => {
       return { ...state };
     }
     case 'CREATE_ERROR': {
-      return { ...state, isError: true, errMessage: action.payload }
+      return { ...state, isError: true, errMessage: action.payload };
     }
     default: {
-      return { ...state }
+      return { ...state };
     }
   }
-}
+};
 
 export default auth;

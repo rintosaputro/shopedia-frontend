@@ -1,20 +1,20 @@
-import { useRouter } from "next/router"
+/* eslint-disable implicit-arrow-linebreak */
+import React from 'react';
+import { useRouter } from 'next/router';
 
-const withAuth = (WrappedComponent) => {
+const withAuth = (WrappedComponent) =>
   // eslint-disable-next-line react/display-name
-  return (props) => {
-    if (typeof window !== undefined) {
-      const Router = useRouter()
+  function (props) {
+    if (typeof window !== 'undefined') {
+      const Router = useRouter();
 
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
       if (!token) {
-        Router.replace('/login')
-        return null
+        Router.replace('/login');
+        return null;
       }
-      return <WrappedComponent {...props}/>
+      return <WrappedComponent {...props} />;
     }
     return null;
-  }
-}
-
-export default withAuth
+  };
+export default withAuth;

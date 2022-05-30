@@ -1,52 +1,51 @@
-import http from "../../helper/http";
+import http from '../../helper/http';
 
 export const getProfile = async (dispatch) => {
   dispatch({
-    type: 'TOGGLE_LOADING'  
-  })
-  const token = window.localStorage.getItem('token')
-  const { data } = await http(token).get('/users/profile')
+    type: 'TOGGLE_LOADING',
+  });
+  const token = window.localStorage.getItem('token');
+  const { data } = await http(token).get('/users/profile');
   dispatch({
     type: 'GET_PROFILE',
-    payload: data.results
-  })
+    payload: data.results,
+  });
   dispatch({
-    type: 'TOGGLE_LOADING'
-  })
-}
+    type: 'TOGGLE_LOADING',
+  });
+};
 
 export const editProfile = (name, gender, images) => {
-  console.log(gender)
+  console.log(gender);
   return async (dispatch) => {
     try {
       dispatch({
-        type: 'TOGGLE_LOADING'
-      })
-      const token = window.localStorage.getItem('token')
-      const param = new FormData()
+        type: 'TOGGLE_LOADING',
+      });
+      const token = window.localStorage.getItem('token');
+      const param = new FormData();
 
       // param.append('email', email)
-      param.append('gender', gender)
-      param.append('name', name)
+      param.append('gender', gender);
+      param.append('name', name);
       // param.append('description', description)
-      param.append('image', images)
-      const { data } = await http(token).patch('/users/profile', param)
+      param.append('image', images);
+      const { data } = await http(token).patch('/users/profile', param);
       dispatch({
         type: 'EDIT_PROFILE',
-        payload: data
-      })
+        payload: data,
+      });
       dispatch({
-        type: 'TOGGLE_LOADING'
-      })
+        type: 'TOGGLE_LOADING',
+      });
     } catch (err) {
       dispatch({
         type: 'USER_ERROR',
-        payload: err.response
-      })
+        payload: err.response,
+      });
       dispatch({
-        type: 'TOGGLE_LOADING'
-      })
+        type: 'TOGGLE_LOADING',
+      });
     }
-  }
-}
-
+  };
+};

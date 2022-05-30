@@ -1,171 +1,173 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react'
-import http from '../../helper/http'
-import Head from 'next/head'
-import Carousel from '../../components/Carousel'
-import { Container, Row, Col, ListGroup, Form, Pagination, Button, Alert } from 'react-bootstrap'
-import noImg from '../../images/noImg.jpg'
-// import RangeSlider from 'react-bootstrap-range-slider';
-import RangeSlider from '../../components/RangeSlider';
-import Layout from '../../components/Layout'
-import BreadCrumb from '../../components/BrreadCrumb'
-import Image from 'next/image'
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-plusplus */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-use-before-define */
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import {
+  Container, Row, Col, ListGroup, Form, Pagination, Button, Alert,
+} from 'react-bootstrap';
+import Image from 'next/image';
 import NumberFormat from 'react-number-format';
 import { useRouter } from 'next/router';
-import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs'
+import { BsChevronDoubleRight, BsChevronDoubleLeft } from 'react-icons/bs';
+import http from '../../helper/http';
+import Carousel from '../../components/Carousel';
+import noImg from '../../images/noImg.jpg';
+// import RangeSlider from 'react-bootstrap-range-slider';
+import RangeSlider from '../../components/RangeSlider';
+import Layout from '../../components/Layout';
+import BreadCrumb from '../../components/BrreadCrumb';
 
-const Index = () => {
-  const [value, setValue] = useState(25);
-  const [product, setProduct] = useState([])
-  const [brands, setBrands] = useState([])
-  const [page, setPage] = useState({})
-  const [errorMsg, setErrorMsg] = useState(null)
-
-
-  const route = useRouter()
-  useEffect(() => {
-    getProduct(`/products?limit=9`)
-    getBrands(`/brands`)
-  }, [])
+function Index() {
+  const [product, setProduct] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [page, setPage] = useState({});
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const getProduct = async (url) => {
-    const { data } = await http().get(url)
-    console.log(data)
-    setProduct(data?.results)
-    setPage(data?.pageInfo)
-  }
-
+    const { data } = await http().get(url);
+    setProduct(data?.results);
+    setPage(data?.pageInfo);
+  };
   const getBrands = async (url) => {
-    const { data } = await http().get(url)
-    setBrands(data?.results)
-  }
+    const { data } = await http().get(url);
+    setBrands(data?.results);
+  };
+
+  const route = useRouter();
+  useEffect(() => {
+    getProduct('/products?limit=9');
+    getBrands('/brands');
+  }, []);
 
   const getNextData = async (url, replace = false) => {
     try {
-      setErrorMsg(null)
-      const { data } = await http().get(url)
+      setErrorMsg(null);
+      const { data } = await http().get(url);
       if (replace) {
         if (!Array.isArray(data.results)) {
-          data.results = [data.results]
+          data.results = [data.results];
         }
-        setProduct(data?.results)
+        setProduct(data?.results);
       } else {
         setProduct([
-          ...data.results
-        ])
+          ...data.results,
+        ]);
       }
-      setPage(data.pageInfo)
+      setPage(data.pageInfo);
     } catch (e) {
       if (e.message.includes('404')) {
-        setErrorMsg('Data not found!')
-        setProduct([])
+        setErrorMsg('Data not found!');
+        setProduct([]);
         setPage({
-          next: null
-        })
+          next: null,
+        });
       }
     }
-  }
+  };
 
   const onSearch = async (event) => {
     event.preventDefault();
-    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&store=${productStore}&limit=9`
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&store=${productStore}&limit=9`;
     let name = document.getElementById('name').value;
     let productStore = document.getElementById('productStore').value;
     let brand = document.querySelector('.form-check-input:checked').value;
     let minPrice = document.querySelector('#min-value').value;
     let maxPrice = document.querySelector('#max-value').value;
-    await getNextData(url(brand, minPrice, maxPrice, name), true)
-  }
+    await getNextData(url(brand, minPrice, maxPrice, name), true);
+  };
 
   const onSort = async (event) => {
     event.preventDefault();
-    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&sort=${sort}&orderBy=${orderBy}&limit=9`
+    const url = () => `/products?brandId=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${name}&sort=${sort}&orderBy=${orderBy}&limit=9`;
     let name = document.getElementById('name').value;
     let brand = document.querySelector('.form-check-input:checked').value;
     let minPrice = document.querySelector('#min-value').value;
     let maxPrice = document.querySelector('#max-value').value;
-    let check = document.querySelector('.form-select option:checked').value;
-    let sort = ""
-    let orderBy = ""
-    if (check === "cheap") {
-      sort = "ASC"
-      orderBy = "price"
-    } else if (check === "expensive") {
-      sort = "DESC"
-      orderBy = "price"
-    } else if (check == "latest") {
-      sort = "DESC"
-      orderBy = "id"
+    const check = document.querySelector('.form-select option:checked').value;
+    let sort = '';
+    let orderBy = '';
+    if (check === 'cheap') {
+      sort = 'ASC';
+      orderBy = 'price';
+    } else if (check === 'expensive') {
+      sort = 'DESC';
+      orderBy = 'price';
+    } else if (check == 'latest') {
+      sort = 'DESC';
+      orderBy = 'id';
     }
-    await getNextData(url(brand, minPrice, maxPrice, name, sort, orderBy), true)
-  }
+    await getNextData(url(brand, minPrice, maxPrice, name, sort, orderBy), true);
+  };
 
   const onCategories1 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '1'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '1';
+    await getNextData(url(category), true);
+  };
   const onCategories2 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '2'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '2';
+    await getNextData(url(category), true);
+  };
   const onCategories3 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '3'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '3';
+    await getNextData(url(category), true);
+  };
   const onCategories4 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '4'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '4';
+    await getNextData(url(category), true);
+  };
   const onCategories5 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '5'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '5';
+    await getNextData(url(category), true);
+  };
   const onCategories6 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '6'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '6';
+    await getNextData(url(category), true);
+  };
   const onCategories7 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '7'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '7';
+    await getNextData(url(category), true);
+  };
   const onCategories8 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '8'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '8';
+    await getNextData(url(category), true);
+  };
   const onCategories9 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '9'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '9';
+    await getNextData(url(category), true);
+  };
   const onCategories10 = async (event) => {
     event.preventDefault();
-    const url = () => `/products?categoryId=${category}&limit=9`
-    const category = '10'
-    await getNextData(url(category), true)
-  }
+    const url = () => `/products?categoryId=${category}&limit=9`;
+    const category = '10';
+    await getNextData(url(category), true);
+  };
 
-  let active = page.currentPage;
-  let items = [];
+  const active = page.currentPage;
+  const items = [];
   for (let number = 1; number <= page.lastPage; number++) {
     items.push(
-      <Pagination.Item onClick={() => getNextData(`/products?page=${number}&limit=9`)} size="lg" className='mx-1' key={number} active={number === active}>
+      <Pagination.Item onClick={() => getNextData(`/products?page=${number}&limit=9`)} size="lg" className="mx-1" key={number} active={number === active}>
         {number}
       </Pagination.Item>,
     );
@@ -177,7 +179,7 @@ const Index = () => {
         <title>Product | Shopedia</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Container className='mb-5'>
+      <Container className="mb-5">
         <Carousel />
         <BreadCrumb data={[{ name: 'Home', href: '/' }, { name: 'Product', active: true }]} />
 
@@ -189,53 +191,63 @@ const Index = () => {
                 id="name"
                 name="name"
                 aria-describedby="name"
-                className='me-5 py-3 mt-5'
-                placeholder='Product Name'
+                className="me-5 py-3 mt-5"
+                placeholder="Product Name"
               />
               <Form.Control
                 type="text"
                 id="productStore"
                 name="productStore"
                 aria-describedby="productStore"
-                className='me-5 py-3 mt-1 mb-5'
-                placeholder='Product By Store'
+                className="me-5 py-3 mt-1 mb-5"
+                placeholder="Product By Store"
               />
-              <ListGroup >
-                <h3 className='ms-3'>Categories</h3>
-                <ListGroup.Item onClick={onCategories1} id="category" value='1' className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p >Bed</p><div>99</div>
+              <ListGroup>
+                <h3 className="ms-3">Categories</h3>
+                <ListGroup.Item onClick={onCategories1} id="category" value="1" className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Bed</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories2} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Chairs</p><div>99</div>
+                <ListGroup.Item onClick={onCategories2} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Chairs</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories3} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Tables</p><div>99</div>
+                <ListGroup.Item onClick={onCategories3} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Tables</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories4} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Cabinets</p><div>99</div>
+                <ListGroup.Item onClick={onCategories4} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Cabinets</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories5} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Sofas</p><div>99</div>
+                <ListGroup.Item onClick={onCategories5} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Sofas</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories6} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Wardrobes</p><div>99</div>
+                <ListGroup.Item onClick={onCategories6} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Wardrobes</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories7} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Storages</p><div>99</div>
+                <ListGroup.Item onClick={onCategories7} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Storages</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories8} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Desks</p><div>99</div>
+                <ListGroup.Item onClick={onCategories8} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Desks</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories9} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Lamps</p><div>99</div>
+                <ListGroup.Item onClick={onCategories9} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Lamps</p>
+                  <div>99</div>
                 </ListGroup.Item>
-                <ListGroup.Item onClick={onCategories10} className='bg-transparent border-0 d-flex justify-content-between' action >
-                  <p>Clocks</p><div>99</div>
+                <ListGroup.Item onClick={onCategories10} className="bg-transparent border-0 d-flex justify-content-between" action>
+                  <p>Clocks</p>
+                  <div>99</div>
                 </ListGroup.Item>
               </ListGroup>
 
               <>
-                <h3 className='ms-3 my-3'>Price</h3>
+                <h3 className="ms-3 my-3">Price</h3>
                 <RangeSlider
                   min={0}
                   max={10000000}
@@ -244,99 +256,120 @@ const Index = () => {
               </>
 
               <>
-                <h3 className='ms-3 my-3'>Brands</h3>
-                <div className='d-flex flex-column gap-4 ms-3'>
+                <h3 className="ms-3 my-3">Brands</h3>
+                <div className="d-flex flex-column gap-4 ms-3">
                   <Form.Check
-                    key={'All'}
+                    key="All"
                     inline
-                    label={'All'}
+                    label="All"
                     name="group1"
-                    id='brand'
-                    value={""}
-                    defaultChecked='true'
+                    id="brand"
+                    value=""
+                    defaultChecked="true"
                   />
-                  {brands?.map((data, idx) => {
-                    return (
-                      <>
-                        <Form.Check
-                          key={data.name}
-                          inline
-                          label={data.name}
-                          name="group1"
-                          id='brand'
-                          value={data.id}
-                        />
-                      </>
-                    )
-                  })}
+                  {brands?.map((data) => (
+                    <Form.Check
+                      key={data.name}
+                      inline
+                      label={data.name}
+                      name="group1"
+                      id="brand"
+                      value={data.id}
+                    />
+                  ))}
 
                 </div>
-                <Button type="submit" className='mt-4 px-4' variant="color2" size="lg" active>
+                <Button type="submit" className="mt-4 px-4" variant="color2" size="lg" active>
                   &nbsp;Search
-                </Button>{' '}
+                </Button>
+                {' '}
               </>
             </Form>
           </Col>
           <Col md={9}>
             <Row>
               <Col md={9}>
-                <div className='d-flex flex-row'>
-                  {page.prev !== null && <button onClick={() => getNextData(page.prev)} className='btn '><p><BsChevronDoubleLeft size={28} /> </p></button>}
+                <div className="d-flex flex-row">
+                  {page.prev !== null && (
+                  <button type="button" onClick={() => getNextData(page.prev)} className="btn ">
+                    <p>
+                      <BsChevronDoubleLeft size={28} />
+                      {' '}
+                    </p>
+                  </button>
+                  )}
                   <Pagination size="lg">{items}</Pagination>
-                  {page.next !== null && <button onClick={() => getNextData(page.next)} className='btn '><p><BsChevronDoubleRight size={28} /> </p></button>}
+                  {page.next !== null && (
+                  <button type="button" onClick={() => getNextData(page.next)} className="btn ">
+                    <p>
+                      <BsChevronDoubleRight size={28} />
+                      {' '}
+                    </p>
+                  </button>
+                  )}
                 </div>
               </Col>
               <Col md={3}>
                 <Form onSubmit={onSort}>
-                  <Form.Select className='border-0' defaultChecked={""}>
-                    <option value={""}>Sort By</option>
-                    <option value={"latest"}>Latest Product</option>
+                  <Form.Select className="border-0" defaultChecked="">
+                    <option value="">Sort By</option>
+                    <option value="latest">Latest Product</option>
                     <option value="expensive">More Expensive</option>
                     <option value="cheap">More Cheap</option>
                   </Form.Select>
-                  <Button type="submit" className='mt-4 px-4' variant="color2" size="sm" active>
+                  <Button type="submit" className="mt-4 px-4" variant="color2" size="sm" active>
                     &nbsp;Sort
-                  </Button>{' '}
+                  </Button>
+                  {' '}
                 </Form>
               </Col>
             </Row>
-            <Row className='mt-5 mb-5 text-center'>
-              {errorMsg &&
-                <Alert variant='color3'>{errorMsg}</Alert>
-              }
+            <Row className="mt-5 mb-5 text-center">
+              {errorMsg
+                && <Alert variant="color3">{errorMsg}</Alert>}
               {product?.map((data, idx) => {
-
-                let imageProduct = []
+                let imageProduct = [];
                 if (data.product_images) {
-                  imageProduct = data.product_images[0]
+                  imageProduct = data.product_images[0];
                 }
                 return (
-                  <>
-                    <Col style={{ cursor: 'pointer' }} onClick={e => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
-                      {data.product_images.length > 0 
+                  <Col style={{ cursor: 'pointer' }} onClick={(e) => route.push(`/product/${data.id}`)} key={String(idx)} md={4} className="mb-4">
+                    {data.product_images.length > 0
                       ? <Image src={data.product_images[0].image} width={360} quality={50} height={330} alt="chair2" />
-                      : <Image src={noImg} width={360} quality={50} height={360} alt="chair2" />
-                      }
-                      <div className="text-md-start ms-auto me-auto">
-                        <p className='fs-5'>{data.name}</p>
-                        <div className='fs-6 fw-bold'>
-                          <NumberFormat value={String(data.price)} prefix={'Rp. '} mask="." thousandSeparator={true} displayType={'text'} />
-                        </div>
+                      : <Image src={noImg} width={360} quality={50} height={360} alt="chair2" />}
+                    <div className="text-md-start ms-auto me-auto">
+                      <p className="fs-5">{data.name}</p>
+                      <div className="fs-6 fw-bold">
+                        <NumberFormat value={String(data.price)} prefix="Rp. " mask="." thousandSeparator displayType="text" />
                       </div>
-                    </Col>
-                  </>
-                )
+                    </div>
+                  </Col>
+                );
               })}
             </Row>
-            <div className='d-flex flex-row'>
-              {page.prev !== null && <button onClick={() => getNextData(page.prev)} className='btn '><p><BsChevronDoubleLeft size={28} /> </p></button>}
+            <div className="d-flex flex-row">
+              {page.prev !== null && (
+              <button type="button" onClick={() => getNextData(page.prev)} className="btn ">
+                <p>
+                  <BsChevronDoubleLeft size={28} />
+                  {' '}
+                </p>
+              </button>
+              )}
               <Pagination size="lg">{items}</Pagination>
-              {page.next !== null && <button onClick={() => getNextData(page.next)} className='btn '><p><BsChevronDoubleRight size={28} /> </p></button>}
+              {page.next !== null && (
+              <button type="button" onClick={() => getNextData(page.next)} className="btn ">
+                <p>
+                  <BsChevronDoubleRight size={28} />
+                  {' '}
+                </p>
+              </button>
+              )}
             </div>
           </Col>
         </Row>
-      </Container >
-    </Layout >
-  )
+      </Container>
+    </Layout>
+  );
 }
-export default Index
+export default Index;

@@ -1,21 +1,21 @@
 const initialState = {
   isLoading: false,
-}
+};
 
 const pages = (state = initialState, action) => {
   switch (action.type) {
     case 'TOGGLE_LOADING': {
-      let { isLoading } = state
-      isLoading = !isLoading
+      let { isLoading } = state;
+      isLoading = !isLoading;
       state.token = null;
       state.errMessage = null;
-      return { ...state,isLoading}
+      return { ...state, isLoading };
     }
 
     default: {
-      return { ...state }
+      return { ...state };
     }
   }
-}
+};
 
 export default pages;

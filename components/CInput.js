@@ -1,9 +1,12 @@
-import { Form } from "react-bootstrap";
+import React from 'react';
+import { Form } from 'react-bootstrap';
 
-const CInput = ({ typeInput, as, classVariant, children, ...rest }) => {
+function CInput({
+  typeInput, as, classVariant, children, ...rest
+}) {
   return (
-    <Form.Control as={as} type={typeInput} className={classVariant}{...rest} />
-  )
+    <Form.Control as={as} type={typeInput} className={classVariant} {...rest} />
+  );
 }
 
-export default CInput
+export default CInput;

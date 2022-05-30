@@ -1,17 +1,18 @@
-import { combineReducers } from 'redux'
-import auth from './auth'
-import user from './user'
-import product from './product'
-import wishlists from './wishlist'
-import pages from './pages'
-import cart from './cart'
-import shipping from './shipping'
-import payment from './payment'
-import checkout from './checkout'
-import order from './order'
-import review from './review'
-import store from './store'
-import rating from './rating'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { combineReducers } from 'redux';
+import auth from './auth';
+import user from './user';
+import product from './product';
+import wishlists from './wishlist';
+import pages from './pages';
+import cart from './cart';
+import shipping from './shipping';
+import payment from './payment';
+import checkout from './checkout';
+import order from './order';
+import review from './review';
+import store from './store';
+import rating from './rating';
 
 const rootReducer = combineReducers({
   auth,
@@ -26,7 +27,7 @@ const rootReducer = combineReducers({
   order,
   review,
   store,
-  rating
-})
+  rating,
+});
 
-export default rootReducer
+export default rootReducer;

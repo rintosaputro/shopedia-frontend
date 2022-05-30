@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react'
-import { Nav } from 'react-bootstrap'
-import { useRouter } from 'next/router'
-import { Container } from 'react-bootstrap'
-import Link from 'next/link'
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
-const ProfileNAv = () => {
-  const route = useRouter()
-  const [active, setActive] = useState('/profile')
+function ProfileNAv() {
+  const route = useRouter();
+  const [active, setActive] = useState('/profile');
   useEffect(() => {
-    setActive(route.pathname)
-    console.log(route.pathname)
-  }, [route.pathname])
+    setActive(route.pathname);
+  }, [route.pathname]);
   const menu = [
     { link: '/profile', name: 'Profile' },
     { link: '/profile/my-product', name: 'My Product' },
     { link: '/profile/selling-product', name: 'Selling Product' },
     { link: '/profile/my-order', name: 'My Order' },
-  ]
+  ];
   return (
     <>
       <style jsx>
@@ -47,22 +43,18 @@ const ProfileNAv = () => {
         <div className="container-fluid">
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
-              {menu.map(item => {
-                return (
-                  <>
-                    <div className='d-flex flex-column'>
-                      <li key={item.name} className="nav-item mx-3">
-                        <a className={active === item.link ? 'active actived nav-link' : 'nav-link'} aria-current="page" href={item.link}>{item.name}</a>
-                      </li>
-                    </div>
-                  </>
-                )
-              })}
+              {menu.map((item) => (
+                <div className="d-flex flex-column">
+                  <li key={item.name} className="nav-item mx-3">
+                    <a className={active === item.link ? 'active actived nav-link' : 'nav-link'} aria-current="page" href={item.link}>{item.name}</a>
+                  </li>
+                </div>
+              ))}
             </ul>
           </div>
         </div>
       </nav>
     </>
-  )
+  );
 }
-export default ProfileNAv
+export default ProfileNAv;

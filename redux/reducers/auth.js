@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable default-param-last */
 const initialState = {
   isError: false,
   isLoading: false,
@@ -8,14 +10,14 @@ const initialState = {
   verify: false,
   errMessage: null,
   dataUser: {},
-}
+};
 
 const auth = (state = initialState, action) => {
   switch (action.type) {
     case 'AUTH_LOGIN': {
-      state.token = action.payload
-      window.localStorage.setItem('token', action.payload)
-      return { ...state }
+      state.token = action.payload;
+      window.localStorage.setItem('token', action.payload);
+      return { ...state };
     }
     case 'AUTH_SIGNUP': {
       state.signup = true;
@@ -30,22 +32,22 @@ const auth = (state = initialState, action) => {
       return { ...state };
     }
     case 'AUTH_ERROR': {
-      return { ...state, isError: true, errMessage: action.payload }
+      return { ...state, isError: true, errMessage: action.payload };
     }
     case 'AUTH_LOGOUT': {
-      state.token = null
-      state.dataUser = {}
-      window.localStorage.removeItem('token')
-      window.localStorage.removeItem('cart')
-      return { ...state }
+      state.token = null;
+      state.dataUser = {};
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('cart');
+      return { ...state };
     }
     case 'AUTH_CLEAR_STATE': {
-      return initialState
+      return initialState;
     }
     default: {
-      return { ...state }
+      return { ...state };
     }
   }
-}
+};
 
 export default auth;

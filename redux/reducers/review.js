@@ -3,26 +3,26 @@ const initialState = {
   isLoading: false,
   results: [],
   addReview: false,
-}
+};
 
 const review = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_LIST_REVIEW': {
-      state.results = action.payload.results
-      return { ...state }
+      state.results = action.payload.results;
+      return { ...state };
     }
     case 'ADD_REVIEW': {
       state.addReview = true;
-      return { ...state }
+      return { ...state };
     }
     case 'REVIEW_ERROR': {
-      state.isError = true
-      return { ...state }
+      state.isError = true;
+      return { ...state };
     }
     default: {
-      return { ...state }
+      return { ...state };
     }
   }
-}
+};
 
-export default review
+export default review;
