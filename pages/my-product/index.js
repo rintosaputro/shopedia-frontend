@@ -1,30 +1,25 @@
-import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
-import NavProduct from "../../components/NavProduct";
-import Image from 'next/image'
-import CButton from "../../components/CButton";
-import { Row, Col } from "react-bootstrap";
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import { Row, Col } from 'react-bootstrap';
 import { BsCheck } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import Layout from '../../components/Layout';
+import NavProduct from '../../components/NavProduct';
+import CButton from '../../components/CButton';
 import styles from './MyProduct.module.css';
-import { getMyProduct } from '../../redux/actions/product'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from "react";
+import { getMyProduct } from '../../redux/actions/product';
 
-const MyProduct = () => {
+function MyProduct() {
+  const dispatch = useDispatch();
+  const datas = useSelector((state) => state.product.myProduct);
+  const route = useRouter();
 
-  const dispatch = useDispatch()
-  const datas = useSelector(state => state.product.myProduct)
-  const error = useSelector(state => state.product)
-  const route = useRouter()
+  const { role } = useSelector((state) => state.user.dataUser);
 
-  const { role } = useSelector(state => state.user.dataUser)
-
-  console.log(error.errMessage)
-  useEffect(
-    () => {
-      dispatch(getMyProduct)
-    }, []
-  )
+  useEffect(() => {
+    dispatch(getMyProduct);
+  }, []);
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -33,7 +28,7 @@ const MyProduct = () => {
   return (
     <div>
       {role && role.name === 'seller'
-      &&
+      && (
       <Layout>
         <header className="text-center bg-color4 py-5">
           <div className="my-5 container">
@@ -56,29 +51,32 @@ const MyProduct = () => {
               <span className="ms-0 ms-lg-5">Price</span>
             </Col>
           </Row>
-          {datas.map((data, index) => {
-            return (
-              <Row key={index} className='my-5'>
-                <Col xs={12} sm={6} lg={4} onClick={e => route.push(`/my-product/${data.id}`)} className='d-flex flex-row align-items-center'>
-                  {data.product_images.length > 0 && <Image src={data.product_images[0].image} alt='product' width={100} height={100} />}
-                  <span className="ps-4">{data.name}</span>
-                </Col>
-                <Col xs={12} sm={6} lg={4} className='my-auto'>
-                  <div className="my-3 my-lg-0 ms-0 ms-lg-5">
-                    <span className={styles.pill}><BsCheck /></span> {data.stock} Stock
-                  </div>
-                </Col>
-                <Col xs={12} sm={12} lg={4} className='my-auto'>
-                  <span className="fw-bold ms-0 ms-lg-5">{formatter.format(data.price)}</span>
-                  <CButton classStyle='px-5 py-2 ms-5' color='danger'>Delete</CButton>
-                </Col>
-              </Row>
-            )
-          })}
+          {datas.map((data, index) => (
+            <Row key={index} className="my-5">
+              <Col xs={12} sm={6} lg={4} onClick={() => route.push(`/my-product/${data.id}`)} className="d-flex flex-row align-items-center">
+                {data.product_images.length > 0 && <Image src={data.product_images[0].image} alt="product" width={100} height={100} />}
+                <span className="ps-4">{data.name}</span>
+              </Col>
+              <Col xs={12} sm={6} lg={4} className="my-auto">
+                <div className="my-3 my-lg-0 ms-0 ms-lg-5">
+                  <span className={styles.pill}><BsCheck /></span>
+                  {' '}
+                  {data.stock}
+                  {' '}
+                  Stock
+                </div>
+              </Col>
+              <Col xs={12} sm={12} lg={4} className="my-auto">
+                <span className="fw-bold ms-0 ms-lg-5">{formatter.format(data.price)}</span>
+                <CButton classStyle="px-5 py-2 ms-5" color="danger">Delete</CButton>
+              </Col>
+            </Row>
+          ))}
         </section>
-      </Layout>}
+      </Layout>
+      )}
     </div>
-  )
+  );
 }
 
 export default MyProduct;

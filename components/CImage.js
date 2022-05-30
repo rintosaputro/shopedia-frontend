@@ -1,10 +1,12 @@
-import Image from "next/image"
+import React from 'react';
+import Image from 'next/image';
 
-const CImage = ({pathImage,classVariant,children,...rest})=>{
-    console.log("masuk!!")
-    return(
-        <Image src={pathImage} className={classVariant} {...rest}/>
-    )
+function CImage({
+  pathImage, classVariant, children, ...rest
+}) {
+  return (
+    <Image src={pathImage} className={classVariant} {...rest} />
+  );
 }
 
-export default CImage
+export default CImage;

@@ -1,6 +1,10 @@
-import { Html, Head, Main, NextScript } from "next/document";
+/* eslint-disable no-underscore-dangle */
+import React from 'react';
+import {
+  Html, Head, Main, NextScript,
+} from 'next/document';
 
-const _document = () => {
+function _document() {
   return (
     <Html>
       <Head>
@@ -13,7 +17,7 @@ const _document = () => {
         <link
           href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500&family=Nunito+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Nunito:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700;900&family=Poppins&display=swap"
           rel="stylesheet"
-        ></link>
+        />
 
         <link
           rel="shortcut icon"
@@ -27,6 +31,6 @@ const _document = () => {
       </body>
     </Html>
   );
-};
+}
 
 export default _document;

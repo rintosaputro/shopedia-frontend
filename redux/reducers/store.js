@@ -3,11 +3,11 @@ const initialState = {
   isLoading: false,
   token: null,
   errMessage: null,
-  successMsg: "",
+  successMsg: '',
   store: false,
   editStore: false,
-  createStore: false
-}
+  createStore: false,
+};
 
 const store = (state = initialState, action) => {
   switch (action.type) {
@@ -18,26 +18,26 @@ const store = (state = initialState, action) => {
     }
     case 'EDIT_STORE': {
       state.editStore = true;
-      return { ...state, isError: false, };
+      return { ...state, isError: false };
     }
     case 'STORE_ERROR': {
       state.createStore = false;
-      return { ...state, isError: true, errMessage: action.payload }
+      return { ...state, isError: true, errMessage: action.payload };
     }
     case 'CREATE_STORE_ERROR': {
       state.createStore = false;
-      return { ...state, isError: true, errMessage: action.payload }
+      return { ...state, isError: true, errMessage: action.payload };
     }
     case 'STORE_CLEAR_STATE': {
       return {
         isError: false,
         isLoading: false,
-      }
+      };
     }
     default: {
-      return { ...state }
+      return { ...state };
     }
   }
-}
+};
 
 export default store;
